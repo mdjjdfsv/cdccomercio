@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CDC Comércio Online - Mais produtos. Mais praticidade.</title>
     
     <!-- Tailwind CSS CDN -->
@@ -12,14 +12,9 @@
             theme: {
                 extend: {
                     colors: {
-                        navy: {
-                            50: '#f0f4f8',
-                            100: '#d9e2ec',
-                            500: '#103061',
-                            700: '#0b2347',
-                            800: '#0f2b5c',
-                            900: '#0a192f',
-                        }
+                        cdcDark: '#081329',      /* Top bar / Footer escuro */
+                        cdcHeader: '#0F2B5C',    /* Header azul azul-marinho */
+                        cdcCardBg: '#F8FAFC',    /* Fundo dos cards na Home */
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -40,23 +35,30 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-header {
-            background: rgba(15, 43, 92, 0.96);
-            backdrop-filter: blur(8px);
+            background: #0F2B5C;
         }
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            height: 4px;
+            width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #0f2b5c;
+            background: #0F2B5C;
             border-radius: 4px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         
         .banner-slide {
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.6s ease-in-out;
             pointer-events: none;
             position: absolute;
             inset: 0;
@@ -68,76 +70,71 @@
         }
     </style>
 </head>
-<body class="bg-white text-gray-800 min-h-screen flex flex-col justify-between antialiased relative">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between antialiased relative">
 
-    <!-- Top Contact Bar -->
-    <div class="bg-navy-900 text-white text-xs py-2 px-4 shadow-inner">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-            <div class="flex items-center space-x-4">
-                <a href="https://wa.me/5561995829201" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-1">
-                    <i class="fab fa-whatsapp text-emerald-400 text-sm"></i> (61) 99582-9201
+    <!-- Top Contact Bar (Dark Navy Original) -->
+    <div class="bg-cdcDark text-white text-[11px] py-2 px-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-4">
+            <div class="flex items-center space-x-4 text-[12px] font-medium">
+                <a href="https://wa.me/5561995829201" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-1.5">
+                    <i class="fab fa-whatsapp text-emerald-400"></i> <span>(61) 99582-9201</span>
                 </a>
-                <span class="hidden sm:inline text-navy-500">|</span>
-                <a href="mailto:cdccomercioonline@gmail.com" class="hidden sm:flex items-center gap-1 hover:text-blue-300 transition">
-                    <i class="far fa-envelope text-blue-300"></i> cdccomercioonline@gmail.com
+                <a href="https://instagram.com/cdccomercioonline" target="_blank" class="hover:text-pink-400 transition flex items-center gap-1.5">
+                    <i class="fab fa-instagram text-pink-400"></i> <span>@cdccomercioonline</span>
                 </a>
             </div>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-300 hidden md:inline">📍 Valparaíso-GO | Entrega para todo o Brasil</span>
-                <a href="https://instagram.com/cdccomercioonline" target="_blank" class="hover:text-pink-400 transition flex items-center gap-1">
-                    <i class="fab fa-instagram text-pink-400 text-sm"></i> @cdccomercioonline
-                </a>
+            <div class="hidden md:flex items-center space-x-4 text-[11px] text-gray-300">
+                <span>📍 Valparaíso-GO | Entrega para todo o Brasil</span>
             </div>
         </div>
     </div>
 
-    <!-- Main Header -->
-    <header class="sticky top-0 z-40 glass-header text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between gap-4">
+    <!-- Main Header (Original Dark Header) -->
+    <header class="sticky top-0 z-40 glass-header text-white shadow-md border-t border-blue-900/40">
+        <div class="max-w-7xl mx-auto px-3 py-2.5 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between gap-3">
                 <!-- Logo & Brand Name -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="closeAllPages()">
-                    <img src="imagem comercio online.jpeg" alt="CDC Comércio Online" class="h-10 w-auto object-contain rounded-xl shadow-md">
+                <div class="flex items-center gap-2 cursor-pointer flex-shrink-0" onclick="closeAllPages()">
+                    <img src="imagem comercio online.jpeg" alt="CDC Comércio Online" class="h-9 sm:h-11 w-auto object-contain rounded-lg">
                     <div>
-                        <h1 class="text-xl font-extrabold tracking-tight leading-none text-white">CDC COMÉRCIO</h1>
-                        <span class="text-xs text-blue-200 font-medium tracking-widest uppercase block">Online Ltda</span>
+                        <h1 class="text-base sm:text-xl font-extrabold tracking-tight leading-none text-white">CDC COMÉRCIO</h1>
+                        <span class="text-[9px] sm:text-xs text-blue-200 font-semibold tracking-widest uppercase block">ONLINE LTDA</span>
                     </div>
                 </div>
 
-                <!-- Search Bar -->
+                <!-- Search Bar Desktop -->
                 <div class="hidden md:flex flex-1 max-w-lg relative">
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="O que você precisa hoje? (Ex: Detergente, Teclado, Pepsi...)" 
-                           class="w-full pl-10 pr-10 py-2.5 rounded-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-inner bg-gray-100 placeholder-gray-500">
-                    <i class="fas fa-search absolute left-3.5 top-3 text-gray-400"></i>
-                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="O que você precisa hoje?" 
+                           class="w-full pl-10 pr-10 py-2 rounded-full text-gray-800 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white placeholder-gray-400">
+                    <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400"></i>
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-2 text-gray-400 hover:text-gray-600">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
 
                 <!-- Right Menu: Actions -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 sm:gap-3">
                     <!-- Mobile Search Toggle Button -->
-                    <button onclick="toggleMobileSearch()" class="md:hidden text-white p-2 hover:bg-navy-700 rounded-lg">
+                    <button onclick="toggleMobileSearch()" class="text-white p-2 hover:bg-navy-700 rounded-lg">
                         <i class="fas fa-search text-lg"></i>
                     </button>
 
                     <!-- User Account Quick Link -->
                     <div id="userAccountBtn" class="hidden lg:flex items-center text-xs text-left gap-2 cursor-pointer hover:opacity-80" onclick="toggleAuthModal(true)">
-                        <i class="far fa-user-circle text-2xl"></i>
+                        <i class="far fa-user-circle text-2xl text-white"></i>
                         <div>
                             <span class="block text-gray-300">Bem-vindo(a)!</span>
-                            <span class="font-semibold text-white" id="userAccountStatus">Comprar p/ Visitante / ADM</span>
+                            <span class="font-semibold text-white" id="userAccountStatus">Visitante / ADM</span>
                         </div>
                     </div>
 
-                    <!-- Cart Icon with Badge -->
-                    <button onclick="toggleCartModal(true)" class="relative flex items-center gap-2 bg-navy-700 hover:bg-navy-800 px-3.5 py-2 rounded-xl border border-navy-500 transition shadow-sm">
-                        <div class="relative">
+                    <!-- Cart Icon with Badge (Estilo Original da Imagem) -->
+                    <button onclick="toggleCartModal(true)" class="relative flex items-center justify-center bg-[#081836] hover:bg-[#061229] p-2.5 rounded-xl transition shadow-inner border border-blue-900/50 active:scale-95">
+                        <div class="relative flex items-center">
                             <i class="fas fa-shopping-basket text-xl text-emerald-400"></i>
-                            <span id="cartCountBadge" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-navy-800">0</span>
+                            <span id="cartCountBadge" class="absolute -top-2.5 -right-2.5 bg-red-600 text-white text-[10px] font-black w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-[#081836]">0</span>
                         </div>
-                        <div class="hidden sm:block text-left text-xs">
-                            <span class="block text-gray-300 text-[10px]">Meu Carrinho</span>
+                        <div class="hidden sm:block text-left text-xs ml-2">
                             <span id="cartHeaderTotal" class="font-bold text-emerald-400">R$ 0,00</span>
                         </div>
                     </button>
@@ -145,35 +142,35 @@
             </div>
 
             <!-- Mobile Search Bar Expanded -->
-            <div id="mobileSearchBar" class="hidden mt-3 pt-2 border-t border-navy-700">
+            <div id="mobileSearchBar" class="hidden mt-2 pt-2 border-t border-blue-900/50">
                 <div class="relative">
                     <input type="text" id="mobileSearchInput" oninput="handleSearch(true)" placeholder="Buscar no catálogo CDC..." 
-                           class="w-full pl-10 pr-10 py-2 rounded-lg text-gray-800 text-sm focus:outline-none">
-                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                           class="w-full pl-9 pr-9 py-2 rounded-xl text-gray-800 text-xs bg-white focus:outline-none">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Navigation Bar Categories -->
-        <nav class="bg-navy-900 border-t border-navy-700/50 hidden md:block">
-            <div class="max-w-7xl mx-auto px-4 flex items-center space-x-1 overflow-x-auto py-1 text-xs font-medium text-gray-200 custom-scrollbar">
-                <button onclick="filterCategory('todos'); closeAllPages();" class="cat-btn py-2 px-3 rounded-lg hover:bg-navy-800 hover:text-white transition whitespace-nowrap active-cat" data-cat="todos">
-                    <i class="fas fa-th-large mr-1"></i> Todos os Produtos
+        <!-- CATEGORIAS EM CARROSSEL HORIZONTAL -->
+        <nav class="bg-[#081836] border-t border-blue-900/40">
+            <div class="max-w-7xl mx-auto px-2 flex items-center space-x-2 overflow-x-auto py-2 text-xs font-medium text-gray-200 no-scrollbar">
+                <button onclick="filterCategory('todos'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap active-cat flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="todos">
+                    <i class="fas fa-th-large text-emerald-400"></i> Todos
                 </button>
-                <button onclick="filterCategory('limpeza'); closeAllPages();" class="cat-btn py-2 px-3 rounded-lg hover:bg-navy-800 hover:text-white transition whitespace-nowrap" data-cat="limpeza">
-                    <i class="fas fa-soap mr-1"></i> Limpeza
+                <button onclick="filterCategory('limpeza'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="limpeza">
+                    <i class="fas fa-soap text-blue-300"></i> Limpeza
                 </button>
-                <button onclick="filterCategory('bijuterias'); closeAllPages();" class="cat-btn py-2 px-3 rounded-lg hover:bg-navy-800 hover:text-white transition whitespace-nowrap" data-cat="bijuterias">
-                    <i class="fas fa-gem mr-1"></i> Bijuterias
+                <button onclick="filterCategory('bijuterias'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="bijuterias">
+                    <i class="fas fa-gem text-pink-300"></i> Bijuterias
                 </button>
-                <button onclick="filterCategory('informatica'); closeAllPages();" class="cat-btn py-2 px-3 rounded-lg hover:bg-navy-800 hover:text-white transition whitespace-nowrap" data-cat="informatica">
-                    <i class="fas fa-laptop mr-1"></i> Informática
+                <button onclick="filterCategory('informatica'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="informatica">
+                    <i class="fas fa-laptop text-amber-300"></i> Informática
                 </button>
-                <button onclick="filterCategory('bebidas'); closeAllPages();" class="cat-btn py-2 px-3 rounded-lg hover:bg-navy-800 hover:text-white transition whitespace-nowrap" data-cat="bebidas">
-                    <i class="fas fa-wine-bottle mr-1"></i> Bebidas
+                <button onclick="filterCategory('bebidas'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="bebidas">
+                    <i class="fas fa-wine-bottle text-purple-300"></i> Bebidas
                 </button>
-                <button id="navAdminDashboardLink" onclick="displayAdminDashboardView()" class="hidden py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold transition whitespace-nowrap ml-auto">
-                    <i class="fas fa-user-shield mr-1"></i> Painel ADM
+                <button id="navAdminDashboardLink" onclick="displayAdminDashboardView()" class="hidden px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold transition whitespace-nowrap ml-auto text-[11px]">
+                    <i class="fas fa-user-shield"></i> ADM
                 </button>
             </div>
         </nav>
@@ -182,65 +179,66 @@
     <main class="flex-grow">
         <!-- VITRINE PRINCIPAL (HOME) -->
         <div id="mainStorefrontView">
-            <!-- Hero Banners Slider Rotativo -->
-            <section class="w-full bg-navy-900 overflow-hidden border-b border-navy-700 relative group">
-                <div id="bannerContainer" class="relative w-full overflow-hidden min-h-[180px] sm:min-h-[300px] md:min-h-[420px]">
+            
+            <!-- Hero Banners Slider -->
+            <section class="w-full bg-black overflow-hidden relative group">
+                <div id="bannerContainer" class="relative w-full overflow-hidden aspect-[16/9] max-h-[220px] sm:max-h-[360px] md:max-h-[440px]">
                     <!-- Injetado via JS -->
                 </div>
 
-                <button onclick="prevBanner()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition opacity-0 group-hover:opacity-100 z-10">
-                    <i class="fas fa-chevron-left"></i>
+                <button onclick="prevBanner()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-8 h-8 rounded-full flex items-center justify-center transition opacity-0 group-hover:opacity-100 z-10">
+                    <i class="fas fa-chevron-left text-xs"></i>
                 </button>
-                <button onclick="nextBanner()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition opacity-0 group-hover:opacity-100 z-10">
-                    <i class="fas fa-chevron-right"></i>
+                <button onclick="nextBanner()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-8 h-8 rounded-full flex items-center justify-center transition opacity-0 group-hover:opacity-100 z-10">
+                    <i class="fas fa-chevron-right text-xs"></i>
                 </button>
 
-                <div id="bannerDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 z-10">
+                <div id="bannerDots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center space-x-1.5 z-10">
                     <!-- Injetado via JS -->
                 </div>
             </section>
 
-            <!-- Key Differentials Section -->
-            <section class="py-8 bg-white border-b border-gray-200">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                        <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-navy-100 text-navy-800 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
+            <!-- Key Differentials Section (Cards exatamente como no Print Original) -->
+            <section class="py-4 bg-white border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-3">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+                        <div class="p-3 rounded-2xl bg-[#F8FAFC] border border-gray-100 flex items-center gap-3 shadow-xs">
+                            <div class="w-9 h-9 bg-blue-100 text-blue-900 rounded-xl flex items-center justify-center text-base flex-shrink-0">
                                 <i class="fas fa-store"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-navy-900">Tudo em Um Só Lugar</h4>
-                                <p class="text-[11px] text-gray-500">Multicategorias completas</p>
+                                <h4 class="font-bold text-[11px] sm:text-xs text-navy-900 leading-tight">Tudo em Um Só Lugar</h4>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Multicategorias completas</p>
                             </div>
                         </div>
 
-                        <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-100 text-blue-800 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
-                                <i class="fas fa-globe-americas"></i>
+                        <div class="p-3 rounded-2xl bg-[#F8FAFC] border border-gray-100 flex items-center gap-3 shadow-xs">
+                            <div class="w-9 h-9 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center text-base flex-shrink-0">
+                                <i class="fas fa-globe"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-navy-900">Compre de Onde Estiver</h4>
-                                <p class="text-[11px] text-gray-500">Sem barreiras físicas</p>
+                                <h4 class="font-bold text-[11px] sm:text-xs text-navy-900 leading-tight">Compre de Onde Estiver</h4>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Sem barreiras físicas</p>
                             </div>
                         </div>
 
-                        <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
+                        <div class="p-3 rounded-2xl bg-[#F8FAFC] border border-gray-100 flex items-center gap-3 shadow-xs">
+                            <div class="w-9 h-9 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-base flex-shrink-0">
                                 <i class="fas fa-headset"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-navy-900">Atendimento Próximo</h4>
-                                <p class="text-[11px] text-gray-500">Suporte humanizado no Zap</p>
+                                <h4 class="font-bold text-[11px] sm:text-xs text-navy-900 leading-tight">Atendimento Próximo</h4>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Suporte humanizado no Zap</p>
                             </div>
                         </div>
 
-                        <div class="p-4 rounded-xl bg-gray-50 border border-gray-100 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-purple-100 text-purple-800 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
+                        <div class="p-3 rounded-2xl bg-[#F8FAFC] border border-gray-100 flex items-center gap-3 shadow-xs">
+                            <div class="w-9 h-9 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center text-base flex-shrink-0">
                                 <i class="fas fa-truck-fast"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-navy-900">Logística Facilitada</h4>
-                                <p class="text-[11px] text-gray-500">Correios, Motoboy, Drone e +</p>
+                                <h4 class="font-bold text-[11px] sm:text-xs text-navy-900 leading-tight">Logística Facilitada</h4>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Correios, Motoboy e +</p>
                             </div>
                         </div>
                     </div>
@@ -248,27 +246,17 @@
             </section>
 
             <!-- Product Catalog Section -->
-            <section id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <section id="catalogo" class="max-w-7xl mx-auto px-3 sm:px-6 py-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                     <div>
-                        <h3 class="text-2xl font-black text-navy-900 flex items-center gap-2">
+                        <h3 class="text-lg sm:text-2xl font-black text-navy-900 flex items-center gap-2">
                             <i class="fas fa-boxes text-blue-600"></i> Nosso Catálogo
                         </h3>
-                        <p class="text-xs text-gray-500" id="catalogSubtitle">Exibindo todos os produtos disponíveis</p>
+                        <p class="text-[11px] text-gray-500" id="catalogSubtitle">Exibindo todos os produtos disponíveis</p>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="md:hidden flex-1">
-                            <select id="mobileCategorySelect" onchange="filterCategory(this.value)" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs font-medium">
-                                <option value="todos">Todas Categorias</option>
-                                <option value="limpeza">Limpeza</option>
-                                <option value="bijuterias">Bijuterias</option>
-                                <option value="informatica">Informática</option>
-                                <option value="bebidas">Bebidas</option>
-                            </select>
-                        </div>
-
-                        <select id="sortBy" onchange="sortProducts()" class="bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs font-medium text-gray-700">
+                    <div class="flex items-center gap-2">
+                        <select id="sortBy" onchange="sortProducts()" class="w-full sm:w-auto bg-white border border-gray-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
                             <option value="default">Mais Relevantes</option>
                             <option value="price-asc">Menor Preço</option>
                             <option value="price-desc">Maior Preço</option>
@@ -277,24 +265,24 @@
                     </div>
                 </div>
 
-                <div id="activeFilterBadge" class="hidden mb-4 flex items-center gap-2">
-                    <span class="text-xs text-gray-600">Filtro ativo:</span>
-                    <span id="activeFilterName" class="bg-navy-800 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-2">
+                <div id="activeFilterBadge" class="hidden mb-3 flex items-center gap-2">
+                    <span class="text-xs text-gray-600">Filtro:</span>
+                    <span id="activeFilterName" class="bg-cdcHeader text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-2">
                         - <button onclick="resetFilters()"><i class="fas fa-times"></i></button>
                     </span>
                 </div>
 
-                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                     <!-- Products dynamically rendered here -->
                 </div>
 
-                <div id="emptyCatalogState" class="hidden py-16 text-center">
-                    <div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                <div id="emptyCatalogState" class="hidden py-12 text-center">
+                    <div class="w-12 h-12 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
                         <i class="fas fa-search"></i>
                     </div>
-                    <h4 class="font-bold text-gray-700">Nenhum produto encontrado</h4>
-                    <p class="text-xs text-gray-500 mt-1">Tente pesquisar por outros termos ou mudar a categoria.</p>
-                    <button onclick="resetFilters()" class="mt-4 bg-navy-800 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-900">
+                    <h4 class="font-bold text-gray-700 text-xs sm:text-sm">Nenhum produto encontrado</h4>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Tente pesquisar por outros termos ou mudar a categoria.</p>
+                    <button onclick="resetFilters()" class="mt-3 bg-cdcHeader text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-cdcDark">
                         Ver Todos os Produtos
                     </button>
                 </div>
@@ -302,93 +290,89 @@
         </div>
 
         <!-- PÁGINA DO PAINEL ADMINISTRATIVO (ADM) -->
-        <div id="adminDashboardView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
-            <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
+        <div id="adminDashboardView" class="hidden max-w-7xl mx-auto px-3 sm:px-6 py-6">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-black text-navy-900 flex items-center gap-2">
+                    <h1 class="text-xl sm:text-2xl font-black text-navy-900 flex items-center gap-2">
                         <i class="fas fa-user-shield text-amber-500"></i> Painel do Administrador
                     </h1>
-                    <p class="text-xs text-gray-500">Adicione novos itens, edite produtos e gerencie o carrossel da sua loja em tempo real</p>
+                    <p class="text-[11px] text-gray-500">Gerencie produtos e carrossel em tempo real</p>
                 </div>
-                <button onclick="handleAdminLogout()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow">
-                    <i class="fas fa-sign-out-alt"></i> Sair do Modo ADM
+                <button onclick="handleAdminLogout()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1 shadow">
+                    <i class="fas fa-sign-out-alt"></i> Sair
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                 
                 <!-- COLUNA ESQUERDA: CARROSSEL / BANNERS -->
                 <div class="space-y-6">
-                    <!-- FORMULÁRIO: ACRESCENTAR MAIS CARROSSEL (BANNERS) -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm space-y-4">
-                        <h3 class="text-lg font-bold text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3">
+                        <h3 class="text-sm font-bold text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
                             <i class="fas fa-images text-blue-600"></i> Acrescentar Carrossel / Banner
                         </h3>
 
-                        <form onsubmit="handleAddNewBanner(event)" class="space-y-4">
+                        <form onsubmit="handleAddNewBanner(event)" class="space-y-3">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">URL da Imagem do Banner</label>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL da Imagem do Banner</label>
                                 <input type="url" id="newBannerImgUrl" required placeholder="https://exemplo.com/imagem-banner.jpg" 
-                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Link de Redirecionamento (Opcional)</label>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Link de Redirecionamento (Opcional)</label>
                                 <input type="text" id="newBannerLink" placeholder="#catalogo ou URL externa" 
-                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Data de Início da Promoção</label>
-                                    <input type="date" id="newBannerStartDate" required class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 text-gray-700 font-medium">
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Início Promoção</label>
+                                    <input type="date" id="newBannerStartDate" required class="w-full px-2 py-1.5 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 font-medium">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Data de Término da Promoção</label>
-                                    <input type="date" id="newBannerEndDate" required class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 text-gray-700 font-medium">
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Fim Promoção</label>
+                                    <input type="date" id="newBannerEndDate" required class="w-full px-2 py-1.5 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 font-medium">
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full bg-navy-800 hover:bg-navy-900 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                                <i class="fas fa-plus-circle"></i> Adicionar Banner ao Carrossel
+                            <button type="submit" class="w-full bg-cdcHeader hover:bg-cdcDark text-white font-bold text-xs py-2.5 rounded-xl transition shadow flex items-center justify-center gap-1.5">
+                                <i class="fas fa-plus-circle"></i> Adicionar Banner
                             </button>
                         </form>
                     </div>
 
-                    <!-- LISTA DE CARROSSÉIS CADASTRADOS -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm space-y-4">
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3">
                         <div class="flex items-center justify-between border-b border-gray-200 pb-2">
-                            <h4 class="text-sm font-bold text-navy-900 flex items-center gap-2">
+                            <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
                                 <i class="fas fa-list text-blue-600"></i> Carrosséis Ativos (<span id="adminBannerCount">0</span>)
                             </h4>
-                            <span class="text-[11px] text-gray-500">Listagem de Banners</span>
                         </div>
 
-                        <div id="adminBannersList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
-                            <!-- Injetado dinamicamente via JS -->
+                        <div id="adminBannersList" class="space-y-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Injetado via JS -->
                         </div>
                     </div>
                 </div>
 
                 <!-- COLUNA DIREITA: PRODUTOS -->
                 <div class="space-y-6">
-                    <!-- FORMULÁRIO: ACRESCENTAR MAIS PRODUTOS -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm space-y-4">
-                        <h3 class="text-lg font-bold text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3">
+                        <h3 class="text-sm font-bold text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
                             <i class="fas fa-box-open text-emerald-600"></i> Acrescentar Novo Produto
                         </h3>
 
-                        <form onsubmit="handleAddNewProduct(event)" class="space-y-3">
+                        <form onsubmit="handleAddNewProduct(event)" class="space-y-2.5">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Nome do Produto</label>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome do Produto</label>
                                 <input type="text" id="newProdName" required placeholder="Ex: Detergente Neutro 500ml" 
                                        class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Categoria</label>
-                                    <select id="newProdCategory" required class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
+                                    <select id="newProdCategory" required class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
                                         <option value="limpeza">Limpeza</option>
                                         <option value="bijuterias">Bijuterias</option>
                                         <option value="informatica">Informática</option>
@@ -396,70 +380,68 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Preço (R$)</label>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço (R$)</label>
                                     <input type="number" step="0.01" id="newProdPrice" required placeholder="29.90" 
                                            class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Preço Original (R$)</label>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Original (R$)</label>
                                     <input type="number" step="0.01" id="newProdOriginalPrice" placeholder="35.00" 
                                            class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Estoque (Unidades)</label>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Estoque (Unid.)</label>
                                     <input type="number" id="newProdStock" required placeholder="10" 
                                            class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">URL da Imagem do Produto</label>
-                                    <input type="url" id="newProdImage" required placeholder="https://exemplo.com/imagem-produto.jpg" 
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL Imagem</label>
+                                    <input type="url" id="newProdImage" required placeholder="https://exemplo.com/imagem.jpg" 
                                            class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Possui Frete Grátis?</label>
-                                    <select id="newProdFreeShipping" class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
-                                        <option value="true">Sim (Frete Grátis)</option>
-                                        <option value="false" selected>Não (Frete Padrão)</option>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
+                                    <select id="newProdFreeShipping" class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        <option value="true">Sim (Grátis)</option>
+                                        <option value="false" selected>Não (Padrão)</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Selo / Destaque (Opcional)</label>
-                                <input type="text" id="newProdBadge" placeholder="Ex: Lançamento, Promoção..." 
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
+                                <input type="text" id="newProdBadge" placeholder="Ex: Lançamento..." 
                                        class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Descrição do Produto</label>
-                                <textarea id="newProdDescription" required rows="2" placeholder="Detalhes técnicos, especificações..." 
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Descrição</label>
+                                <textarea id="newProdDescription" required rows="2" placeholder="Especificações..." 
                                           class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 resize-none"></textarea>
                             </div>
 
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-2">
-                                <i class="fas fa-cart-plus"></i> Cadastrar Produto no Catálogo
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition shadow flex items-center justify-center gap-1.5">
+                                <i class="fas fa-cart-plus"></i> Cadastrar Produto
                             </button>
                         </form>
                     </div>
 
-                    <!-- LISTA DE PRODUTOS CADASTRADOS E FILTRO DE CATEGORIA ADM -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl shadow-sm space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-3">
-                            <h4 class="text-sm font-bold text-navy-900 flex items-center gap-2">
-                                <i class="fas fa-boxes text-emerald-600"></i> Produtos Cadastrados (<span id="adminProductCount">0</span>)
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-2">
+                            <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
+                                <i class="fas fa-boxes text-emerald-600"></i> Produtos (<span id="adminProductCount">0</span>)
                             </h4>
                             
-                            <!-- SELETOR DE FILTRO DE CATEGORIA PARA O PAINEL ADM -->
                             <div class="flex items-center gap-2">
-                                <span class="text-[11px] font-semibold text-gray-600">Filtrar Categoria:</span>
-                                <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-white border border-gray-300 rounded-lg px-2.5 py-1 text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-600">
-                                    <option value="todos">Todas as Categorias</option>
+                                <span class="text-[10px] font-semibold text-gray-600">Filtrar:</span>
+                                <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700">
+                                    <option value="todos">Todas Categorias</option>
                                     <option value="limpeza">Limpeza</option>
                                     <option value="bijuterias">Bijuterias</option>
                                     <option value="informatica">Informática</option>
@@ -468,8 +450,8 @@
                             </div>
                         </div>
 
-                        <div id="adminProductsList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
-                            <!-- Injetado dinamicamente via JS -->
+                        <div id="adminProductsList" class="space-y-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Injetado via JS -->
                         </div>
                     </div>
                 </div>
@@ -477,31 +459,31 @@
             </div>
         </div>
 
-        <!-- MODAL DE EDIÇÃO DE PRODUTO PELO ADMINISTRADOR -->
+        <!-- MODAL DE EDIÇÃO DE PRODUTO -->
         <div id="editProductModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-            <div class="fixed inset-0 bg-navy-900/60 backdrop-blur-sm transition-opacity" onclick="closeEditProductModal()"></div>
-            <div class="flex items-center justify-center min-h-screen p-4">
-                <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl z-10 space-y-4">
-                    <button onclick="closeEditProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-lg"></i>
+            <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeEditProductModal()"></div>
+            <div class="flex items-center justify-center min-h-screen p-3">
+                <div class="relative bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl z-10 space-y-3 border border-gray-200">
+                    <button onclick="closeEditProductModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-base"></i>
                     </button>
 
-                    <h3 class="text-lg font-extrabold text-navy-900 flex items-center gap-2 border-b pb-2">
+                    <h3 class="text-sm sm:text-lg font-extrabold text-navy-900 flex items-center gap-2 border-b pb-2">
                         <i class="fas fa-edit text-amber-500"></i> Editar Produto (ADM)
                     </h3>
 
-                    <form onsubmit="handleSaveEditedProduct(event)" class="space-y-3">
+                    <form onsubmit="handleSaveEditedProduct(event)" class="space-y-2.5">
                         <input type="hidden" id="editProdId">
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Nome do Produto</label>
-                            <input type="text" id="editProdName" required class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome do Produto</label>
+                            <input type="text" id="editProdName" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Categoria</label>
-                                <select id="editProdCategory" required class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 font-medium">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
+                                <select id="editProdCategory" required class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
                                     <option value="limpeza">Limpeza</option>
                                     <option value="bijuterias">Bijuterias</option>
                                     <option value="informatica">Informática</option>
@@ -509,52 +491,52 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Preço Atual (R$)</label>
-                                <input type="number" step="0.01" id="editProdPrice" required class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Atual (R$)</label>
+                                <input type="number" step="0.01" id="editProdPrice" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Preço Original (R$)</label>
-                                <input type="number" step="0.01" id="editProdOriginalPrice" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Original (R$)</label>
+                                <input type="number" step="0.01" id="editProdOriginalPrice" class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Estoque (Unidades)</label>
-                                <input type="number" id="editProdStock" required class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Estoque (Unid.)</label>
+                                <input type="number" id="editProdStock" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">URL da Imagem</label>
-                                <input type="url" id="editProdImage" required class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL Imagem</label>
+                                <input type="url" id="editProdImage" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Possui Frete Grátis?</label>
-                                <select id="editProdFreeShipping" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 font-medium">
-                                    <option value="true">Sim (Frete Grátis)</option>
-                                    <option value="false">Não (Frete Padrão)</option>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
+                                <select id="editProdFreeShipping" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                    <option value="true">Sim (Grátis)</option>
+                                    <option value="false">Não (Padrão)</option>
                                 </select>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Selo / Destaque</label>
-                            <input type="text" id="editProdBadge" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
+                            <input type="text" id="editProdBadge" class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Descrição</label>
-                            <textarea id="editProdDescription" required rows="3" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 resize-none"></textarea>
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">Descrição</label>
+                            <textarea id="editProdDescription" required rows="2" class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                         </div>
 
                         <div class="flex gap-2 pt-2">
-                            <button type="button" onclick="closeEditProductModal()" class="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-xs py-2.5 rounded-xl transition">
+                            <button type="button" onclick="closeEditProductModal()" class="w-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-xs py-2 rounded-xl transition">
                                 Cancelar
                             </button>
-                            <button type="submit" class="w-1/2 bg-navy-800 hover:bg-navy-900 text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
-                                Salvar Alterações
+                            <button type="submit" class="w-1/2 bg-cdcHeader hover:bg-cdcDark text-white font-bold text-xs py-2 rounded-xl transition shadow">
+                                Salvar
                             </button>
                         </div>
                     </form>
@@ -563,121 +545,96 @@
         </div>
 
         <!-- PÁGINA DEDICADA DO PRODUTO -->
-        <div id="singleProductPageView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div id="singleProductPageView" class="hidden max-w-7xl mx-auto px-3 sm:px-6 py-4">
             
-            <!-- Botão Voltar -->
-            <button onclick="closeAllPages()" class="mb-4 inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-navy-900 transition">
+            <button onclick="closeAllPages()" class="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-navy-900 transition">
                 <i class="fas fa-arrow-left"></i> Voltar para o Catálogo
             </button>
 
-            <!-- Breadcrumb Navigation -->
-            <nav class="text-xs text-gray-500 mb-6 flex items-center gap-2 flex-wrap" id="pdBreadcrumb">
+            <nav class="text-[11px] text-gray-500 mb-4 flex items-center gap-1.5 flex-wrap" id="pdBreadcrumb">
                 <!-- Injected via JS -->
             </nav>
 
-            <!-- Main Product Layout Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                 
-                <!-- Left: Thumbnails & Main Image Gallery -->
-                <div class="md:col-span-7 flex flex-col sm:flex-row gap-4">
-                    <div class="flex sm:flex-col gap-3 order-2 sm:order-1">
-                        <div class="w-16 h-16 border-2 border-emerald-500 rounded-lg overflow-hidden cursor-pointer shadow-sm">
+                <div class="md:col-span-7 flex flex-col sm:flex-row gap-3">
+                    <div class="flex sm:flex-col gap-2 order-2 sm:order-1">
+                        <div class="w-14 h-14 border-2 border-emerald-500 rounded-lg overflow-hidden cursor-pointer shadow-sm">
                             <img id="pdThumbImg" src="" class="w-full h-full object-cover">
                         </div>
                     </div>
 
-                    <div class="flex-1 order-1 sm:order-2 bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden shadow-sm aspect-square flex items-center justify-center p-2">
+                    <div class="flex-1 order-1 sm:order-2 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm aspect-square flex items-center justify-center p-2">
                         <img id="pdMainImg" src="" class="w-full h-full object-contain">
                     </div>
                 </div>
 
-                <!-- Right: Product Purchase Options and Info -->
-                <div class="md:col-span-5 space-y-4">
+                <div class="md:col-span-5 space-y-3">
                     
                     <div>
-                        <span id="pdFreeShippingBadge" class="inline-block bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wider mb-2">
+                        <span id="pdFreeShippingBadge" class="inline-block bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1">
                             FRETE GRÁTIS
                         </span>
                         
-                        <div class="text-xs text-gray-500 space-y-0.5">
+                        <div class="text-[11px] text-gray-500 space-y-0.5">
                             <p>Disponibilidade: <span class="font-medium text-gray-700">Imediata</span></p>
-                            <p>Garantia: <span class="font-medium text-gray-700">3 meses</span></p>
                         </div>
                     </div>
 
-                    <h1 id="pdTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight">
+                    <h1 id="pdTitle" class="text-lg sm:text-2xl font-extrabold text-navy-900 leading-tight">
                         <!-- Injected via JS -->
                     </h1>
 
                     <div class="flex items-center gap-2 text-xs text-gray-400">
-                        <div class="flex text-yellow-400">
+                        <div class="flex text-yellow-400 text-xs">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </div>
-                        <span id="pdReviewsCount">(Sem avaliações)</span>
+                        <span id="pdReviewsCount" class="text-[10px]">(Sem avaliações)</span>
                     </div>
 
                     <div class="pt-2 border-t border-gray-100">
-                        <span id="pdOriginalPrice" class="line-through text-gray-400 text-sm font-medium block">
+                        <span id="pdOriginalPrice" class="line-through text-gray-400 text-xs font-medium block">
                             R$ 109,00
                         </span>
                         
-                        <div class="flex items-center gap-3">
-                            <span id="pdCurrentPrice" class="text-3xl sm:text-4xl font-black text-gray-900">
+                        <div class="flex items-center gap-2">
+                            <span id="pdCurrentPrice" class="text-2xl sm:text-3xl font-black text-navy-900">
                                 R$ 97,00
                             </span>
-                            <span id="pdDiscountBadge" class="bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-md">
+                            <span id="pdDiscountBadge" class="bg-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
                                 -11%
                             </span>
                         </div>
 
-                        <p id="pdInstallments" class="text-sm font-semibold text-gray-700 mt-1">
+                        <p id="pdInstallments" class="text-xs font-semibold text-gray-700 mt-0.5">
                             12x de R$ 18,95
                         </p>
-                        <button class="text-xs text-gray-500 hover:text-navy-900 underline mt-0.5 block">
-                            Ver opções de parcelamento
-                        </button>
                     </div>
 
-                    <div class="space-y-1 pt-2">
-                        <label class="text-xs font-bold uppercase text-gray-600 tracking-wider block">MODELO</label>
-                        <select id="pdModelSelect" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="">Padrão</option>
-                            <option value="premium">Edição Especial</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold uppercase text-gray-600 tracking-wider block">COR</label>
-                        <select id="pdColorSelect" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="">Dourado / Rose</option>
-                            <option value="prata">Prata</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-4 pt-4">
+                    <div class="flex items-center gap-3 pt-3">
                         <div class="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white">
-                            <button onclick="changePdQty(-1)" class="px-3 py-2.5 text-gray-600 hover:bg-gray-100 font-bold text-sm transition">
+                            <button onclick="changePdQty(-1)" class="px-2.5 py-2 text-gray-600 hover:bg-gray-100 font-bold text-xs transition">
                                 –
                             </button>
-                            <span id="pdQtyValue" class="px-3 py-2.5 font-bold text-sm text-gray-800 min-w-[32px] text-center">
+                            <span id="pdQtyValue" class="px-2.5 py-2 font-bold text-xs text-gray-800 min-w-[28px] text-center">
                                 1
                             </span>
-                            <button onclick="changePdQty(1)" class="px-3 py-2.5 text-gray-600 hover:bg-gray-100 font-bold text-sm transition">
+                            <button onclick="changePdQty(1)" class="px-2.5 py-2 text-gray-600 hover:bg-gray-100 font-bold text-xs transition">
                                 +
                             </button>
                         </div>
 
-                        <button onclick="buyNowFromPage()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm uppercase tracking-wider py-3.5 px-6 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                            COMPRAR
+                        <button onclick="buyNowFromPage()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2 active:scale-95">
+                            COMPRAR AGORA
                         </button>
                     </div>
 
-                    <div class="pt-6 border-t border-gray-200 mt-6">
-                        <h4 class="font-bold text-sm text-gray-900 mb-2">Descrição do Produto</h4>
+                    <div class="pt-4 border-t border-gray-200 mt-4">
+                        <h4 class="font-bold text-xs text-navy-900 mb-1">Descrição do Produto</h4>
                         <p id="pdDescription" class="text-xs text-gray-600 leading-relaxed">
                             <!-- Injected via JS -->
                         </p>
@@ -686,141 +643,101 @@
                 </div>
             </div>
 
-            <!-- 1. SECÇÃO DE PRODUTOS RECOMENDEDOS -->
-            <section class="mt-16 pt-10 border-t border-gray-200">
-                <div class="flex items-center justify-between mb-6">
-                    <div>
-                        <h3 class="text-xl sm:text-2xl font-black text-navy-900 flex items-center gap-2">
-                            <i class="fas fa-fire text-amber-500"></i> Quem comprou este produto, também comprou
-                        </h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Aproveite para adicionar outros itens ao seu carrinho</p>
-                    </div>
-                </div>
+            <!-- RECOMENDADOS -->
+            <section class="mt-10 pt-6 border-t border-gray-200">
+                <h3 class="text-base font-black text-navy-900 mb-3 flex items-center gap-1.5">
+                    <i class="fas fa-fire text-amber-500"></i> Quem comprou este produto, também comprou
+                </h3>
 
-                <div id="recommendedProductsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div id="recommendedProductsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <!-- Dinamicamente carregado via JS -->
                 </div>
             </section>
 
-            <!-- 2. SECÇÃO DE AVALIAÇÕES E COMENTÁRIOS DOS COMPRADORES -->
-            <section class="mt-16 pt-10 border-t border-gray-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                    <div>
-                        <h3 class="text-xl sm:text-2xl font-black text-navy-900 flex items-center gap-2">
-                            <i class="fas fa-comments text-blue-600"></i> Avaliações e Comentários dos Compradores
-                        </h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Veja a opinião de quem já comprou este produto na CDC Comércio Online</p>
-                    </div>
+            <!-- AVALIAÇÕES -->
+            <section class="mt-10 pt-6 border-t border-gray-200">
+                <h3 class="text-base font-black text-navy-900 mb-4 flex items-center gap-1.5">
+                    <i class="fas fa-comments text-blue-600"></i> Avaliações e Comentários
+                </h3>
 
-                    <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl">
-                        <span id="reviewScoreAvg" class="text-2xl font-black text-navy-900">4.9</span>
-                        <div>
-                            <div class="flex text-yellow-400 text-xs">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span id="reviewScoreTotal" class="text-[10px] text-gray-500">Média baseada nas opiniões</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    
-                    <div class="lg:col-span-5 bg-gray-50 border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm">
-                        <h4 class="font-bold text-sm text-navy-900 mb-1 flex items-center gap-2">
-                            <i class="fas fa-pen-to-square text-emerald-600"></i> Deixe seu comentário
-                        </h4>
-                        <p class="text-xs text-gray-500 mb-4">Já comprou esse produto? Conte sua experiência para outros clientes!</p>
-
-                        <form onsubmit="handleAddComment(event)" class="space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
+                        <h4 class="font-bold text-xs text-navy-900 mb-2">Deixe seu comentário</h4>
+                        <form onsubmit="handleAddComment(event)" class="space-y-3">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Seu Nome / Apelido</label>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Seu Nome</label>
                                 <input type="text" id="commentAuthor" required placeholder="Ex: Maria Silva" 
-                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                                       class="w-full px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-lg">
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Sua Nota para o Produto</label>
-                                <select id="commentRating" class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 font-medium text-gray-800">
-                                    <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas (Excelente)</option>
-                                    <option value="4">⭐⭐⭐⭐ 4 Estrelas (Muito Bom)</option>
-                                    <option value="3">⭐⭐⭐ 3 Estrelas (Bom)</option>
-                                    <option value="2">⭐⭐ 2 Estrelas (Regular)</option>
-                                    <option value="1">⭐ 1 Estrela (Ruim)</option>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Sua Nota</label>
+                                <select id="commentRating" class="w-full px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-lg font-medium">
+                                    <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas</option>
+                                    <option value="4">⭐⭐⭐⭐ 4 Estrelas</option>
+                                    <option value="3">⭐⭐⭐ 3 Estrelas</option>
+                                    <option value="2">⭐⭐ 2 Estrelas</option>
+                                    <option value="1">⭐ 1 Estrela</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Seu Comentário</label>
-                                <textarea id="commentText" required rows="3" placeholder="Escreva o que achou do produto, qualidade, entrega..." 
-                                          class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800 resize-none"></textarea>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Seu Comentário</label>
+                                <textarea id="commentText" required rows="2" placeholder="O que achou do produto..." 
+                                          class="w-full px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-lg resize-none"></textarea>
                             </div>
 
-                            <button type="submit" class="w-full bg-navy-800 hover:bg-navy-900 text-white font-bold text-xs py-2.5 rounded-xl transition shadow flex items-center justify-center gap-2">
-                                <i class="fas fa-paper-plane"></i> Publicar Comentário
+                            <button type="submit" class="w-full bg-cdcHeader hover:bg-cdcDark text-white font-bold text-xs py-2 rounded-xl transition shadow">
+                                Publicar Comentário
                             </button>
                         </form>
                     </div>
 
-                    <div class="lg:col-span-7 space-y-4">
-                        <h4 class="font-bold text-sm text-gray-900 mb-2">Comentários e Avaliações Recentes</h4>
-                        
-                        <div id="commentsListContainer" class="space-y-3">
+                    <div class="lg:col-span-7 space-y-3">
+                        <div id="commentsListContainer" class="space-y-2">
                             <!-- Dinamicamente gerado via JS -->
                         </div>
                     </div>
-
                 </div>
             </section>
         </div>
 
-        <!-- PÁGINA DEDICADA DE INFORMAÇÕES (POLÍTICA DE TROCA, DEVOLUÇÃO E CANCELAMENTO E OUTRAS) -->
-        <div id="infoPageView" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
-            
-            <!-- Breadcrumb Navigation -->
-            <nav class="text-xs text-gray-500 mb-6 flex items-center gap-2 flex-wrap">
-                <a href="javascript:void(0)" onclick="closeAllPages()" class="hover:underline">Página Inicial</a> 
+        <!-- PÁGINA DEDICADA DE INFORMAÇÕES -->
+        <div id="infoPageView" class="hidden max-w-7xl mx-auto px-3 sm:px-6 py-6">
+            <nav class="text-xs text-gray-500 mb-4 flex items-center gap-1.5">
+                <a href="javascript:void(0)" onclick="closeAllPages()" class="hover:underline">Início</a> 
                 <span>&gt;</span> 
-                <span id="infoBreadcrumbCurrent" class="text-gray-800 font-medium">Política de trocas e devolução</span>
+                <span id="infoBreadcrumbCurrent" class="text-gray-800 font-medium">Política</span>
             </nav>
 
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                
-                <!-- Menu Lateral Esquerdo: Informações -->
-                <div class="md:col-span-3 bg-gray-50 p-5 rounded-2xl border border-gray-200">
-                    <h3 class="font-extrabold text-navy-900 text-base mb-4 tracking-tight border-b border-gray-200 pb-2">
-                        Informações
-                    </h3>
-                    <ul class="space-y-2.5 text-xs text-gray-700 font-medium">
-                        <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="info-link hover:text-navy-900 transition block py-1" data-info="envio">Envio e Entrega</a></li>
-                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="info-link font-bold text-navy-900 hover:text-navy-900 transition block py-1 border-l-2 border-navy-800 pl-2" data-info="politica-troca">Política de trocas e devolução</a></li>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                <div class="md:col-span-3 bg-white p-4 rounded-2xl border border-gray-200">
+                    <h3 class="font-extrabold text-navy-900 text-sm mb-3 border-b pb-2">Informações</h3>
+                    <ul class="space-y-2 text-xs text-gray-700 font-medium">
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="info-link hover:text-navy-900 block py-1" data-info="envio">Envio e Entrega</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="info-link font-bold text-navy-900 block py-1 border-l-2 border-cdcHeader pl-2" data-info="politica-troca">Política de trocas e devolução</a></li>
                     </ul>
                 </div>
 
-                <!-- Conteúdo Principal da Página Selecionada -->
-                <div class="md:col-span-9 bg-white p-2 sm:p-4 rounded-2xl">
-                    <div id="infoContentContainer" class="prose max-w-none text-xs sm:text-sm text-gray-700 leading-relaxed space-y-4">
+                <div class="md:col-span-9 bg-white p-4 rounded-2xl border border-gray-200">
+                    <div id="infoContentContainer" class="prose max-w-none text-xs sm:text-sm text-gray-700 leading-relaxed space-y-3">
                         <!-- Conteúdo injetado via JS -->
                     </div>
                 </div>
-
             </div>
         </div>
 
         <!-- Newsletter Subscription Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-            <div class="bg-gray-100 rounded-2xl p-8 sm:p-10 text-center shadow-sm">
-                <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-tight mb-6">
+        <section class="max-w-7xl mx-auto px-3 sm:px-6 py-8">
+            <div class="bg-cdcHeader text-white rounded-2xl p-6 text-center shadow-md">
+                <h3 class="text-base sm:text-xl font-black uppercase tracking-tight mb-4">
                     RECEBA NOVIDADES E OFERTAS INCRÍVEIS!
                 </h3>
-                <form onsubmit="handleNewsletterSubmit(event)" class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-2xl mx-auto">
+                <form onsubmit="handleNewsletterSubmit(event)" class="flex flex-col sm:flex-row items-center justify-center gap-2 max-w-xl mx-auto">
                     <input type="email" id="newsletterEmail" required placeholder="Digite seu e-mail" 
-                           class="w-full sm:flex-1 px-5 py-3.5 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gray-800 bg-white placeholder-gray-400">
-                    <button type="submit" class="w-full sm:w-auto bg-gray-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-lg transition shadow-md">
-                        CADASTRE-SE
+                           class="w-full sm:flex-1 px-4 py-2.5 rounded-xl border border-gray-300 text-xs text-gray-800 focus:outline-none bg-white">
+                    <button type="submit" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider px-6 py-2.5 rounded-xl transition shadow">
+                        CADASTRAR
                     </button>
                 </form>
             </div>
@@ -829,54 +746,51 @@
 
     <!-- Modal de Acesso (Visitante / Admin) -->
     <div id="authModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div class="fixed inset-0 bg-navy-900/60 backdrop-blur-sm transition-opacity" onclick="toggleAuthModal(false)"></div>
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl z-10 space-y-4">
-                <button onclick="toggleAuthModal(false)" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-lg"></i>
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleAuthModal(false)"></div>
+        <div class="flex items-center justify-center min-h-screen p-3">
+            <div class="relative bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl z-10 space-y-3">
+                <button onclick="toggleAuthModal(false)" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-base"></i>
                 </button>
 
-                <!-- Abas do Modal -->
                 <div class="flex border-b border-gray-200">
-                    <button id="tabVisitorBtn" onclick="switchAuthTab('visitor')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-navy-800 text-navy-800">
-                        <i class="fas fa-user-plus mr-1"></i> Cadastrar Visitante
+                    <button id="tabVisitorBtn" onclick="switchAuthTab('visitor')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-cdcHeader text-cdcHeader">
+                        <i class="fas fa-user-plus mr-1"></i> Visitante
                     </button>
-                    <button id="tabAdminBtn" onclick="switchAuthTab('admin')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-navy-800">
-                        <i class="fas fa-user-shield mr-1"></i> Login ADM
+                    <button id="tabAdminBtn" onclick="switchAuthTab('admin')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-transparent text-gray-500">
+                        <i class="fas fa-user-shield mr-1"></i> ADM
                     </button>
                 </div>
 
-                <!-- Form Cadastro Visitante -->
-                <form id="visitorAuthForm" onsubmit="handleVisitorRegister(event)" class="space-y-3 pt-2">
+                <form id="visitorAuthForm" onsubmit="handleVisitorRegister(event)" class="space-y-2.5 pt-1">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nome Completo</label>
-                        <input type="text" required placeholder="Seu nome" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome Completo</label>
+                        <input type="text" required placeholder="Seu nome" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail</label>
-                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">E-mail</label>
+                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">WhatsApp / Telefone</label>
-                        <input type="tel" required placeholder="(61) 99999-9999" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">WhatsApp</label>
+                        <input type="tel" required placeholder="(61) 99999-9999" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
-                        Cadastrar e Continuar Comprando
+                        Cadastrar e Continuar
                     </button>
                 </form>
 
-                <!-- Form Login Admin -->
-                <form id="adminAuthForm" onsubmit="handleAdminLogin(event)" class="space-y-3 pt-2 hidden">
+                <form id="adminAuthForm" onsubmit="handleAdminLogin(event)" class="space-y-2.5 pt-1 hidden">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Usuário Administrador</label>
-                        <input type="text" id="adminUser" required placeholder="admin" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Usuário Administrador</label>
+                        <input type="text" id="adminUser" required placeholder="admin" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Senha</label>
-                        <input type="password" id="adminPass" required placeholder="••••••••" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Senha</label>
+                        <input type="password" id="adminPass" required placeholder="••••••••" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
                     </div>
-                    <button type="submit" class="w-full bg-navy-800 hover:bg-navy-900 text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
-                        Entrar como Administrador
+                    <button type="submit" class="w-full bg-cdcHeader hover:bg-cdcDark text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
+                        Entrar como ADM
                     </button>
                 </form>
             </div>
@@ -885,74 +799,72 @@
 
     <!-- Cart Drawer Modal -->
     <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-navy-900/60 backdrop-blur-sm transition-opacity" onclick="toggleCartModal(false)"></div>
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleCartModal(false)"></div>
 
-        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-6">
             <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
                 
-                <div class="p-4 bg-navy-800 text-white flex items-center justify-between">
+                <div class="p-3.5 bg-cdcHeader text-white flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-shopping-basket text-emerald-400 text-lg"></i>
-                        <h3 class="font-bold text-base">Seu Carrinho de Compras</h3>
+                        <i class="fas fa-shopping-basket text-emerald-400 text-base"></i>
+                        <h3 class="font-bold text-xs sm:text-sm">Seu Carrinho</h3>
                     </div>
                     <button onclick="toggleCartModal(false)" class="text-gray-300 hover:text-white p-1">
-                        <i class="fas fa-times text-lg"></i>
+                        <i class="fas fa-times text-base"></i>
                     </button>
                 </div>
 
-                <div id="cartItemsList" class="flex-grow p-4 overflow-y-auto space-y-4 custom-scrollbar">
+                <div id="cartItemsList" class="flex-grow p-3 overflow-y-auto space-y-3 custom-scrollbar">
                     <!-- JS injects cart items here -->
                 </div>
 
-                <div id="cartFooter" class="p-4 bg-gray-50 border-t border-gray-200 space-y-3">
-                    <div class="bg-white p-3 rounded-lg border border-gray-200 text-xs">
+                <div id="cartFooter" class="p-3.5 bg-gray-50 border-t border-gray-200 space-y-2.5">
+                    <div class="bg-white p-2.5 rounded-lg border border-gray-200 text-xs">
                         <label class="font-semibold text-gray-700 block mb-1">
-                            <i class="fas fa-truck text-navy-800 mr-1"></i> Simular Frete (CEP):
+                            <i class="fas fa-truck text-cdcHeader mr-1"></i> Simular Frete (CEP):
                         </label>
                         <div class="flex gap-2">
-                            <input type="text" id="cepInput" placeholder="72870-000" maxlength="9" class="flex-grow border rounded px-2 py-1 text-xs focus:ring-1 focus:ring-navy-800">
-                            <button onclick="calculateFreight()" class="bg-navy-800 text-white px-3 py-1 rounded text-xs font-bold hover:bg-navy-900">
+                            <input type="text" id="cepInput" placeholder="72870-000" maxlength="9" class="flex-grow border rounded px-2 py-1 text-xs focus:ring-1 focus:ring-cdcHeader">
+                            <button onclick="calculateFreight()" class="bg-cdcHeader text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-cdcDark">
                                 OK
                             </button>
                         </div>
-                        <span id="freightMsg" class="text-[10px] text-gray-500 mt-1 block"> Digite seu CEP para calcular Correios/Motoboy</span>
+                        <span id="freightMsg" class="text-[9px] text-gray-500 mt-1 block"> Digite seu CEP para calcular</span>
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-gray-700">Forma de Pagamento:</label>
-                        <select id="paymentMethodSelect" class="w-full border border-gray-300 rounded p-1.5 text-xs font-medium text-gray-800">
+                        <label class="text-[11px] font-semibold text-gray-700">Forma de Pagamento:</label>
+                        <select id="paymentMethodSelect" class="w-full border border-gray-300 rounded p-1 text-xs font-medium text-gray-800">
                             <option value="pix">PIX (Confirmação Imediata)</option>
                             <option value="cartao">Cartão de Crédito / Débito</option>
                             <option value="transferencia">Transferência Bancária</option>
-                            <option value="cheque">Cheque (Consulte condições)</option>
                         </select>
                     </div>
 
-                    <div id="pixInfoBox" class="bg-emerald-50 border border-emerald-200 p-2.5 rounded text-[11px] text-emerald-900 flex items-start gap-2">
-                        <i class="fas fa-qrcode text-emerald-600 text-base mt-0.5"></i>
+                    <div id="pixInfoBox" class="bg-emerald-50 border border-emerald-200 p-2 rounded text-[10px] text-emerald-900 flex items-start gap-2">
+                        <i class="fas fa-qrcode text-emerald-600 text-sm mt-0.5"></i>
                         <div>
                             <strong>Chave PIX (CNPJ):</strong> <span class="select-all font-mono">62.024.645/0001-11</span>
-                            <br><span class="text-[10px] text-emerald-700">CDC COMERCIO ONLINE LTDA</span>
                         </div>
                     </div>
 
-                    <div class="space-y-1 pt-2 border-t border-gray-200">
+                    <div class="space-y-0.5 pt-1 border-t border-gray-200">
                         <div class="flex justify-between text-xs text-gray-600">
-                            <span>Subtotal Produtos:</span>
+                            <span>Subtotal:</span>
                             <span id="cartSubtotal">R$ 0,00</span>
                         </div>
                         <div class="flex justify-between text-xs text-gray-600">
                             <span>Frete:</span>
                             <span id="cartFreightValue">R$ 0,00</span>
                         </div>
-                        <div class="flex justify-between text-base font-black text-navy-900 pt-1">
-                            <span>Total Geral:</span>
+                        <div class="flex justify-between text-sm font-black text-navy-900 pt-1">
+                            <span>Total:</span>
                             <span id="cartTotal" class="text-emerald-600">R$ 0,00</span>
                         </div>
                     </div>
 
-                    <button onclick="finishCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm">
-                        <i class="fas fa-check-circle"></i> Finalizar Compra como Visitante
+                    <button onclick="finishCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95">
+                        <i class="fas fa-check-circle"></i> Finalizar Compra no WhatsApp
                     </button>
                 </div>
             </div>
@@ -960,87 +872,91 @@
     </div>
 
     <!-- Toast Notification Box -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none border border-navy-700">
-        <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white flex-shrink-0">
+    <div id="toastNotification" class="fixed bottom-4 right-4 z-50 bg-cdcDark text-white px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none border border-blue-900">
+        <div class="w-6 h-6 bg-emerald-500 rounded-lg flex items-center justify-center text-white flex-shrink-0 text-xs">
             <i class="fas fa-check"></i>
         </div>
         <div>
-            <h5 id="toastTitle" class="font-bold text-xs">Sucesso!</h5>
-            <p id="toastMessage" class="text-xs text-gray-300">Item adicionado ao carrinho.</p>
+            <h5 id="toastTitle" class="font-bold text-[11px]">Sucesso!</h5>
+            <p id="toastMessage" class="text-[10px] text-gray-300">Item adicionado ao carrinho.</p>
         </div>
     </div>
 
-    <!-- Botão Flutuante do WhatsApp no Canto Inferior Direito -->
+    <!-- Botão Flutuante do WhatsApp (Estilo Exato do Print) -->
     <a href="https://wa.me/5561995829201?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20falar%20com%20a%20loja." 
        target="_blank" 
        rel="noopener noreferrer"
-       class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+       class="fixed bottom-4 right-4 z-40 bg-[#10C87E] hover:bg-[#0EB370] text-white p-3.5 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
        title="Fale conosco no WhatsApp">
-        <i class="fab fa-whatsapp text-3xl sm:text-4xl"></i>
-        <!-- Tooltip ao passar o mouse -->
-        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg pointer-events-none">
-            Fale com a loja no WhatsApp!
-        </span>
+        <i class="fab fa-whatsapp text-2xl sm:text-3xl"></i>
     </a>
 
-    <!-- Footer -->
-    <footer class="bg-navy-900 text-white pt-12 pb-6 border-t border-navy-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-5 gap-8 mb-10 text-xs">
+    <!-- Footer (Estilo Dark Navy Exato do Print Original) -->
+    <footer class="bg-[#081329] text-white pt-8 pb-6 border-t border-blue-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-6 text-xs">
             
-            <div class="space-y-3 md:col-span-1">
+            <!-- Branding Footer Section -->
+            <div class="space-y-2 border-b border-blue-900/30 pb-4">
                 <div class="flex items-center gap-2 cursor-pointer" onclick="closeAllPages()">
                     <img src="imagem comercio online.jpeg" alt="CDC Comércio Online" class="h-8 w-auto object-contain rounded-lg">
-                    <span class="font-bold text-base text-white">CDC Comércio Online</span>
+                    <span class="font-black text-base text-white">CDC Comércio Online</span>
                 </div>
-                <p class="text-gray-400 leading-relaxed">
+                <p class="text-gray-300 leading-relaxed text-[11px] max-w-md">
                     Transformando a experiência de compra presencial em um ambiente digital prático, seguro e humanizado.
                 </p>
-                <div class="text-gray-400 space-y-1">
+                <div class="text-gray-400 space-y-0.5 text-[11px] pt-1">
                     <p><strong>CNPJ:</strong> 62.024.645/0001-11</p>
                     <p>CDC COMERCIO ONLINE LTDA</p>
                 </div>
             </div>
 
-            <div class="space-y-2">
-                <h4 class="font-bold text-sm text-amber-400 uppercase tracking-wider mb-2">Informações</h4>
-                <ul class="space-y-1.5 text-gray-300">
-                    <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="hover:text-amber-300">Envio e Entrega</a></li>
-                    <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="hover:text-amber-300 font-semibold text-white">Política de trocas e devolução</a></li>
-                </ul>
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Informações -->
+                <div class="space-y-2">
+                    <h4 class="font-extrabold text-xs text-[#ECA929] uppercase tracking-wider">INFORMAÇÕES</h4>
+                    <ul class="space-y-1.5 text-gray-200 text-[11px]">
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="hover:text-amber-300">Envio e Entrega</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="hover:text-amber-300 font-bold text-white">Política de trocas e devolução</a></li>
+                    </ul>
+                </div>
 
-            <div class="space-y-2">
-                <h4 class="font-bold text-sm text-blue-300 uppercase tracking-wider mb-2">Categorias</h4>
-                <ul class="space-y-1.5 text-gray-300">
-                    <li><a href="#catalogo" onclick="filterCategory('limpeza'); closeAllPages();" class="hover:text-blue-400">Limpeza</a></li>
-                    <li><a href="#catalogo" onclick="filterCategory('bijuterias'); closeAllPages();" class="hover:text-blue-400">Bijuterias</a></li>
-                    <li><a href="#catalogo" onclick="filterCategory('informatica'); closeAllPages();" class="hover:text-blue-400">Informática</a></li>
-                    <li><a href="#catalogo" onclick="filterCategory('bebidas'); closeAllPages();" class="hover:text-blue-400">Bebidas</a></li>
-                </ul>
-            </div>
+                <!-- Categorias -->
+                <div class="space-y-2">
+                    <h4 class="font-extrabold text-xs text-[#5294E2] uppercase tracking-wider">CATEGORIAS</h4>
+                    <ul class="space-y-1.5 text-gray-200 text-[11px]">
+                        <li><a href="#catalogo" onclick="filterCategory('limpeza'); closeAllPages();" class="hover:text-blue-300">Limpeza</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('bijuterias'); closeAllPages();" class="hover:text-blue-300">Bijuterias</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('informatica'); closeAllPages();" class="hover:text-blue-300">Informática</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('bebidas'); closeAllPages();" class="hover:text-blue-300">Bebidas</a></li>
+                    </ul>
+                </div>
 
-            <div class="space-y-2">
-                <h4 class="font-bold text-sm text-blue-300 uppercase tracking-wider mb-2">Formas de Entrega</h4>
-                <div class="text-gray-300 space-y-1.5">
-                    <p class="flex items-center gap-2"><i class="fas fa-box text-emerald-400"></i> Correios & Transportadoras</p>
-                    <p class="flex items-center gap-2"><i class="fas fa-motorcycle text-emerald-400"></i> Motoboy / Uber / 99</p>
-                    <p class="flex items-center gap-2"><i class="fas fa-helicopter text-emerald-400"></i> Drones & Entrega Própria</p>
-                    <p class="flex items-center gap-2"><i class="fas fa-store text-emerald-400"></i> Retirada no Local</p>
+                <!-- Formas de Entrega -->
+                <div class="space-y-2">
+                    <h4 class="font-extrabold text-xs text-[#5294E2] uppercase tracking-wider">FORMAS DE ENTREGA</h4>
+                    <div class="text-gray-200 space-y-1.5 text-[11px]">
+                        <p class="flex items-center gap-2"><i class="fas fa-box text-emerald-400"></i> Correios & Transportadoras</p>
+                        <p class="flex items-center gap-2"><i class="fas fa-motorcycle text-emerald-400"></i> Motoboy / Uber / 99</p>
+                        <p class="flex items-center gap-2"><i class="fas fa-helicopter text-emerald-400"></i> Drones & Entrega Própria</p>
+                        <p class="flex items-center gap-2"><i class="fas fa-store text-emerald-400"></i> Retirada no Local</p>
+                    </div>
+                </div>
+
+                <!-- Atendimento -->
+                <div class="space-y-2">
+                    <h4 class="font-extrabold text-xs text-[#5294E2] uppercase tracking-wider">ATENDIMENTO</h4>
+                    <div class="text-gray-200 space-y-1.5 text-[11px]">
+                        <p class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-red-400"></i> Rua 105 Lote 16 – Céu Azul – Valparaíso-GO</p>
+                        <p class="flex items-center gap-2"><i class="fab fa-whatsapp text-emerald-400"></i> (61) 99582-9201</p>
+                        <p class="flex items-center gap-2"><i class="far fa-envelope text-blue-300"></i> cdccomercioonline@gmail.com</p>
+                        <p class="flex items-center gap-2"><i class="fab fa-instagram text-pink-400"></i> @cdccomercioonline</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-2">
-                <h4 class="font-bold text-sm text-blue-300 uppercase tracking-wider mb-2">Atendimento</h4>
-                <p class="text-gray-300"><i class="fas fa-map-marker-alt text-red-400 mr-1.5"></i> Rua 105 Lote 16 – Céu Azul – Valparaíso-GO</p>
-                <p class="text-gray-300"><i class="fab fa-whatsapp text-emerald-400 mr-1.5"></i> (61) 99582-9201</p>
-                <p class="text-gray-300"><i class="far fa-envelope text-blue-300 mr-1.5"></i> cdccomercioonline@gmail.com</p>
-                <p class="text-gray-300"><i class="fab fa-instagram text-pink-400 mr-1.5"></i> @cdccomercioonline</p>
+            <div class="pt-4 border-t border-blue-900/30 text-center text-gray-500 text-[10px]">
+                <p>© 2026 CDC COMERCIO ONLINE LTDA. Todos os direitos reservados.</p>
             </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 border-t border-navy-800 text-center text-gray-500 text-[11px] flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p>© 2026 CDC COMERCIO ONLINE LTDA. Todos os direitos reservados.</p>
-            <p class="text-gray-400">"Mais produtos. Mais praticidade. Mais perto de você."</p>
         </div>
     </footer>
 
@@ -1082,7 +998,7 @@
             }
         ];
 
-        // Sample Product Database
+        // Complete Product Database (20 Produtos)
         const productsData = [
             {
                 id: 1,
@@ -1090,11 +1006,11 @@
                 category: "limpeza",
                 price: 15.90,
                 originalPrice: 18.00,
-                badge: "Oferta Especial",
+                badge: "Oferta",
                 rating: 4.8,
                 reviews: 42,
                 image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis, com ação desengordurante.",
+                description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis.",
                 stock: 50,
                 freeShipping: true
             },
@@ -1122,36 +1038,36 @@
                 rating: 4.7,
                 reviews: 29,
                 image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Lava-roupas em pó para roupas brancas e coloridas, voltado à limpeza profunda do dia a dia.",
+                description: "Lava-roupas em pó para roupas brancas e coloridas.",
                 stock: 25,
                 freeShipping: true
             },
             {
                 id: 4,
-                name: "Detergente para Lava-Louças Finish Advanced 1kg",
+                name: "Desinfetante Pinho Sol 1 Litro",
                 category: "limpeza",
-                price: 43.49,
-                originalPrice: 49.90,
-                badge: "Lançamento",
-                rating: 4.9,
-                reviews: 15,
+                price: 12.50,
+                originalPrice: 15.00,
+                badge: "Promoção",
+                rating: 4.8,
+                reviews: 19,
                 image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Detergente em pó desenvolvido para máquinas de lavar louças.",
-                stock: 20,
+                description: "Desinfetante eficiente na eliminação de germes e bactérias.",
+                stock: 40,
                 freeShipping: false
             },
             {
                 id: 5,
-                name: "Sabão em Pó 5kg — Lava Roupas Brancas e Coloridas",
+                name: "Amaciante Downy Concentrado 1,5L",
                 category: "limpeza",
-                price: 49.90,
-                originalPrice: 58.00,
-                badge: "Econômico",
-                rating: 4.6,
-                reviews: 50,
+                price: 26.90,
+                originalPrice: 31.00,
+                badge: "Perfume Intenso",
+                rating: 4.9,
+                reviews: 51,
                 image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Sabão em pó para lavagem de roupas brancas e coloridas.",
-                stock: 40,
+                description: "Amaciante concentrado que garante fragrância prolongada e maciez.",
+                stock: 35,
                 freeShipping: true
             },
             {
@@ -1170,7 +1086,7 @@
             },
             {
                 id: 7,
-                name: "Kit Conjunto Trevo 4 Peças — Colar, Brinco, Pulseira e Anel",
+                name: "Kit Conjunto Trevo 4 Peças — Colar e Brinco",
                 category: "bijuterias",
                 price: 32.90,
                 originalPrice: 40.00,
@@ -1178,55 +1094,55 @@
                 rating: 4.9,
                 reviews: 64,
                 image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto feminino de quatro peças com visual delicado e versátil.",
+                description: "Conjunto feminino de quatro peças com visual delicado.",
                 stock: 22,
                 freeShipping: false
             },
             {
                 id: 8,
-                name: "Conjunto Colar, Choker, Pulseira, Brinco e Anel Noiva Strass",
+                name: "Pulseira Feminina Banhada a Ouro",
                 category: "bijuterias",
-                price: 117.06,
-                originalPrice: 130.00,
-                badge: "Premium",
-                rating: 5.0,
-                reviews: 19,
+                price: 45.00,
+                originalPrice: 55.00,
+                badge: "Lançamento",
+                rating: 4.7,
+                reviews: 18,
                 image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto de acessórios com acabamento brilhante.",
-                stock: 10,
-                freeShipping: true
+                description: "Pulseira com elos finos e fecho seguro, perfeita para o dia a dia.",
+                stock: 12,
+                freeShipping: false
             },
             {
                 id: 9,
-                name: "Conjunto Colar e Brinco Estrela do Mar Dourado",
+                name: "Colar Ponto de Luz em Zircônia",
                 category: "bijuterias",
-                price: 31.91,
+                price: 29.90,
                 originalPrice: 38.00,
-                badge: "Verão",
-                rating: 4.7,
-                reviews: 23,
+                badge: "Delicado",
+                rating: 4.9,
+                reviews: 27,
                 image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto feminino com inspiração marítima.",
+                description: "Colar clássico ponto de luz com corrente veneziana elegante.",
+                stock: 20,
+                freeShipping: true
+            },
+            {
+                id: 10,
+                name: "Anel Solitário Ajustável Cravejado",
+                category: "bijuterias",
+                price: 24.90,
+                originalPrice: 30.00,
+                badge: "Ajustável",
+                rating: 4.6,
+                reviews: 14,
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
+                description: "Anel brilhante ajustável que se adapta perfeitamente a qualquer dedo.",
                 stock: 18,
                 freeShipping: false
             },
             {
-                id: 10,
-                name: "Conjunto Colar, Brinco e Anel com Opala Sintética",
-                category: "bijuterias",
-                price: 16.97,
-                originalPrice: 22.00,
-                badge: "Oferta",
-                rating: 4.5,
-                reviews: 14,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto de acessórios femininos com pedra sintética.",
-                stock: 25,
-                freeShipping: false
-            },
-            {
                 id: 11,
-                name: "Teclado e Mouse Sem Fio Lelong LE-7716",
+                name: "Teclado e Mouse Sem Fio Lelong",
                 category: "informatica",
                 price: 25.99,
                 originalPrice: 35.00,
@@ -1240,59 +1156,59 @@
             },
             {
                 id: 12,
-                name: "Hub USB KVM HDMI Switch com suporte 4K",
+                name: "Mouse Pad Ergônomico com Apoio em Gel",
                 category: "informatica",
-                price: 62.50,
-                originalPrice: 75.00,
-                badge: "Lançamento",
+                price: 18.50,
+                originalPrice: 24.00,
+                badge: "Ergonômico",
                 rating: 4.8,
-                reviews: 27,
-                image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop&q=60",
-                description: "Hub/switch para ampliar possibilidades de conexão.",
-                stock: 12,
-                freeShipping: true
+                reviews: 31,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
+                description: "Mouse pad com descanso de pulso macio para digitação e jogos.",
+                stock: 45,
+                freeShipping: false
             },
             {
                 id: 13,
-                name: "Adaptador Tipo-C para HDMI 4K + USB 3.0",
+                name: "Fone de Ouvido Bluetooth Sem Fio TWS",
                 category: "informatica",
-                price: 35.50,
-                originalPrice: 42.00,
-                badge: "Destaque",
-                rating: 4.9,
-                reviews: 45,
-                image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop&q=60",
-                description: "Adaptador multifunção para equipamentos com USB Tipo-C.",
-                stock: 30,
-                freeShipping: false
-            },
-            {
-                id: 14,
-                name: "Hub USB 3.1 Tipo-C 3x1 com HDMI e PD",
-                category: "informatica",
-                price: 52.25,
-                originalPrice: 60.00,
-                badge: "Destaque",
+                price: 59.90,
+                originalPrice: 79.90,
+                badge: "Alta Definição",
                 rating: 4.7,
-                reviews: 19,
-                image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop&q=60",
-                description: "Adaptador/hub compacto para expandir conexões.",
-                stock: 16,
+                reviews: 83,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
+                description: "Fone Bluetooth estéreo com estojo carregador e autonomia duradoura.",
+                stock: 28,
                 freeShipping: true
             },
             {
-                id: 15,
-                name: "Kingston DataTraveler Exodia S 64GB USB-A 3.2 Gen 1",
+                id: 14,
+                name: "Cabo USB-C Rápido para Celular 1 Metro",
                 category: "informatica",
-                price: 63.90,
-                originalPrice: 72.00,
-                badge: "Original",
+                price: 14.90,
+                originalPrice: 20.00,
+                badge: "Carga Rápida",
                 rating: 4.9,
-                reviews: 82,
-                image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&auto=format&fit=crop&q=60",
-                description: "Pen drive de 64 GB para armazenamento de arquivos.",
-                stock: 45,
+                reviews: 104,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
+                description: "Cabo reforçado trançado para carregamento rápido e transferência de dados.",
+                stock: 60,
                 freeShipping: false
+            },
+            {
+                id: 15,
+                name: "Suporte Dobrável para Notebook e Tablet",
+                category: "informatica",
+                price: 39.90,
+                originalPrice: 49.90,
+                badge: "Portátil",
+                rating: 4.8,
+                reviews: 22,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
+                description: "Suporte leve em alumínio ajustável para postura correta na mesa.",
+                stock: 16,
+                freeShipping: true
             },
             {
                 id: 16,
@@ -1310,7 +1226,7 @@
             },
             {
                 id: 17,
-                name: "Refrigerante Guaraná Antarctica 2 Litros",
+                name: "Refrigerante Guaraná Antarctica 2L",
                 category: "bebidas",
                 price: 8.74,
                 originalPrice: 10.00,
@@ -1324,138 +1240,65 @@
             },
             {
                 id: 18,
-                name: "Suco de Uva Aurora Tinto Integral 1,5L",
+                name: "Água Mineral Sem Gás Garrafa 500ml (Fardo 12un)",
                 category: "bebidas",
-                price: 15.60,
-                originalPrice: 18.00,
-                badge: "100% Natural",
+                price: 18.00,
+                originalPrice: 22.00,
+                badge: "Econômico",
                 rating: 4.9,
-                reviews: 37,
-                image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&auto=format&fit=crop&q=60",
-                description: "Suco de uva integral, pronto para consumo.",
-                stock: 24,
+                reviews: 45,
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
+                description: "Fardo prático de água mineral natural sem gás.",
+                stock: 40,
                 freeShipping: false
             },
             {
                 id: 19,
-                name: "Água Mineral Lindoya Speciali com Gás — kit 12 x 500ml",
+                name: "Suco Natural Del Valle Laranja 1 Litro",
                 category: "bebidas",
-                price: 22.90,
-                originalPrice: 28.00,
-                badge: "Kit Pacote",
+                price: 9.50,
+                originalPrice: 11.90,
+                badge: "Saboroso",
                 rating: 4.7,
-                reviews: 16,
-                image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&auto=format&fit=crop&q=60",
-                description: "Água mineral com gás em kit com 12 unidades.",
-                stock: 20,
+                reviews: 33,
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
+                description: "Suco pronto para beber enriquecido com vitamina C.",
+                stock: 35,
                 freeShipping: false
             },
             {
                 id: 20,
-                name: "Kit 10 Energéticos Red Bull Sem Açúcar 250ml",
+                name: "Energético Red Bull Energy Drink 250ml",
                 category: "bebidas",
-                price: 183.66,
-                originalPrice: 210.00,
-                badge: "Pack Especial",
+                price: 11.90,
+                originalPrice: 14.00,
+                badge: "Energia",
                 rating: 4.9,
-                reviews: 28,
-                image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=500&auto=format&fit=crop&q=60",
-                description: "Kit com dez latas de energético sem açúcar.",
-                stock: 15,
+                reviews: 77,
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
+                description: "Bebida energética para disposição imediata em lata de 250ml.",
+                stock: 50,
                 freeShipping: true
             }
         ];
 
-        // Base de Dados Simulada de Comentários por Produto ID
+        // Base de Dados Simulada de Comentários
         const initialComments = {
             6: [
-                { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo e chegou super bem embalado na caixinha." },
-                { id: 102, author: "Carla Antunes", rating: 5, date: "28/02/2026", text: "Achei super delicado e o acabamento é perfeito. Recomendo com certeza!" }
-            ],
-            20: [
-                { id: 201, author: "Marcos Paulo", rating: 5, date: "05/03/2026", text: "Chegou rápido e a embalagem veio bem intacta. Produto 100% original." },
-                { id: 202, author: "Lucas Andrade", rating: 4, date: "15/02/2026", text: "Ótimo custo benefício para comprar o pack, vale muito a pena." }
+                { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo." },
+                { id: 102, author: "Carla Antunes", rating: 5, date: "28/02/2026", text: "Achei super delicado e o acabamento é perfeito." }
             ]
         };
 
-        // Textos Institucionais das Páginas de Informações
         const infoPagesData = {
             'politica-troca': `
-                <h1 class="text-2xl sm:text-3xl font-black text-navy-900 mb-2 tracking-tight">POLÍTICA DE TROCA, DEVOLUÇÃO E CANCELAMENTO</h1>
-                <p class="text-xs text-gray-500 mb-6 font-medium">CDC COMÉRCIO ONLINE • Versão 1.0 • Outubro de 2026</p>
-
-                <div class="space-y-6 text-gray-700">
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">1. Objetivo</h2>
-                        <p>A presente Política de Troca, Devolução e Cancelamento estabelece as condições aplicáveis às compras realizadas por meio da <strong>CDC Comércio Online</strong>, buscando oferecer ao consumidor informações claras, objetivas e acessíveis sobre seus direitos e sobre os procedimentos para solicitar troca, devolução, cancelamento ou reembolso.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">2. Abrangência</h2>
-                        <p>Esta política aplica-se às compras realizadas pelos canais digitais oficiais da CDC Comércio Online, incluindo produtos das categorias de limpeza, bijuterias e acessórios, informática, eletrônicos, bebidas, alimentação, roupas, brinquedos, materiais escolares e de escritório, produtos de beleza e demais produtos comercializados pela empresa.</p>
-                        <p class="mt-1">As regras aqui previstas devem ser interpretadas em conjunto com a legislação brasileira de proteção e defesa do consumidor, especialmente a Lei nº 8.078/1990 (Código de Defesa do Consumidor) e o Decreto nº 7.962/2013, que regulamenta o comércio eletrônico.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">3. Direito de Arrependimento — Compras pela Internet</h2>
-                        <p>Nas compras realizadas fora do estabelecimento comercial, inclusive pela internet, o consumidor poderá exercer o direito de arrependimento no prazo legal de <strong>7 (sete) dias</strong>, contado da assinatura do contrato ou do recebimento do produto, conforme aplicável.</p>
-                        <p class="mt-1">No exercício regular desse direito, os valores pagos pelo consumidor deverão ser restituídos na forma prevista na legislação aplicável, sem prejuízo dos procedimentos necessários para a devolução do produto. O consumidor não precisa apresentar justificativa para exercer o direito de arrependimento.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">4. Como Solicitar uma Devolução</h2>
-                        <ol class="list-decimal pl-5 space-y-1 mt-1">
-                            <li>Entre em contato com a CDC Comércio Online pelo canal oficial informado nesta política.</li>
-                            <li>Informe o número do pedido, nome do comprador, produto e motivo da solicitação, quando solicitado para fins de atendimento e registro.</li>
-                            <li>A CDC orientará o consumidor sobre o procedimento de devolução e, quando aplicável, sobre a forma de postagem ou coleta.</li>
-                            <li>Após o recebimento do produto, serão realizados os procedimentos de conferência e processamento da solicitação.</li>
-                            <li>O reembolso será realizado conforme a forma de pagamento utilizada e os prazos operacionais aplicáveis, observada a legislação.</li>
-                        </ol>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">5. Condições para Devolução por Arrependimento</h2>
-                        <p>Quando a devolução decorrer do direito de arrependimento, o produto deverá, sempre que possível, ser devolvido com seus acessórios, manuais, etiquetas, embalagem e demais itens que o acompanham. Isso não limita os direitos legalmente assegurados ao consumidor.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">6. Produto com Defeito ou Vício</h2>
-                        <p>Caso o produto apresente vício de qualidade ou quantidade, a CDC Comércio Online adotará as providências cabíveis de acordo com o Código de Defesa do Consumidor e com a natureza do produto. O art. 18 do CDC estabelece a responsabilidade dos fornecedores pelos vícios que tornem o produto impróprio ou inadequado ao consumo.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">7. Produto Recebido Avariado ou Diferente do Pedido</h2>
-                        <p>Se o consumidor receber produto danificado, com embalagem violada, produto diferente daquele adquirido ou quantidade divergente, recomenda-se comunicar a CDC Comércio Online assim que identificar a ocorrência, preferencialmente registrando fotografias da embalagem e do item recebido.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">8. Cancelamento do Pedido antes do Envio</h2>
-                        <p>O consumidor poderá solicitar o cancelamento do pedido enquanto ele ainda estiver em etapa que permita a interrupção do processamento. Em compras com pagamento por cartão, a CDC adotará as providências cabíveis junto ao meio de pagamento para cancelamento ou estorno.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="text-base font-bold text-navy-900 mb-1">9. Reembolso</h2>
-                        <ul class="list-disc pl-5 space-y-1 mt-1">
-                            <li><strong>Cartão de crédito:</strong> O estorno será solicitado pela CDC conforme o procedimento da operadora/administradora.</li>
-                            <li><strong>PIX ou Transferência:</strong> Reembolso realizado diretamente na conta do titular do pedido.</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl mt-6">
-                        <h2 class="text-base font-bold text-navy-900 mb-2">10. Canais de Atendimento Oficial</h2>
-                        <p><strong>Razão Social:</strong> CDC Comércio e Distribuidora Ltda.</p>
-                        <p><strong>Nome Comercial:</strong> CDC Comércio Online</p>
-                        <p><strong>CNPJ:</strong> 62.024.645/0001-11</p>
-                        <p><strong>E-mail:</strong> cdccomercioonline@gmail.com</p>
-                        <p><strong>WhatsApp:</strong> (61) 99582-9201</p>
-                        <p><strong>Endereço:</strong> Rua 105 Lote 16 – Céu Azul – Valparaíso-GO</p>
-                    </div>
-                </div>
+                <h1 class="text-xl font-black text-navy-900 mb-2">POLÍTICA DE TROCA E DEVOLUÇÃO</h1>
+                <p class="text-xs text-gray-500 mb-4">CDC COMÉRCIO ONLINE</p>
+                <p class="text-xs">Você poderá exercer o direito de arrependimento no prazo de 7 dias após o recebimento. Para iniciar o processo, entre em contato via WhatsApp com o número do pedido.</p>
             `,
             'envio': `
-                <h1 class="text-2xl sm:text-3xl font-black text-navy-900 mb-4 tracking-tight">Envio e Entrega</h1>
-                <p><strong>1 ESTOQUE DO PRODUTO:</strong><br>1.0 - Praticamente todos os produtos vendidos na CDC Comércio Online são enviados diretamente de nossas unidades de distribuição ou estoque parceiro para o endereço informado no pedido.</p>
-                <p class="mt-4"><strong>2 ENDEREÇO DO PEDIDO:</strong><br>2.0 - A CDC Comércio Online providenciará o envio para o endereço cadastrado. Pedimos atenção ao preencher o CEP e logradouro.<br>2.1 - O endereço não poderá ser alterado após a expedição do pedido.<br>2.2 - Certifique-se de que haverá alguém no local para receber a encomenda.</p>
+                <h1 class="text-xl font-black text-navy-900 mb-2">Envio e Entrega</h1>
+                <p class="text-xs">Enviamos para todo o Brasil através dos Correios e realizamos entregas via Motoboy para Valparaíso-GO e região do DF.</p>
             `
         };
 
@@ -1468,11 +1311,9 @@
         let activePageQuantity = 1;
         let isAdminLoggedIn = false;
 
-        // Banner Slider State
         let currentBannerIndex = 0;
         let bannerTimer = null;
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             renderBannersSlider();
             renderProducts(productsData);
@@ -1490,7 +1331,6 @@
             };
         });
 
-        // Banner Slider Render
         function renderBannersSlider() {
             const container = document.getElementById('bannerContainer');
             const dots = document.getElementById('bannerDots');
@@ -1498,29 +1338,28 @@
             if (!container || !dots) return;
 
             if (bannersData.length === 0) {
-                container.innerHTML = `<div class="p-12 text-center text-white">Nenhum banner ativo.</div>`;
+                container.innerHTML = `<div class="p-8 text-center text-gray-500 text-xs">Nenhum banner ativo.</div>`;
                 dots.innerHTML = '';
                 return;
             }
 
             container.innerHTML = bannersData.map((b, idx) => `
-                <div class="banner-slide ${idx === 0 ? 'active' : ''} w-full">
+                <div class="banner-slide ${idx === 0 ? 'active' : ''} w-full h-full">
                     <a href="${b.link}">
-                        <img src="${b.image}" class="w-full h-full object-cover max-h-[480px]">
+                        <img src="${b.image}" class="w-full h-full object-cover">
                     </a>
                 </div>
             `).join('');
 
             dots.innerHTML = bannersData.map((_, idx) => `
-                <button onclick="setBanner(${idx})" class="banner-dot w-3 h-3 rounded-full ${idx === 0 ? 'bg-white opacity-100' : 'bg-white/50'} hover:bg-white transition"></button>
+                <button onclick="setBanner(${idx})" class="banner-dot w-2 h-2 rounded-full ${idx === 0 ? 'bg-white opacity-100' : 'bg-white/50'} transition"></button>
             `).join('');
         }
 
-        // Banner Slider Logic
         function startBannerRotation() {
             stopBannerRotation();
             if (bannersData.length > 1) {
-                bannerTimer = setInterval(() => { nextBanner(); }, 3000);
+                bannerTimer = setInterval(() => { nextBanner(); }, 3500);
             }
         }
 
@@ -1559,25 +1398,17 @@
         function nextBanner() { setBanner(currentBannerIndex + 1); }
         function prevBanner() { setBanner(currentBannerIndex - 1); }
 
-        function handleNewsletterSubmit(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('newsletterEmail');
-            if (emailInput.value) {
-                showNotification("Obrigado! Seu e-mail foi cadastrado para ofertas.");
-                emailInput.value = '';
-            }
-        }
-
-        // Category & Search Filters
         function filterCategory(cat) {
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.dataset.cat === cat) btn.classList.add('bg-navy-800', 'text-white');
-                else btn.classList.remove('bg-navy-800', 'text-white');
+                if (btn.dataset.cat === cat) {
+                    btn.classList.add('bg-cdcHeader', 'text-white', 'border-blue-700');
+                    btn.classList.remove('border-blue-900');
+                } else {
+                    btn.classList.remove('bg-cdcHeader', 'text-white', 'border-blue-700');
+                    btn.classList.add('border-blue-900');
+                }
             });
-
-            const mobileSelect = document.getElementById('mobileCategorySelect');
-            if (mobileSelect) mobileSelect.value = cat;
 
             applyFiltersAndSearch();
         }
@@ -1642,7 +1473,6 @@
             renderProducts(sorted);
         }
 
-        // Render Catalog Grid
         function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
             const emptyState = document.getElementById('emptyCatalogState');
@@ -1655,32 +1485,32 @@
 
             emptyState.classList.add('hidden');
             grid.innerHTML = items.map(p => `
-                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="relative overflow-hidden bg-gray-100 aspect-square cursor-pointer" onclick="navigateToProduct(${p.id})">
-                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        ${p.badge ? `<span class="absolute top-2 left-2 bg-navy-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow">${p.badge}</span>` : ''}
-                        ${p.freeShipping ? `<span class="absolute top-2 right-2 bg-emerald-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow uppercase">Frete Grátis</span>` : ''}
+                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div class="relative overflow-hidden bg-gray-50 aspect-square cursor-pointer" onclick="navigateToProduct(${p.id})">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        ${p.badge ? `<span class="absolute top-1.5 left-1.5 bg-cdcHeader text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">${p.badge}</span>` : ''}
+                        ${p.freeShipping ? `<span class="absolute top-1.5 right-1.5 bg-emerald-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow uppercase">Frete Grátis</span>` : ''}
                     </div>
 
-                    <div class="p-3.5 flex-grow flex flex-col justify-between space-y-2">
+                    <div class="p-2.5 sm:p-3.5 flex-grow flex flex-col justify-between space-y-1.5">
                         <div>
-                            <div class="flex items-center text-yellow-400 text-[11px] gap-1 mb-1">
+                            <div class="flex items-center text-yellow-400 text-[10px] gap-0.5 mb-0.5">
                                 <i class="fas fa-star"></i>
                                 <span class="font-bold text-gray-700">${p.rating}</span>
-                                <span class="text-gray-400 text-[10px]">(${p.reviews})</span>
+                                <span class="text-gray-400 text-[9px]">(${p.reviews})</span>
                             </div>
-                            <h4 onclick="navigateToProduct(${p.id})" class="font-bold text-xs sm:text-sm text-navy-900 line-clamp-2 hover:text-blue-600 cursor-pointer transition">
+                            <h4 onclick="navigateToProduct(${p.id})" class="font-bold text-xs text-navy-900 line-clamp-2 hover:text-blue-600 cursor-pointer transition leading-tight">
                                 ${p.name}
                             </h4>
                         </div>
 
                         <div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-base sm:text-lg font-black text-navy-900">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-sm sm:text-base font-black text-navy-900">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
                             </div>
-                            <p class="text-[10px] text-emerald-600 font-medium">Em estoque (${p.stock} un.)</p>
+                            <p class="text-[9px] text-emerald-600 font-medium">Estoque (${p.stock} un.)</p>
                             
-                            <button onclick="navigateToProduct(${p.id})" class="w-full mt-2 bg-navy-800 hover:bg-navy-900 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md active:scale-95">
+                            <button onclick="navigateToProduct(${p.id})" class="w-full mt-2 bg-cdcHeader hover:bg-cdcDark text-white text-[11px] font-bold py-1.5 px-2 rounded-xl transition flex items-center justify-center gap-1 shadow active:scale-95">
                                 Ver Detalhes
                             </button>
                         </div>
@@ -1689,42 +1519,23 @@
             `).join('');
         }
 
-        // COMENTÁRIOS E AVALIAÇÕES
         function renderComments(productId) {
             const container = document.getElementById('commentsListContainer');
             if (!container) return;
 
             const comments = initialComments[productId] || [
-                { id: 991, author: "Fernanda Costa", rating: 5, date: "10/03/2026", text: "Excelente atendimento da loja e o produto chegou dentro do prazo previsto!" },
-                { id: 992, author: "Rodrigo Lima", rating: 5, date: "01/03/2026", text: "Super recomendo a CDC Comércio Online, compra segura e rápida." }
+                { id: 991, author: "Fernanda Costa", rating: 5, date: "10/03/2026", text: "Excelente atendimento da loja e o produto chegou no prazo!" }
             ];
 
-            container.innerHTML = comments.map(c => {
-                let starsHtml = '';
-                for (let i = 1; i <= 5; i++) {
-                    starsHtml += `<i class="fas fa-star ${i <= c.rating ? 'text-yellow-400' : 'text-gray-200'}"></i>`;
-                }
-
-                return `
-                    <div class="p-4 bg-white rounded-xl border border-gray-200 shadow-sm space-y-2">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 bg-navy-100 text-navy-800 rounded-full flex items-center justify-center font-bold text-xs">
-                                    ${c.author.charAt(0)}
-                                </div>
-                                <div>
-                                    <h5 class="text-xs font-bold text-navy-900">${c.author}</h5>
-                                    <div class="flex text-[10px] gap-0.5 mt-0.5">
-                                        ${starsHtml}
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="text-[10px] text-gray-400">${c.date}</span>
-                        </div>
-                        <p class="text-xs text-gray-600 leading-relaxed">${c.text}</p>
+            container.innerHTML = comments.map(c => `
+                <div class="p-2.5 bg-white rounded-xl border border-gray-200 shadow-sm space-y-1 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-navy-900">${c.author}</span>
+                        <span class="text-[9px] text-gray-400">${c.date}</span>
                     </div>
-                `;
-            }).join('');
+                    <p class="text-gray-600 text-[11px]">${c.text}</p>
+                </div>
+            `).join('');
         }
 
         function handleAddComment(e) {
@@ -1752,60 +1563,27 @@
 
             authorInput.value = '';
             textInput.value = '';
-
-            showNotification("Comentário publicado com sucesso!");
+            showNotification("Comentário publicado!");
         }
 
-        // RECOMENDADOS
         function renderRecommendedProducts(currentProductId) {
             const container = document.getElementById('recommendedProductsGrid');
             if (!container) return;
 
-            let list = productsData.filter(p => p.id !== currentProductId);
-            
-            const currentProduct = productsData.find(p => p.id === currentProductId);
-            if (currentProduct) {
-                const sameCategory = list.filter(p => p.category === currentProduct.category);
-                const otherCategories = list.filter(p => p.category !== currentProduct.category);
-                list = [...sameCategory, ...otherCategories];
-            }
+            let list = productsData.filter(p => p.id !== currentProductId).slice(0, 4);
 
-            const recommended = list.slice(0, 4);
-
-            container.innerHTML = recommended.map(p => `
-                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="relative overflow-hidden bg-gray-100 aspect-square cursor-pointer" onclick="navigateToProduct(${p.id})">
-                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        ${p.badge ? `<span class="absolute top-2 left-2 bg-navy-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow">${p.badge}</span>` : ''}
+            container.innerHTML = list.map(p => `
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm p-2 flex flex-col justify-between">
+                    <div class="aspect-square bg-gray-50 rounded-lg overflow-hidden cursor-pointer" onclick="navigateToProduct(${p.id})">
+                        <img src="${p.image}" class="w-full h-full object-cover">
                     </div>
-
-                    <div class="p-3.5 flex-grow flex flex-col justify-between space-y-2">
-                        <div>
-                            <div class="flex items-center text-yellow-400 text-[11px] gap-1 mb-1">
-                                <i class="fas fa-star"></i>
-                                <span class="font-bold text-gray-700">${p.rating}</span>
-                                <span class="text-gray-400 text-[10px]">(${p.reviews})</span>
-                            </div>
-                            <h4 onclick="navigateToProduct(${p.id})" class="font-bold text-xs sm:text-sm text-navy-900 line-clamp-2 hover:text-blue-600 cursor-pointer transition">
-                                ${p.name}
-                            </h4>
-                        </div>
-
-                        <div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-base sm:text-lg font-black text-navy-900">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-                            </div>
-                            
-                            <button onclick="navigateToProduct(${p.id})" class="w-full mt-2 bg-navy-800 hover:bg-navy-900 text-white text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md active:scale-95">
-                                Ver Detalhes
-                            </button>
-                        </div>
-                    </div>
+                    <h5 class="font-bold text-[11px] text-navy-900 line-clamp-1 mt-1">${p.name}</h5>
+                    <span class="text-xs font-black text-navy-900">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                    <button onclick="navigateToProduct(${p.id})" class="mt-1 bg-cdcHeader text-white text-[10px] font-bold py-1 rounded-lg">Ver</button>
                 </div>
             `).join('');
         }
 
-        // NAVEGAÇÃO ENTRE PÁGINAS (HOME / PRODUTO / INFORMAÇÕES / PAINEL ADM)
         function navigateToProduct(productId) {
             history.pushState({ productId: productId }, '', '#produto-' + productId);
             displayProductView(productId);
@@ -1824,37 +1602,25 @@
             activePageQuantity = 1;
 
             document.getElementById('pdBreadcrumb').innerHTML = `
-                <a href="javascript:void(0)" onclick="closeAllPages()" class="hover:underline">Página Inicial</a> 
+                <a href="javascript:void(0)" onclick="closeAllPages()" class="hover:underline">Início</a> 
                 <span>&gt;</span> 
-                <span class="capitalize hover:underline cursor-pointer" onclick="filterCategory('${product.category}'); closeAllPages();">${product.category}</span> 
-                <span>&gt;</span> 
-                <span class="text-gray-800 font-medium">${product.name}</span>
+                <span class="capitalize font-medium">${product.category}</span> 
             `;
 
             document.getElementById('pdTitle').innerText = product.name;
             document.getElementById('pdMainImg').src = product.image;
             document.getElementById('pdThumbImg').src = product.image;
-            document.getElementById('pdReviewsCount').innerText = product.reviews > 0 ? `(${product.reviews} avaliações)` : '(Sem avaliações)';
             
             const freeShippingBadge = document.getElementById('pdFreeShippingBadge');
             if (product.freeShipping) {
                 freeShippingBadge.innerText = "FRETE GRÁTIS";
-                freeShippingBadge.className = "inline-block bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wider mb-2";
+                freeShippingBadge.className = "inline-block bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1";
             } else {
                 freeShippingBadge.innerText = "FRETE PADRÃO";
-                freeShippingBadge.className = "inline-block bg-gray-500 text-white text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wider mb-2";
+                freeShippingBadge.className = "inline-block bg-gray-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1";
             }
 
-            const origPrice = product.originalPrice || (product.price * 1.12);
-            document.getElementById('pdOriginalPrice').innerText = `R$ ${origPrice.toFixed(2).replace('.', ',')}`;
             document.getElementById('pdCurrentPrice').innerText = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
-            
-            const calcDiscount = Math.round(((origPrice - product.price) / origPrice) * 100);
-            document.getElementById('pdDiscountBadge').innerText = `-${calcDiscount > 0 ? calcDiscount : 11}%`;
-
-            const installmentVal = (product.price / 12).toFixed(2).replace('.', ',');
-            document.getElementById('pdInstallments').innerText = `12x de R$ ${installmentVal}`;
-
             document.getElementById('pdDescription').innerText = product.description;
             document.getElementById('pdQtyValue').innerText = activePageQuantity;
 
@@ -1863,36 +1629,14 @@
 
             hideAllViews();
             document.getElementById('singleProductPageView').classList.remove('hidden');
-            document.getElementById('singleProductPageView').style.display = 'block';
-
             window.scrollTo(0, 0);
         }
 
         function displayInfoView(infoKey) {
             const container = document.getElementById('infoContentContainer');
-            const breadcrumbCurrent = document.getElementById('infoBreadcrumbCurrent');
-
-            // Atualiza Destaque no Menu Lateral de Informações
-            document.querySelectorAll('.info-link').forEach(link => {
-                if (link.dataset.info === infoKey) {
-                    link.className = "info-link font-bold text-navy-900 transition block py-1 border-l-2 border-navy-800 pl-2";
-                    breadcrumbCurrent.innerText = link.innerText;
-                } else {
-                    link.className = "info-link hover:text-navy-900 transition block py-1";
-                }
-            });
-
-            // Injeta o Conteúdo correspondente
-            if (infoPagesData[infoKey]) {
-                container.innerHTML = infoPagesData[infoKey];
-            } else {
-                container.innerHTML = `<h1 class="text-2xl font-bold text-navy-900 mb-2">Informação</h1><p>Esta seção está sendo atualizada conforme as normas da CDC Comércio Online.</p>`;
-            }
-
+            if (infoPagesData[infoKey]) container.innerHTML = infoPagesData[infoKey];
             hideAllViews();
             document.getElementById('infoPageView').classList.remove('hidden');
-            document.getElementById('infoPageView').style.display = 'block';
-
             window.scrollTo(0, 0);
         }
 
@@ -1900,48 +1644,31 @@
             if (!isAdminLoggedIn) {
                 toggleAuthModal(true);
                 switchAuthTab('admin');
-                showNotification("Por favor, faça login como Administrador!");
+                showNotification("Faça login como Administrador!");
                 return;
             }
             history.pushState({ admin: true }, '', '#admin-dashboard');
             hideAllViews();
-            
-            renderAdminLists(); // Renderiza listas de banners e produtos no painel
-
-            const adminDashboard = document.getElementById('adminDashboardView');
-            if (adminDashboard) {
-                adminDashboard.classList.remove('hidden');
-                adminDashboard.style.display = 'block';
-            }
+            renderAdminLists();
+            document.getElementById('adminDashboardView').classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
         function hideAllViews() {
-            const storefront = document.getElementById('mainStorefrontView');
-            const productPage = document.getElementById('singleProductPageView');
-            const infoPage = document.getElementById('infoPageView');
-            const adminDashboard = document.getElementById('adminDashboardView');
-
-            if (storefront) { storefront.classList.add('hidden'); storefront.style.display = 'none'; }
-            if (productPage) { productPage.classList.add('hidden'); productPage.style.display = 'none'; }
-            if (infoPage) { infoPage.classList.add('hidden'); infoPage.style.display = 'none'; }
-            if (adminDashboard) { adminDashboard.classList.add('hidden'); adminDashboard.style.display = 'none'; }
+            ['mainStorefrontView', 'singleProductPageView', 'infoPageView', 'adminDashboardView'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
         }
 
         function closeAllPages() {
-            if (location.hash) {
-                history.pushState(null, '', location.pathname);
-            }
+            if (location.hash) history.pushState(null, '', location.pathname);
             displayStorefrontView();
         }
 
         function displayStorefrontView() {
             hideAllViews();
-            const storefront = document.getElementById('mainStorefrontView');
-            if (storefront) {
-                storefront.classList.remove('hidden');
-                storefront.style.display = 'block';
-            }
+            document.getElementById('mainStorefrontView').classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
@@ -1953,28 +1680,20 @@
 
         function buyNowFromPage() {
             if (!selectedProductForPage) return;
-
             const existing = cart.find(item => item.id === selectedProductForPage.id);
-            if (existing) {
-                existing.quantity += activePageQuantity;
-            } else {
-                cart.push({ ...selectedProductForPage, quantity: activePageQuantity });
-            }
+            if (existing) existing.quantity += activePageQuantity;
+            else cart.push({ ...selectedProductForPage, quantity: activePageQuantity });
 
             updateCartUI();
-            showNotification(`'${selectedProductForPage.name}' adicionado ao carrinho!`);
+            showNotification(`Adicionado ao carrinho!`);
             toggleCartModal(true);
         }
 
-        // Cart Logic
         function updateCartQuantity(productId, delta) {
             const item = cart.find(i => i.id === productId);
             if (!item) return;
-
             item.quantity += delta;
-            if (item.quantity <= 0) {
-                cart = cart.filter(i => i.id !== productId);
-            }
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== productId);
             updateCartUI();
         }
 
@@ -1990,36 +1709,28 @@
 
             document.getElementById('cartCountBadge').innerText = totalCount;
             document.getElementById('cartHeaderTotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            
             document.getElementById('cartSubtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             document.getElementById('cartFreightValue').innerText = `R$ ${calculatedFreight.toFixed(2).replace('.', ',')}`;
             document.getElementById('cartTotal').innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 
             const cartList = document.getElementById('cartItemsList');
             if (cart.length === 0) {
-                cartList.innerHTML = `
-                    <div class="py-12 text-center text-gray-400">
-                        <i class="fas fa-shopping-basket text-4xl mb-2 text-gray-300"></i>
-                        <p class="text-sm font-semibold">Seu carrinho está vazio</p>
-                        <p class="text-xs">Explore nosso catálogo para adicionar produtos.</p>
-                    </div>
-                `;
+                cartList.innerHTML = `<div class="py-8 text-center text-gray-400 text-xs"><p>Seu carrinho está vazio</p></div>`;
             } else {
                 cartList.innerHTML = cart.map(item => `
-                    <div class="flex items-center gap-3 p-2.5 bg-gray-50 rounded-xl border border-gray-200">
-                        <img src="${item.image}" class="w-14 h-14 object-cover rounded-lg border">
+                    <div class="flex items-center gap-2.5 p-2 bg-gray-50 rounded-xl border border-gray-200">
+                        <img src="${item.image}" class="w-10 h-10 object-cover rounded-lg">
                         <div class="flex-grow">
                             <h5 class="text-xs font-bold text-navy-900 line-clamp-1">${item.name}</h5>
-                            <span class="text-xs text-navy-800 font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
-                            
-                            <div class="flex items-center gap-2 mt-1">
-                                <button onclick="updateCartQuantity(${item.id}, -1)" class="w-5 h-5 bg-gray-200 rounded text-xs font-bold hover:bg-gray-300">-</button>
-                                <span class="text-xs font-bold">${item.quantity}</span>
-                                <button onclick="updateCartQuantity(${item.id}, 1)" class="w-5 h-5 bg-gray-200 rounded text-xs font-bold hover:bg-gray-300">+</button>
-                            </div>
+                            <span class="text-[11px] text-cdcHeader font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 p-1">
-                            <i class="fas fa-trash-alt text-xs"></i>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="updateCartQuantity(${item.id}, -1)" class="w-4 h-4 bg-gray-200 rounded text-xs font-bold">-</button>
+                            <span class="text-xs font-bold">${item.quantity}</span>
+                            <button onclick="updateCartQuantity(${item.id}, 1)" class="w-4 h-4 bg-gray-200 rounded text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 p-1 text-xs">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 `).join('');
@@ -2031,172 +1742,113 @@
             const msg = document.getElementById('freightMsg');
 
             if (cep.length < 8) {
-                msg.innerText = "❌ Digite um CEP válido com 8 dígitos.";
-                msg.className = "text-[10px] text-red-500 mt-1 block";
+                msg.innerText = "❌ CEP inválido.";
+                msg.className = "text-[9px] text-red-500 mt-1 block";
                 return;
             }
 
-            if (cep.startsWith('72') || cep.startsWith('73') || cep.startsWith('74')) {
-                calculatedFreight = 12.00;
-                msg.innerText = "✅ Frete Regional (DF/GO): R$ 12,00 (Entrega via Motoboy/Correios)";
-                msg.className = "text-[10px] text-emerald-600 font-semibold mt-1 block";
-            } else {
-                calculatedFreight = 24.50;
-                msg.innerText = "✅ Frete Nacional: R$ 24,50 (Entrega via Correios/PAC)";
-                msg.className = "text-[10px] text-emerald-600 font-semibold mt-1 block";
-            }
-
+            calculatedFreight = (cep.startsWith('72') || cep.startsWith('73')) ? 12.00 : 24.50;
+            msg.innerText = `✅ Frete calculated: R$ ${calculatedFreight.toFixed(2)}`;
+            msg.className = "text-[9px] text-emerald-600 font-semibold mt-1 block";
             updateCartUI();
         }
 
         function toggleCartModal(show) {
-            const modal = document.getElementById('cartModal');
-            if (show) modal.classList.remove('hidden');
-            else modal.classList.add('hidden');
+            document.getElementById('cartModal').classList.toggle('hidden', !show);
         }
 
         function toggleMobileSearch() {
             document.getElementById('mobileSearchBar').classList.toggle('hidden');
         }
 
-        // Funções para Controle do Modal de Autenticação (Visitante / Admin)
         function toggleAuthModal(show) {
-            const modal = document.getElementById('authModal');
-            if (show) modal.classList.remove('hidden');
-            else modal.classList.add('hidden');
+            document.getElementById('authModal').classList.toggle('hidden', !show);
         }
 
         function switchAuthTab(type) {
             const visitorForm = document.getElementById('visitorAuthForm');
             const adminForm = document.getElementById('adminAuthForm');
-            const tabVisitorBtn = document.getElementById('tabVisitorBtn');
-            const tabAdminBtn = document.getElementById('tabAdminBtn');
-
             if (type === 'visitor') {
                 visitorForm.classList.remove('hidden');
                 adminForm.classList.add('hidden');
-                tabVisitorBtn.className = "flex-1 py-2 text-center text-xs font-bold border-b-2 border-navy-800 text-navy-800";
-                tabAdminBtn.className = "flex-1 py-2 text-center text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-navy-800";
             } else {
                 adminForm.classList.remove('hidden');
                 visitorForm.classList.add('hidden');
-                tabAdminBtn.className = "flex-1 py-2 text-center text-xs font-bold border-b-2 border-navy-800 text-navy-800";
-                tabVisitorBtn.className = "flex-1 py-2 text-center text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-navy-800";
             }
         }
 
         function handleVisitorRegister(e) {
             e.preventDefault();
             toggleAuthModal(false);
-            showNotification("Cadastro de visitante realizado com sucesso!");
+            showNotification("Cadastro de visitante efetuado!");
         }
 
         function handleAdminLogin(e) {
             e.preventDefault();
             isAdminLoggedIn = true;
             toggleAuthModal(false);
-            
             document.getElementById('userAccountStatus').innerText = "ADM Conectado";
             document.getElementById('navAdminDashboardLink').classList.remove('hidden');
-
-            showNotification("Login ADM efetuado! Redirecionando para o painel...");
+            showNotification("Login ADM realizado!");
             displayAdminDashboardView();
         }
 
         function handleAdminLogout() {
             isAdminLoggedIn = false;
-            document.getElementById('userAccountStatus').innerText = "Comprar p/ Visitante / ADM";
+            document.getElementById('userAccountStatus').innerText = "Visitante / ADM";
             document.getElementById('navAdminDashboardLink').classList.add('hidden');
-            showNotification("Você saiu do modo Administrador.");
+            showNotification("Você saiu do modo ADM.");
             closeAllPages();
         }
 
-        // FORMATAR DATAS PARA EXIBIÇÃO BR (DD/MM/AAAA)
         function formatDateBR(dateStr) {
             if (!dateStr) return 'N/A';
             const parts = dateStr.split('-');
-            if (parts.length === 3) {
-                return `${parts[2]}/${parts[1]}/${parts[0]}`;
-            }
-            return dateStr;
+            return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateStr;
         }
 
-        // FUNÇÃO ADM: RENDERIZAR LISTAS DE CARROSSEL E PRODUTOS NO PAINEL
         function renderAdminLists() {
-            // Renderiza Banners
             const adminBannersContainer = document.getElementById('adminBannersList');
             const adminBannerCount = document.getElementById('adminBannerCount');
             if (adminBannersContainer && adminBannerCount) {
                 adminBannerCount.innerText = bannersData.length;
-                if (bannersData.length === 0) {
-                    adminBannersContainer.innerHTML = `<p class="text-xs text-gray-400 py-4 text-center">Nenhum carrossel cadastrado.</p>`;
-                } else {
-                    adminBannersContainer.innerHTML = bannersData.map(b => `
-                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-                            <img src="${b.image}" class="w-20 h-12 object-cover rounded-lg border flex-shrink-0">
-                            <div class="flex-grow min-w-0">
-                                <p class="text-xs font-bold text-navy-900 truncate">Link: ${b.link}</p>
-                                <div class="flex items-center gap-2 text-[11px] text-gray-500 mt-0.5">
-                                    <span class="bg-blue-50 text-blue-700 font-medium px-2 py-0.5 rounded border border-blue-100">
-                                        <i class="far fa-calendar-alt mr-1"></i> ${formatDateBR(b.startDate)} até ${formatDateBR(b.endDate)}
-                                    </span>
-                                </div>
-                            </div>
-                            <button onclick="removeAdminBanner(${b.id})" class="text-red-500 hover:text-red-700 p-2 text-xs" title="Remover Banner">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                adminBannersContainer.innerHTML = bannersData.map(b => `
+                    <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs">
+                        <img src="${b.image}" class="w-12 h-8 object-cover rounded">
+                        <div class="flex-grow min-w-0">
+                            <p class="font-bold truncate text-[11px]">${b.link}</p>
+                            <span class="text-[9px] text-gray-500">${formatDateBR(b.startDate)} - ${formatDateBR(b.endDate)}</span>
                         </div>
-                    `).join('');
-                }
+                        <button onclick="removeAdminBanner(${b.id})" class="text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `).join('');
             }
 
-            // Renderiza Produtos (Suporta Filtro por Categoria no ADM)
             const adminProductsContainer = document.getElementById('adminProductsList');
             const adminProductCount = document.getElementById('adminProductCount');
             const adminCategoryFilter = document.getElementById('adminCategoryFilter')?.value || 'todos';
 
             if (adminProductsContainer && adminProductCount) {
-                let filteredList = productsData;
-                if (adminCategoryFilter !== 'todos') {
-                    filteredList = productsData.filter(p => p.category === adminCategoryFilter);
-                }
-
+                let filteredList = adminCategoryFilter === 'todos' ? productsData : productsData.filter(p => p.category === adminCategoryFilter);
                 adminProductCount.innerText = filteredList.length;
 
-                if (filteredList.length === 0) {
-                    adminProductsContainer.innerHTML = `<p class="text-xs text-gray-400 py-4 text-center">Nenhum produto cadastrado nesta categoria.</p>`;
-                } else {
-                    adminProductsContainer.innerHTML = filteredList.map(p => `
-                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:border-amber-400 transition cursor-pointer" onclick="openEditProductModal(${p.id})">
-                            <img src="${p.image}" class="w-12 h-12 object-cover rounded-lg border flex-shrink-0">
-                            <div class="flex-grow min-w-0">
-                                <div class="flex items-center justify-between gap-2">
-                                    <h5 class="text-xs font-bold text-navy-900 truncate">${p.name}</h5>
-                                    <span class="text-xs font-extrabold text-emerald-600 flex-shrink-0">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-                                </div>
-                                <p class="text-[11px] text-gray-500 line-clamp-1 mt-0.5">${p.description}</p>
-                                <div class="flex items-center gap-2 text-[10px] text-gray-400 mt-1 flex-wrap">
-                                    <span class="font-semibold text-navy-800">Estoque: ${p.stock} un.</span>
-                                    <span>•</span>
-                                    <span class="capitalize">Categoria: ${p.category}</span>
-                                    ${p.freeShipping ? `<span>•</span><span class="text-emerald-600 font-bold">Frete Grátis</span>` : ''}
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0" onclick="event.stopPropagation()">
-                                <button onclick="openEditProductModal(${p.id})" class="text-amber-600 hover:text-amber-800 p-2 text-xs bg-amber-50 rounded-lg" title="Editar Produto">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="removeAdminProduct(${p.id})" class="text-red-500 hover:text-red-700 p-2 text-xs bg-red-50 rounded-lg" title="Remover Produto">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
+                adminProductsContainer.innerHTML = filteredList.map(p => `
+                    <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-pointer hover:border-amber-400" onclick="openEditProductModal(${p.id})">
+                        <img src="${p.image}" class="w-8 h-8 object-cover rounded">
+                        <div class="flex-grow min-w-0">
+                            <h5 class="font-bold truncate text-[11px]">${p.name}</h5>
+                            <span class="text-[10px] text-emerald-600 font-bold">R$ ${p.price.toFixed(2)}</span>
+                            <span class="text-[9px] text-gray-400 ml-2">Estoque: ${p.stock}</span>
                         </div>
-                    `).join('');
-                }
+                        <div class="flex items-center gap-1" onclick="event.stopPropagation()">
+                            <button onclick="openEditProductModal(${p.id})" class="text-amber-600 p-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeAdminProduct(${p.id})" class="text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `).join('');
             }
         }
 
-        // FUNÇÃO ADM: ACRESCENTAR MAIS CARROSSEL
         function handleAddNewBanner(e) {
             e.preventDefault();
             const imgUrl = document.getElementById('newBannerImgUrl').value.trim();
@@ -2204,46 +1856,24 @@
             const startDate = document.getElementById('newBannerStartDate').value;
             const endDate = document.getElementById('newBannerEndDate').value;
 
-            if (!imgUrl || !startDate || !endDate) return;
-
-            const newBanner = {
-                id: Date.now(),
-                image: imgUrl,
-                link: linkUrl,
-                category: 'geral',
-                startDate: startDate,
-                endDate: endDate
-            };
-
-            bannersData.push(newBanner);
-            
+            bannersData.push({ id: Date.now(), image: imgUrl, link: linkUrl, category: 'geral', startDate, endDate });
             renderBannersSlider();
             renderAdminLists();
-
-            // Limpa o Formulário
-            document.getElementById('newBannerImgUrl').value = '';
-            document.getElementById('newBannerLink').value = '';
-            document.getElementById('newBannerStartDate').value = '';
-            document.getElementById('newBannerEndDate').value = '';
-
-            showNotification("Novo banner acrescentado ao carrossel!");
+            showNotification("Novo banner cadastrado!");
         }
 
-        // FUNÇÃO ADM: REMOVER BANNER
         function removeAdminBanner(bannerId) {
             const index = bannersData.findIndex(b => b.id === bannerId);
             if (index !== -1) {
                 bannersData.splice(index, 1);
                 renderBannersSlider();
                 renderAdminLists();
-                showNotification("Carrossel removido com sucesso!");
+                showNotification("Banner removido!");
             }
         }
 
-        // FUNÇÃO ADM: ACRESCENTAR MAIS PRODUTOS
         function handleAddNewProduct(e) {
             e.preventDefault();
-
             const name = document.getElementById('newProdName').value.trim();
             const category = document.getElementById('newProdCategory').value;
             const price = parseFloat(document.getElementById('newProdPrice').value);
@@ -2254,38 +1884,15 @@
             const badge = document.getElementById('newProdBadge').value.trim() || 'Novo';
             const description = document.getElementById('newProdDescription').value.trim();
 
-            const newProduct = {
-                id: Date.now(),
-                name: name,
-                category: category,
-                price: price,
-                originalPrice: origPrice,
-                badge: badge,
-                rating: 5.0,
-                reviews: 0,
-                image: image,
-                description: description,
-                stock: stock,
-                freeShipping: freeShipping
-            };
+            productsData.unshift({
+                id: Date.now(), name, category, price, originalPrice: origPrice, badge, rating: 5.0, reviews: 0, image, description, stock, freeShipping
+            });
 
-            productsData.unshift(newProduct);
             applyFiltersAndSearch();
             renderAdminLists();
-
-            // Reseta Form
-            document.getElementById('newProdName').value = '';
-            document.getElementById('newProdPrice').value = '';
-            document.getElementById('newProdOriginalPrice').value = '';
-            document.getElementById('newProdStock').value = '';
-            document.getElementById('newProdImage').value = '';
-            document.getElementById('newProdBadge').value = '';
-            document.getElementById('newProdDescription').value = '';
-
-            showNotification(`O produto "${name}" foi acrescentado ao catálogo!`);
+            showNotification(`Produto "${name}" cadastrado!`);
         }
 
-        // FUNÇÃO ADM: ABRIR MODAL DE EDIÇÃO DE PRODUTO
         function openEditProductModal(productId) {
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
@@ -2308,7 +1915,6 @@
             document.getElementById('editProductModal').classList.add('hidden');
         }
 
-        // FUNÇÃO ADM: SALVAR PRODUTO EDITADO
         function handleSaveEditedProduct(e) {
             e.preventDefault();
             const id = parseInt(document.getElementById('editProdId').value);
@@ -2330,47 +1936,33 @@
             applyFiltersAndSearch();
             renderAdminLists();
 
-            showNotification("Produto atualizado com sucesso!");
+            showNotification("Produto atualizado!");
         }
 
-        // FUNÇÃO ADM: REMOVER PRODUTO
         function removeAdminProduct(productId) {
             const index = productsData.findIndex(p => p.id === productId);
             if (index !== -1) {
                 productsData.splice(index, 1);
                 applyFiltersAndSearch();
                 renderAdminLists();
-                showNotification("Produto removido com sucesso!");
+                showNotification("Produto removido!");
             }
         }
 
         function finishCheckout() {
-            if (cart.length === 0) {
-                showNotification("Seu carrinho está vazio!");
-                return;
-            }
-
+            if (cart.length === 0) return;
             const payment = document.getElementById('paymentMethodSelect').value;
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + calculatedFreight;
-
             let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
-            
-            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Forma de Pagamento:* ${payment.toUpperCase()}%0A*Frete:* R$ ${calculatedFreight.toFixed(2)}%0A*Total Geral:* R$ ${total.toFixed(2)}%0A%0A_Aguardando instruções de entrega e chave Pix!_`;
-
+            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Total:* R$ ${total.toFixed(2)}`;
             window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
         }
 
         function showNotification(msg) {
             const toast = document.getElementById('toastNotification');
             document.getElementById('toastMessage').innerText = msg;
-
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-            }, 3000);
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
         }
     </script>
 </body>
