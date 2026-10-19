@@ -32,6 +32,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-header {
@@ -72,7 +75,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between antialiased relative">
 
-    <!-- Top Contact Bar (Dark Navy Original) -->
+    <!-- Top Contact Bar -->
     <div class="bg-cdcDark text-white text-[11px] py-2 px-3">
         <div class="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-4">
             <div class="flex items-center space-x-4 text-[12px] font-medium">
@@ -89,7 +92,7 @@
         </div>
     </div>
 
-    <!-- Main Header (Original Dark Header) -->
+    <!-- Main Header -->
     <header class="sticky top-0 z-40 glass-header text-white shadow-md border-t border-blue-900/40">
         <div class="max-w-7xl mx-auto px-3 py-2.5 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between gap-3">
@@ -114,12 +117,10 @@
 
                 <!-- Right Menu: Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- Mobile Search Toggle Button -->
                     <button onclick="toggleMobileSearch()" class="text-white p-2 hover:bg-navy-700 rounded-lg">
                         <i class="fas fa-search text-lg"></i>
                     </button>
 
-                    <!-- User Account Quick Link -->
                     <div id="userAccountBtn" class="hidden lg:flex items-center text-xs text-left gap-2 cursor-pointer hover:opacity-80" onclick="toggleAuthModal(true)">
                         <i class="far fa-user-circle text-2xl text-white"></i>
                         <div>
@@ -128,7 +129,6 @@
                         </div>
                     </div>
 
-                    <!-- Cart Icon with Badge (Estilo Original da Imagem) -->
                     <button onclick="toggleCartModal(true)" class="relative flex items-center justify-center bg-[#081836] hover:bg-[#061229] p-2.5 rounded-xl transition shadow-inner border border-blue-900/50 active:scale-95">
                         <div class="relative flex items-center">
                             <i class="fas fa-shopping-basket text-xl text-emerald-400"></i>
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <!-- CATEGORIAS EM CARROSSEL HORIZONTAL -->
+        <!-- CATEGORIAS -->
         <nav class="bg-[#081836] border-t border-blue-900/40">
             <div class="max-w-7xl mx-auto px-2 flex items-center space-x-2 overflow-x-auto py-2 text-xs font-medium text-gray-200 no-scrollbar">
                 <button onclick="filterCategory('todos'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap active-cat flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="todos">
@@ -177,10 +177,9 @@
     </header>
 
     <main class="flex-grow">
-        <!-- VITRINE PRINCIPAL (HOME) -->
+        <!-- VITRINE PRINCIPAL -->
         <div id="mainStorefrontView">
             
-            <!-- Hero Banners Slider -->
             <section class="w-full bg-black overflow-hidden relative group">
                 <div id="bannerContainer" class="relative w-full overflow-hidden aspect-[16/9] max-h-[220px] sm:max-h-[360px] md:max-h-[440px]">
                     <!-- Injetado via JS -->
@@ -198,7 +197,6 @@
                 </div>
             </section>
 
-            <!-- Key Differentials Section (Cards exatamente como no Print Original) -->
             <section class="py-4 bg-white border-b border-gray-100">
                 <div class="max-w-7xl mx-auto px-3">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
@@ -593,26 +591,22 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </div>
-                        <span id="pdReviewsCount" class="text-[10px]">(Sem avaliações)</span>
+                        <span id="pdReviewsCount" class="text-[10px]">(Avaliações)</span>
                     </div>
 
                     <div class="pt-2 border-t border-gray-100">
                         <span id="pdOriginalPrice" class="line-through text-gray-400 text-xs font-medium block">
-                            R$ 109,00
+                            <!-- Injetado via JS -->
                         </span>
                         
                         <div class="flex items-center gap-2">
                             <span id="pdCurrentPrice" class="text-2xl sm:text-3xl font-black text-navy-900">
-                                R$ 97,00
+                                <!-- Injetado via JS -->
                             </span>
-                            <span id="pdDiscountBadge" class="bg-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                                -11%
+                            <span id="pdDiscountBadge" class="bg-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded hidden">
+                                <!-- Injetado via JS -->
                             </span>
                         </div>
-
-                        <p id="pdInstallments" class="text-xs font-semibold text-gray-700 mt-0.5">
-                            12x de R$ 18,95
-                        </p>
                     </div>
 
                     <div class="flex items-center gap-3 pt-3">
@@ -744,7 +738,7 @@
         </section>
     </main>
 
-    <!-- Modal de Acesso (Visitante / Admin) -->
+    <!-- Modal de Acesso -->
     <div id="authModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleAuthModal(false)"></div>
         <div class="flex items-center justify-center min-h-screen p-3">
@@ -882,7 +876,7 @@
         </div>
     </div>
 
-    <!-- Botão Flutuante do WhatsApp (Estilo Exato do Print) -->
+    <!-- Botão Flutuante do WhatsApp -->
     <a href="https://wa.me/5561995829201?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20falar%20com%20a%20loja." 
        target="_blank" 
        rel="noopener noreferrer"
@@ -891,7 +885,7 @@
         <i class="fab fa-whatsapp text-2xl sm:text-3xl"></i>
     </a>
 
-    <!-- Footer (Estilo Dark Navy Exato do Print Original) -->
+    <!-- Footer -->
     <footer class="bg-[#081329] text-white pt-8 pb-6 border-t border-blue-900/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-6 text-xs">
             
@@ -962,333 +956,24 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // Banners Data Base
-        const bannersData = [
-            {
-                id: 1,
-                image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1600&auto=format&fit=crop&q=80",
-                link: "#catalogo",
-                category: "limpeza",
-                startDate: "2026-10-01",
-                endDate: "2026-10-31"
-            },
-            {
-                id: 2,
-                image: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=1600&auto=format&fit=crop&q=80",
-                link: "#catalogo",
-                category: "informatica",
-                startDate: "2026-10-01",
-                endDate: "2026-10-31"
-            },
-            {
-                id: 3,
-                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1600&auto=format&fit=crop&q=80",
-                link: "#catalogo",
-                category: "bijuterias",
-                startDate: "2026-10-01",
-                endDate: "2026-11-15"
-            },
-            {
-                id: 4,
-                image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1600&auto=format&fit=crop&q=80",
-                link: "#catalogo",
-                category: "bebidas",
-                startDate: "2026-10-01",
-                endDate: "2026-12-31"
-            }
-        ];
+        // Configuração do Supabase (Substitua pelas suas chaves do painel Project Settings > API)
+        const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
+        const SUPABASE_ANON_KEY = 'SUA_CHAVE_ANON_PUBLICA';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Complete Product Database (20 Produtos)
-        const productsData = [
-            {
-                id: 1,
-                name: "Detergente Líquido Ypê 500ml",
-                category: "limpeza",
-                price: 15.90,
-                originalPrice: 18.00,
-                badge: "Oferta",
-                rating: 4.8,
-                reviews: 42,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis.",
-                stock: 50,
-                freeShipping: true
-            },
-            {
-                id: 2,
-                name: "Sabão em Pó Cif Limpeza Profissional 2,4kg",
-                category: "limpeza",
-                price: 34.99,
-                originalPrice: 39.90,
-                badge: "Mais Vendido",
-                rating: 4.9,
-                reviews: 38,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Limpador em pó indicado para limpeza pesada, com apresentação de 2,4 kg.",
-                stock: 30,
-                freeShipping: false
-            },
-            {
-                id: 3,
-                name: "Lava Roupas em Pó Brilhante Limpeza Total 4kg",
-                category: "limpeza",
-                price: 34.55,
-                originalPrice: 39.00,
-                badge: "Destaque",
-                rating: 4.7,
-                reviews: 29,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Lava-roupas em pó para roupas brancas e coloridas.",
-                stock: 25,
-                freeShipping: true
-            },
-            {
-                id: 4,
-                name: "Desinfetante Pinho Sol 1 Litro",
-                category: "limpeza",
-                price: 12.50,
-                originalPrice: 15.00,
-                badge: "Promoção",
-                rating: 4.8,
-                reviews: 19,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Desinfetante eficiente na eliminação de germes e bactérias.",
-                stock: 40,
-                freeShipping: false
-            },
-            {
-                id: 5,
-                name: "Amaciante Downy Concentrado 1,5L",
-                category: "limpeza",
-                price: 26.90,
-                originalPrice: 31.00,
-                badge: "Perfume Intenso",
-                rating: 4.9,
-                reviews: 51,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Amaciante concentrado que garante fragrância prolongada e maciez.",
-                stock: 35,
-                freeShipping: true
-            },
-            {
-                id: 6,
-                name: "Brinco Gota de Lágrima, Gota de Água",
-                category: "bijuterias",
-                price: 97.00,
-                originalPrice: 109.00,
-                badge: "Destaque",
-                rating: 4.8,
-                reviews: 12,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Brinco elegante em formato gota de lágrima cravejado, ideal para ocasiões especiais.",
-                stock: 15,
-                freeShipping: true
-            },
-            {
-                id: 7,
-                name: "Kit Conjunto Trevo 4 Peças — Colar e Brinco",
-                category: "bijuterias",
-                price: 32.90,
-                originalPrice: 40.00,
-                badge: "Mais Vendido",
-                rating: 4.9,
-                reviews: 64,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto feminino de quatro peças com visual delicado.",
-                stock: 22,
-                freeShipping: false
-            },
-            {
-                id: 8,
-                name: "Pulseira Feminina Banhada a Ouro",
-                category: "bijuterias",
-                price: 45.00,
-                originalPrice: 55.00,
-                badge: "Lançamento",
-                rating: 4.7,
-                reviews: 18,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Pulseira com elos finos e fecho seguro, perfeita para o dia a dia.",
-                stock: 12,
-                freeShipping: false
-            },
-            {
-                id: 9,
-                name: "Colar Ponto de Luz em Zircônia",
-                category: "bijuterias",
-                price: 29.90,
-                originalPrice: 38.00,
-                badge: "Delicado",
-                rating: 4.9,
-                reviews: 27,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Colar clássico ponto de luz com corrente veneziana elegante.",
-                stock: 20,
-                freeShipping: true
-            },
-            {
-                id: 10,
-                name: "Anel Solitário Ajustável Cravejado",
-                category: "bijuterias",
-                price: 24.90,
-                originalPrice: 30.00,
-                badge: "Ajustável",
-                rating: 4.6,
-                reviews: 14,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Anel brilhante ajustável que se adapta perfeitamente a qualquer dedo.",
-                stock: 18,
-                freeShipping: false
-            },
-            {
-                id: 11,
-                name: "Teclado e Mouse Sem Fio Lelong",
-                category: "informatica",
-                price: 25.99,
-                originalPrice: 35.00,
-                badge: "Mais Vendido",
-                rating: 4.6,
-                reviews: 58,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Kit compacto para computador e notebook.",
-                stock: 35,
-                freeShipping: false
-            },
-            {
-                id: 12,
-                name: "Mouse Pad Ergônomico com Apoio em Gel",
-                category: "informatica",
-                price: 18.50,
-                originalPrice: 24.00,
-                badge: "Ergonômico",
-                rating: 4.8,
-                reviews: 31,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Mouse pad com descanso de pulso macio para digitação e jogos.",
-                stock: 45,
-                freeShipping: false
-            },
-            {
-                id: 13,
-                name: "Fone de Ouvido Bluetooth Sem Fio TWS",
-                category: "informatica",
-                price: 59.90,
-                originalPrice: 79.90,
-                badge: "Alta Definição",
-                rating: 4.7,
-                reviews: 83,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Fone Bluetooth estéreo com estojo carregador e autonomia duradoura.",
-                stock: 28,
-                freeShipping: true
-            },
-            {
-                id: 14,
-                name: "Cabo USB-C Rápido para Celular 1 Metro",
-                category: "informatica",
-                price: 14.90,
-                originalPrice: 20.00,
-                badge: "Carga Rápida",
-                rating: 4.9,
-                reviews: 104,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Cabo reforçado trançado para carregamento rápido e transferência de dados.",
-                stock: 60,
-                freeShipping: false
-            },
-            {
-                id: 15,
-                name: "Suporte Dobrável para Notebook e Tablet",
-                category: "informatica",
-                price: 39.90,
-                originalPrice: 49.90,
-                badge: "Portátil",
-                rating: 4.8,
-                reviews: 22,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Suporte leve em alumínio ajustável para postura correta na mesa.",
-                stock: 16,
-                freeShipping: true
-            },
-            {
-                id: 16,
-                name: "Refrigerante Pepsi 2 Litros",
-                category: "bebidas",
-                price: 8.99,
-                originalPrice: 10.50,
-                badge: "Oferta",
-                rating: 4.8,
-                reviews: 90,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Refrigerante sabor cola em garrafa PET de 2 litros.",
-                stock: 60,
-                freeShipping: false
-            },
-            {
-                id: 17,
-                name: "Refrigerante Guaraná Antarctica 2L",
-                category: "bebidas",
-                price: 8.74,
-                originalPrice: 10.00,
-                badge: "Mais Vendido",
-                rating: 5.0,
-                reviews: 110,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Refrigerante sabor guaraná em embalagem PET de 2 litros.",
-                stock: 70,
-                freeShipping: false
-            },
-            {
-                id: 18,
-                name: "Água Mineral Sem Gás Garrafa 500ml (Fardo 12un)",
-                category: "bebidas",
-                price: 18.00,
-                originalPrice: 22.00,
-                badge: "Econômico",
-                rating: 4.9,
-                reviews: 45,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Fardo prático de água mineral natural sem gás.",
-                stock: 40,
-                freeShipping: false
-            },
-            {
-                id: 19,
-                name: "Suco Natural Del Valle Laranja 1 Litro",
-                category: "bebidas",
-                price: 9.50,
-                originalPrice: 11.90,
-                badge: "Saboroso",
-                rating: 4.7,
-                reviews: 33,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Suco pronto para beber enriquecido com vitamina C.",
-                stock: 35,
-                freeShipping: false
-            },
-            {
-                id: 20,
-                name: "Energético Red Bull Energy Drink 250ml",
-                category: "bebidas",
-                price: 11.90,
-                originalPrice: 14.00,
-                badge: "Energia",
-                rating: 4.9,
-                reviews: 77,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Bebida energética para disposição imediata em lata de 250ml.",
-                stock: 50,
-                freeShipping: true
-            }
-        ];
+        // State Management
+        let bannersData = [];
+        let productsData = [];
+        let cart = [];
+        let currentCategory = 'todos';
+        let searchQuery = '';
+        let calculatedFreight = 0;
+        let selectedProductForPage = null;
+        let activePageQuantity = 1;
+        let isAdminLoggedIn = false;
 
-        // Base de Dados Simulada de Comentários
-        const initialComments = {
-            6: [
-                { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo." },
-                { id: 102, author: "Carla Antunes", rating: 5, date: "28/02/2026", text: "Achei super delicado e o acabamento é perfeito." }
-            ]
-        };
+        let currentBannerIndex = 0;
+        let bannerTimer = null;
 
         const infoPagesData = {
             'politica-troca': `
@@ -1302,23 +987,11 @@
             `
         };
 
-        // State Management
-        let cart = [];
-        let currentCategory = 'todos';
-        let searchQuery = '';
-        let calculatedFreight = 0;
-        let selectedProductForPage = null;
-        let activePageQuantity = 1;
-        let isAdminLoggedIn = false;
-
-        let currentBannerIndex = 0;
-        let bannerTimer = null;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBannersSlider();
-            renderProducts(productsData);
+        // --- INICIALIZAÇÃO E INTEGRAÇÃO SUPABASE ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchBanners();
+            await fetchProducts();
             updateCartUI();
-            startBannerRotation();
 
             window.onpopstate = function(event) {
                 if (event.state) {
@@ -1331,6 +1004,62 @@
             };
         });
 
+        // Busca Banners no Supabase
+        async function fetchBanners() {
+            const { data, error } = await supabaseClient
+                .from('banners')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) {
+                console.error("Erro ao buscar banners:", error);
+                return;
+            }
+
+            bannersData = data.map(b => ({
+                id: b.id,
+                image: b.image,
+                link: b.link,
+                category: b.category,
+                startDate: b.start_date,
+                endDate: b.end_date
+            }));
+
+            renderBannersSlider();
+            startBannerRotation();
+        }
+
+        // Busca Produtos no Supabase
+        async function fetchProducts() {
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) {
+                console.error("Erro ao buscar produtos:", error);
+                return;
+            }
+
+            productsData = data.map(p => ({
+                id: p.id,
+                name: p.name,
+                category: p.category,
+                price: parseFloat(p.price),
+                originalPrice: p.original_price ? parseFloat(p.original_price) : null,
+                badge: p.badge,
+                rating: parseFloat(p.rating || 5.0),
+                reviews: p.reviews || 0,
+                image: p.image,
+                description: p.description,
+                stock: p.stock,
+                freeShipping: p.free_shipping
+            }));
+
+            applyFiltersAndSearch();
+        }
+
+        // --- SISTEMA DE CARROSSEL ---
         function renderBannersSlider() {
             const container = document.getElementById('bannerContainer');
             const dots = document.getElementById('bannerDots');
@@ -1398,6 +1127,7 @@
         function nextBanner() { setBanner(currentBannerIndex + 1); }
         function prevBanner() { setBanner(currentBannerIndex - 1); }
 
+        // --- FILTROS E BUSCA ---
         function filterCategory(cat) {
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
@@ -1444,7 +1174,7 @@
         function applyFiltersAndSearch() {
             let filtered = productsData.filter(p => {
                 const matchesCat = (currentCategory === 'todos' || p.category === currentCategory);
-                const matchesSearch = p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery) || (p.description && p.description.toLowerCase().includes(searchQuery));
                 return matchesCat && matchesSearch;
             });
 
@@ -1519,53 +1249,58 @@
             `).join('');
         }
 
-        function renderComments(productId) {
+        // --- SISTEMA DE COMENTÁRIOS E AVALIAÇÕES (INTEGRADO AO SUPABASE) ---
+        async function renderComments(productId) {
             const container = document.getElementById('commentsListContainer');
             if (!container) return;
 
-            const comments = initialComments[productId] || [
-                { id: 991, author: "Fernanda Costa", rating: 5, date: "10/03/2026", text: "Excelente atendimento da loja e o produto chegou no prazo!" }
-            ];
+            const { data: comments, error } = await supabaseClient
+                .from('comments')
+                .select('*')
+                .eq('product_id', productId)
+                .order('id', { ascending: false });
+
+            if (error || !comments || comments.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400">Nenhum comentário ainda. Seja o primeiro a avaliar!</p>`;
+                return;
+            }
 
             container.innerHTML = comments.map(c => `
                 <div class="p-2.5 bg-white rounded-xl border border-gray-200 shadow-sm space-y-1 text-xs">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-navy-900">${c.author}</span>
-                        <span class="text-[9px] text-gray-400">${c.date}</span>
+                        <span class="text-[9px] text-gray-400">${c.date || ''}</span>
                     </div>
                     <p class="text-gray-600 text-[11px]">${c.text}</p>
                 </div>
             `).join('');
         }
 
-        function handleAddComment(e) {
+        async function handleAddComment(e) {
             e.preventDefault();
             if (!selectedProductForPage) return;
 
-            const authorInput = document.getElementById('commentAuthor');
-            const ratingSelect = document.getElementById('commentRating');
-            const textInput = document.getElementById('commentText');
+            const author = document.getElementById('commentAuthor').value.trim();
+            const rating = parseInt(document.getElementById('commentRating').value);
+            const text = document.getElementById('commentText').value.trim();
+            const date = new Date().toLocaleDateString('pt-BR');
 
-            const newComment = {
-                id: Date.now(),
-                author: authorInput.value.trim(),
-                rating: parseInt(ratingSelect.value),
-                date: new Date().toLocaleDateString('pt-BR'),
-                text: textInput.value.trim()
-            };
+            const { error } = await supabaseClient
+                .from('comments')
+                .insert([{ product_id: selectedProductForPage.id, author, rating, text, date }]);
 
-            if (!initialComments[selectedProductForPage.id]) {
-                initialComments[selectedProductForPage.id] = [];
+            if (error) {
+                showNotification("Erro ao publicar comentário.");
+                return;
             }
 
-            initialComments[selectedProductForPage.id].unshift(newComment);
-            renderComments(selectedProductForPage.id);
-
-            authorInput.value = '';
-            textInput.value = '';
+            document.getElementById('commentAuthor').value = '';
+            document.getElementById('commentText').value = '';
+            await renderComments(selectedProductForPage.id);
             showNotification("Comentário publicado!");
         }
 
+        // --- NAVEGAÇÃO E EXIBIÇÃO DE PÁGINAS ---
         function renderRecommendedProducts(currentProductId) {
             const container = document.getElementById('recommendedProductsGrid');
             if (!container) return;
@@ -1621,11 +1356,20 @@
             }
 
             document.getElementById('pdCurrentPrice').innerText = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
-            document.getElementById('pdDescription').innerText = product.description;
+            
+            const originalPriceEl = document.getElementById('pdOriginalPrice');
+            if(product.originalPrice) {
+                originalPriceEl.innerText = `R$ ${product.originalPrice.toFixed(2).replace('.', ',')}`;
+                originalPriceEl.classList.remove('hidden');
+            } else {
+                originalPriceEl.classList.add('hidden');
+            }
+
+            document.getElementById('pdDescription').innerText = product.description || "Sem descrição.";
             document.getElementById('pdQtyValue').innerText = activePageQuantity;
 
             renderRecommendedProducts(productId);
-            renderComments(productId);
+            renderComments(productId); // Chamada assíncrona para buscar avaliações no Supabase
 
             hideAllViews();
             document.getElementById('singleProductPageView').classList.remove('hidden');
@@ -1637,20 +1381,6 @@
             if (infoPagesData[infoKey]) container.innerHTML = infoPagesData[infoKey];
             hideAllViews();
             document.getElementById('infoPageView').classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        function displayAdminDashboardView() {
-            if (!isAdminLoggedIn) {
-                toggleAuthModal(true);
-                switchAuthTab('admin');
-                showNotification("Faça login como Administrador!");
-                return;
-            }
-            history.pushState({ admin: true }, '', '#admin-dashboard');
-            hideAllViews();
-            renderAdminLists();
-            document.getElementById('adminDashboardView').classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
@@ -1672,6 +1402,7 @@
             window.scrollTo(0, 0);
         }
 
+        // --- SISTEMA DE CARRINHO E CHECKOUT ---
         function changePdQty(delta) {
             activePageQuantity += delta;
             if (activePageQuantity < 1) activePageQuantity = 1;
@@ -1757,6 +1488,16 @@
             document.getElementById('cartModal').classList.toggle('hidden', !show);
         }
 
+        function finishCheckout() {
+            if (cart.length === 0) return;
+            const payment = document.getElementById('paymentMethodSelect').value;
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + calculatedFreight;
+            let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
+            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Total:* R$ ${total.toFixed(2)}`;
+            window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
+        }
+
+        // --- SISTEMA DE AUTENTICAÇÃO / LOGIN ADM ---
         function toggleMobileSearch() {
             document.getElementById('mobileSearchBar').classList.toggle('hidden');
         }
@@ -1785,6 +1526,7 @@
 
         function handleAdminLogin(e) {
             e.preventDefault();
+            // Lógica simples de front-end (Para produção, valide no Supabase Auth)
             isAdminLoggedIn = true;
             toggleAuthModal(false);
             document.getElementById('userAccountStatus').innerText = "ADM Conectado";
@@ -1799,6 +1541,21 @@
             document.getElementById('navAdminDashboardLink').classList.add('hidden');
             showNotification("Você saiu do modo ADM.");
             closeAllPages();
+        }
+
+        // --- PAINEL ADMINISTRATIVO (CRUD COM SUPABASE) ---
+        function displayAdminDashboardView() {
+            if (!isAdminLoggedIn) {
+                toggleAuthModal(true);
+                switchAuthTab('admin');
+                showNotification("Faça login como Administrador!");
+                return;
+            }
+            history.pushState({ admin: true }, '', '#admin-dashboard');
+            hideAllViews();
+            renderAdminLists();
+            document.getElementById('adminDashboardView').classList.remove('hidden');
+            window.scrollTo(0, 0);
         }
 
         function formatDateBR(dateStr) {
@@ -1849,48 +1606,73 @@
             }
         }
 
-        function handleAddNewBanner(e) {
+        async function handleAddNewBanner(e) {
             e.preventDefault();
-            const imgUrl = document.getElementById('newBannerImgUrl').value.trim();
-            const linkUrl = document.getElementById('newBannerLink').value.trim() || '#catalogo';
-            const startDate = document.getElementById('newBannerStartDate').value;
-            const endDate = document.getElementById('newBannerEndDate').value;
+            const image = document.getElementById('newBannerImgUrl').value.trim();
+            const link = document.getElementById('newBannerLink').value.trim() || '#catalogo';
+            const start_date = document.getElementById('newBannerStartDate').value;
+            const end_date = document.getElementById('newBannerEndDate').value;
 
-            bannersData.push({ id: Date.now(), image: imgUrl, link: linkUrl, category: 'geral', startDate, endDate });
-            renderBannersSlider();
+            const { error } = await supabaseClient
+                .from('banners')
+                .insert([{ image, link, category: 'geral', start_date, end_date }]);
+
+            if (error) {
+                showNotification("Erro ao cadastrar banner!");
+                return;
+            }
+
+            await fetchBanners();
             renderAdminLists();
             showNotification("Novo banner cadastrado!");
         }
 
-        function removeAdminBanner(bannerId) {
-            const index = bannersData.findIndex(b => b.id === bannerId);
-            if (index !== -1) {
-                bannersData.splice(index, 1);
-                renderBannersSlider();
-                renderAdminLists();
-                showNotification("Banner removido!");
+        async function removeAdminBanner(bannerId) {
+            if (!confirm("Remover este banner?")) return;
+
+            const { error } = await supabaseClient
+                .from('banners')
+                .delete()
+                .eq('id', bannerId);
+
+            if (error) {
+                showNotification("Erro ao remover banner!");
+                return;
             }
+
+            await fetchBanners();
+            renderAdminLists();
+            showNotification("Banner removido!");
         }
 
-        function handleAddNewProduct(e) {
+        async function handleAddNewProduct(e) {
             e.preventDefault();
             const name = document.getElementById('newProdName').value.trim();
             const category = document.getElementById('newProdCategory').value;
             const price = parseFloat(document.getElementById('newProdPrice').value);
-            const origPrice = parseFloat(document.getElementById('newProdOriginalPrice').value) || (price * 1.15);
+            const original_price = parseFloat(document.getElementById('newProdOriginalPrice').value) || null;
             const stock = parseInt(document.getElementById('newProdStock').value) || 10;
             const image = document.getElementById('newProdImage').value.trim();
-            const freeShipping = document.getElementById('newProdFreeShipping').value === 'true';
+            const free_shipping = document.getElementById('newProdFreeShipping').value === 'true';
             const badge = document.getElementById('newProdBadge').value.trim() || 'Novo';
             const description = document.getElementById('newProdDescription').value.trim();
 
-            productsData.unshift({
-                id: Date.now(), name, category, price, originalPrice: origPrice, badge, rating: 5.0, reviews: 0, image, description, stock, freeShipping
-            });
+            const { data, error } = await supabaseClient
+                .from('products')
+                .insert([{ name, category, price, original_price, stock, image, free_shipping, badge, description }])
+                .select();
 
-            applyFiltersAndSearch();
+            if (error) {
+                showNotification("Erro ao cadastrar produto!");
+                console.error(error);
+                return;
+            }
+
+            await fetchProducts();
             renderAdminLists();
-            showNotification(`Produto "${name}" cadastrado!`);
+            document.getElementById('newProdName').value = '';
+            document.getElementById('newProdPrice').value = '';
+            showNotification(`Produto cadastrado!`);
         }
 
         function openEditProductModal(productId) {
@@ -1915,54 +1697,70 @@
             document.getElementById('editProductModal').classList.add('hidden');
         }
 
-        function handleSaveEditedProduct(e) {
+        async function handleSaveEditedProduct(e) {
             e.preventDefault();
             const id = parseInt(document.getElementById('editProdId').value);
-            const product = productsData.find(p => p.id === id);
 
-            if (!product) return;
+            const updatedData = {
+                name: document.getElementById('editProdName').value.trim(),
+                category: document.getElementById('editProdCategory').value,
+                price: parseFloat(document.getElementById('editProdPrice').value),
+                original_price: parseFloat(document.getElementById('editProdOriginalPrice').value) || null,
+                stock: parseInt(document.getElementById('editProdStock').value),
+                image: document.getElementById('editProdImage').value.trim(),
+                free_shipping: document.getElementById('editProdFreeShipping').value === 'true',
+                badge: document.getElementById('editProdBadge').value.trim(),
+                description: document.getElementById('editProdDescription').value.trim()
+            };
 
-            product.name = document.getElementById('editProdName').value.trim();
-            product.category = document.getElementById('editProdCategory').value;
-            product.price = parseFloat(document.getElementById('editProdPrice').value);
-            product.originalPrice = parseFloat(document.getElementById('editProdOriginalPrice').value) || product.price;
-            product.stock = parseInt(document.getElementById('editProdStock').value);
-            product.image = document.getElementById('editProdImage').value.trim();
-            product.freeShipping = document.getElementById('editProdFreeShipping').value === 'true';
-            product.badge = document.getElementById('editProdBadge').value.trim();
-            product.description = document.getElementById('editProdDescription').value.trim();
+            const { error } = await supabaseClient
+                .from('products')
+                .update(updatedData)
+                .eq('id', id);
+
+            if (error) {
+                showNotification("Erro ao atualizar produto!");
+                console.error(error);
+                return;
+            }
 
             closeEditProductModal();
-            applyFiltersAndSearch();
+            await fetchProducts();
             renderAdminLists();
-
-            showNotification("Produto atualizado!");
+            showNotification("Produto atualizado com sucesso!");
         }
 
-        function removeAdminProduct(productId) {
-            const index = productsData.findIndex(p => p.id === productId);
-            if (index !== -1) {
-                productsData.splice(index, 1);
-                applyFiltersAndSearch();
-                renderAdminLists();
-                showNotification("Produto removido!");
+        async function removeAdminProduct(productId) {
+            if (!confirm("Tem certeza que deseja excluir este produto?")) return;
+
+            const { error } = await supabaseClient
+                .from('products')
+                .delete()
+                .eq('id', productId);
+
+            if (error) {
+                showNotification("Erro ao remover produto!");
+                return;
             }
+
+            await fetchProducts();
+            renderAdminLists();
+            showNotification("Produto removido com sucesso!");
         }
 
-        function finishCheckout() {
-            if (cart.length === 0) return;
-            const payment = document.getElementById('paymentMethodSelect').value;
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + calculatedFreight;
-            let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
-            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Total:* R$ ${total.toFixed(2)}`;
-            window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
-        }
-
+        // --- UTILITÁRIOS ---
         function showNotification(msg) {
             const toast = document.getElementById('toastNotification');
             document.getElementById('toastMessage').innerText = msg;
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
             setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
+        }
+        
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            showNotification(`O e-mail ${email} foi cadastrado nas novidades!`);
+            document.getElementById('newsletterEmail').value = '';
         }
     </script>
 </body>
