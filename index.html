@@ -68,6 +68,18 @@
             pointer-events: auto;
             position: relative;
         }
+
+        /* Drag and Drop styling */
+        .draggable-item {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .draggable-item.dragging {
+            opacity: 0.5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .drag-over {
+            border-top: 2px solid #3b82f6 !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between antialiased relative">
@@ -154,6 +166,9 @@
                 </button>
                 <button onclick="filterCategory('bebidas'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="bebidas">
                     <i class="fas fa-wine-bottle text-purple-300"></i> Bebidas
+                </button>
+                <button onclick="filterCategory('livros'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="livros">
+                    <i class="fas fa-book text-red-300"></i> Livros
                 </button>
                 <button id="navAdminDashboardLink" onclick="displayAdminDashboardView()" class="hidden px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold transition whitespace-nowrap ml-auto text-[11px]">
                     <i class="fas fa-user-shield"></i> ADM
@@ -274,7 +289,7 @@
 
         <!-- PÁGINA DO PAINEL ADMINISTRATIVO (ADM) -->
         <div id="adminDashboardView" class="hidden max-w-7xl mx-auto px-3 sm:px-6 py-6">
-            <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 pb-3 mb-4 gap-3">
                 <div>
                     <h1 class="text-xl sm:text-2xl font-black text-navy-900 flex items-center gap-2">
                         <i class="fas fa-user-shield text-amber-500"></i> Painel do Administrador
@@ -297,9 +312,15 @@
 
                         <form onsubmit="handleAddNewBanner(event)" class="space-y-3">
                             <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL da Imagem do Banner</label>
-                                <input type="url" id="newBannerImgUrl" required placeholder="https://exemplo.com/imagem-banner.jpg" 
-                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem do Banner (URL ou Arquivo)</label>
+                                <div class="flex gap-2">
+                                    <input type="url" id="newBannerImgUrl" placeholder="https://exemplo.com/imagem-banner.jpg" 
+                                           class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <label class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                        <i class="fas fa-upload mr-1.5"></i> Arquivo
+                                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newBannerImgUrl')">
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-2">
@@ -320,6 +341,7 @@
                                         <option value="bijuterias">Bijuterias</option>
                                         <option value="informatica">Informática</option>
                                         <option value="bebidas">Bebidas</option>
+                                        <option value="livros">Livros</option>
                                     </select>
                                 </div>
 
@@ -358,9 +380,12 @@
                             <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
                                 <i class="fas fa-list text-blue-600"></i> Carrosséis Ativos (<span id="adminBannerCount">0</span>)
                             </h4>
-                            <button id="toggleBannersBtn" onclick="toggleAllBanners()" type="button" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold px-3 py-1.5 rounded shadow transition">
-                                Desativar Todos
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] text-gray-400 hidden sm:block"><i class="fas fa-arrows-alt-v mr-1"></i>Arraste para ordenar</span>
+                                <button id="toggleBannersBtn" onclick="toggleAllBanners()" type="button" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold px-3 py-1.5 rounded shadow transition">
+                                    Desativar Todos
+                                </button>
+                            </div>
                         </div>
 
                         <div id="adminBannersList" class="space-y-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
@@ -386,11 +411,12 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
-                                    <select id="newProdCategory" required class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    <select id="newProdCategory" onchange="toggleConditionField('new')" required class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
                                         <option value="limpeza">Limpeza</option>
                                         <option value="bijuterias">Bijuterias</option>
                                         <option value="informatica">Informática</option>
                                         <option value="bebidas">Bebidas</option>
+                                        <option value="livros">Livros</option>
                                     </select>
                                 </div>
                                 <div>
@@ -414,12 +440,18 @@
                             </div>
 
                             <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL Imagem</label>
-                                    <input type="url" id="newProdImage" required placeholder="https://exemplo.com/imagem.jpg" 
-                                           class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem (URL ou Arquivo)</label>
+                                    <div class="flex gap-2">
+                                        <input type="url" id="newProdImage" placeholder="https://..." 
+                                               class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                                        <label class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                            <i class="fas fa-upload"></i>
+                                            <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newProdImage')">
+                                        </label>
+                                    </div>
                                 </div>
-                                <div>
+                                <div class="col-span-2 sm:col-span-1">
                                     <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
                                     <select id="newProdFreeShipping" class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
                                         <option value="true">Sim (Grátis)</option>
@@ -428,10 +460,19 @@
                                 </div>
                             </div>
 
-                            <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
-                                <input type="text" id="newProdBadge" placeholder="Ex: Lançamento..." 
-                                       class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
+                                    <input type="text" id="newProdBadge" placeholder="Ex: Lançamento..." 
+                                           class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                                </div>
+                                <div id="newProdConditionGroup" class="hidden">
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Condição (Livros)</label>
+                                    <select id="newProdCondition" class="w-full px-2 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        <option value="novo">Novo</option>
+                                        <option value="usado">Usado</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div>
@@ -447,20 +488,30 @@
                     </div>
 
                     <div class="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-2">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-2">
                             <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
                                 <i class="fas fa-boxes text-emerald-600"></i> Produtos (<span id="adminProductCount">0</span>)
                             </h4>
                             
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-semibold text-gray-600">Filtrar:</span>
-                                <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700">
-                                    <option value="todos">Todas Categorias</option>
-                                    <option value="limpeza">Limpeza</option>
-                                    <option value="bijuterias">Bijuterias</option>
-                                    <option value="informatica">Informática</option>
-                                    <option value="bebidas">Bebidas</option>
-                                </select>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-semibold text-gray-600">Ordem Vitrine:</span>
+                                    <select id="adminStorefrontOrder" onchange="toggleStorefrontOrder()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700">
+                                        <option value="automatica">Automática (Mais Novos)</option>
+                                        <option value="manual">Manual (Ordem do Painel)</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-semibold text-gray-600">Filtrar:</span>
+                                    <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700">
+                                        <option value="todos">Todas</option>
+                                        <option value="limpeza">Limpeza</option>
+                                        <option value="bijuterias">Bijuterias</option>
+                                        <option value="informatica">Informática</option>
+                                        <option value="bebidas">Bebidas</option>
+                                        <option value="livros">Livros</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
@@ -497,11 +548,12 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
-                                <select id="editProdCategory" required class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                <select id="editProdCategory" onchange="toggleConditionField('edit')" required class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
                                     <option value="limpeza">Limpeza</option>
                                     <option value="bijuterias">Bijuterias</option>
                                     <option value="informatica">Informática</option>
                                     <option value="bebidas">Bebidas</option>
+                                    <option value="livros">Livros</option>
                                 </select>
                             </div>
                             <div>
@@ -522,11 +574,17 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL Imagem</label>
-                                <input type="url" id="editProdImage" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div class="col-span-2 sm:col-span-1">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem (URL ou Arquivo)</label>
+                                <div class="flex gap-2">
+                                    <input type="url" id="editProdImage" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <label class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                        <i class="fas fa-upload"></i>
+                                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'editProdImage')">
+                                    </label>
+                                </div>
                             </div>
-                            <div>
+                            <div class="col-span-2 sm:col-span-1">
                                 <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
                                 <select id="editProdFreeShipping" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
                                     <option value="true">Sim (Grátis)</option>
@@ -535,9 +593,18 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
-                            <input type="text" id="editProdBadge" class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo / Destaque</label>
+                                <input type="text" id="editProdBadge" class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div id="editProdConditionGroup" class="hidden">
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Condição (Livros)</label>
+                                <select id="editProdCondition" class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                    <option value="novo">Novo</option>
+                                    <option value="usado">Usado</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div>
@@ -575,8 +642,14 @@
                         <input type="hidden" id="editBannerId">
 
                         <div>
-                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">URL da Imagem do Banner</label>
-                            <input type="url" id="editBannerImgUrl" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem do Banner (URL ou Arquivo)</label>
+                            <div class="flex gap-2">
+                                <input type="url" id="editBannerImgUrl" required class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                    <i class="fas fa-upload"></i>
+                                    <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'editBannerImgUrl')">
+                                </label>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
@@ -597,6 +670,7 @@
                                     <option value="bijuterias">Bijuterias</option>
                                     <option value="informatica">Informática</option>
                                     <option value="bebidas">Bebidas</option>
+                                    <option value="livros">Livros</option>
                                 </select>
                             </div>
 
@@ -668,8 +742,9 @@
                         <span id="pdFreeShippingBadge" class="inline-block bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1">
                             FRETE GRÁTIS
                         </span>
+                        <span id="pdConditionBadge" class="hidden"></span>
                         
-                        <div class="text-[11px] text-gray-500 space-y-0.5">
+                        <div class="text-[11px] text-gray-500 space-y-0.5 mt-1">
                             <p>Disponibilidade: <span class="font-medium text-gray-700">Imediata</span></p>
                         </div>
                     </div>
@@ -804,7 +879,8 @@
                     <h3 class="font-extrabold text-navy-900 text-sm mb-3 border-b pb-2">Informações</h3>
                     <ul class="space-y-2 text-xs text-gray-700 font-medium">
                         <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="info-link hover:text-navy-900 block py-1" data-info="envio">Envio e Entrega</a></li>
-                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="info-link font-bold text-navy-900 block py-1 border-l-2 border-cdcHeader pl-2" data-info="politica-troca">Política de trocas e devolução</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="info-link hover:text-navy-900 block py-1" data-info="politica-troca">Política de trocas e devolução</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('missao-visao-valores')" class="info-link hover:text-navy-900 block py-1" data-info="missao-visao-valores">Missão, visão e valores</a></li>
                     </ul>
                 </div>
 
@@ -1003,7 +1079,8 @@
                     <h4 class="font-extrabold text-xs text-[#ECA929] uppercase tracking-wider">INFORMAÇÕES</h4>
                     <ul class="space-y-1.5 text-gray-200 text-[11px]">
                         <li><a href="javascript:void(0)" onclick="openInfoPage('envio')" class="hover:text-amber-300">Envio e Entrega</a></li>
-                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="hover:text-amber-300 font-bold text-white">Política de trocas e devolução</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('politica-troca')" class="hover:text-amber-300">Política de trocas e devolução</a></li>
+                        <li><a href="javascript:void(0)" onclick="openInfoPage('missao-visao-valores')" class="hover:text-amber-300">Missão, visão e valores</a></li>
                     </ul>
                 </div>
 
@@ -1014,6 +1091,7 @@
                         <li><a href="#catalogo" onclick="filterCategory('bijuterias'); closeAllPages();" class="hover:text-blue-300">Bijuterias</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('informatica'); closeAllPages();" class="hover:text-blue-300">Informática</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('bebidas'); closeAllPages();" class="hover:text-blue-300">Bebidas</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('livros'); closeAllPages();" class="hover:text-blue-300">Livros</a></li>
                     </ul>
                 </div>
 
@@ -1048,326 +1126,34 @@
     <script>
         // Banners Data Base
         const bannersData = [
-            {
-                id: 1,
-                image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1600&auto=format&fit=crop&q=80",
-                link: "javascript:filterCategory('limpeza'); closeAllPages();",
-                targetType: "categoria",
-                targetValue: "limpeza",
-                startDate: "2026-10-01",
-                endDate: "2026-10-31"
-            },
-            {
-                id: 2,
-                image: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=1600&auto=format&fit=crop&q=80",
-                link: "javascript:filterCategory('informatica'); closeAllPages();",
-                targetType: "categoria",
-                targetValue: "informatica",
-                startDate: "2026-10-01",
-                endDate: "2026-10-31"
-            },
-            {
-                id: 3,
-                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1600&auto=format&fit=crop&q=80",
-                link: "javascript:filterCategory('bijuterias'); closeAllPages();",
-                targetType: "categoria",
-                targetValue: "bijuterias",
-                startDate: "2026-10-01",
-                endDate: "2026-11-15"
-            },
-            {
-                id: 4,
-                image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1600&auto=format&fit=crop&q=80",
-                link: "javascript:filterCategory('bebidas'); closeAllPages();",
-                targetType: "categoria",
-                targetValue: "bebidas",
-                startDate: "2026-10-01",
-                endDate: "2026-12-31"
-            }
+            { id: 1, image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('limpeza'); closeAllPages();", targetType: "categoria", targetValue: "limpeza", startDate: "2026-10-01", endDate: "2026-10-31" },
+            { id: 2, image: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('informatica'); closeAllPages();", targetType: "categoria", targetValue: "informatica", startDate: "2026-10-01", endDate: "2026-10-31" },
+            { id: 3, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('bijuterias'); closeAllPages();", targetType: "categoria", targetValue: "bijuterias", startDate: "2026-10-01", endDate: "2026-11-15" },
+            { id: 4, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('bebidas'); closeAllPages();", targetType: "categoria", targetValue: "bebidas", startDate: "2026-10-01", endDate: "2026-12-31" }
         ];
 
         // Complete Product Database
         const productsData = [
-            {
-                id: 1,
-                name: "Detergente Líquido Ypê 500ml",
-                category: "limpeza",
-                price: 15.90,
-                originalPrice: 18.00,
-                badge: "Oferta",
-                rating: 4.8,
-                reviews: 42,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis.",
-                stock: 50,
-                freeShipping: true
-            },
-            {
-                id: 2,
-                name: "Sabão em Pó Cif Limpeza Profissional 2,4kg",
-                category: "limpeza",
-                price: 34.99,
-                originalPrice: 39.90,
-                badge: "Mais Vendido",
-                rating: 4.9,
-                reviews: 38,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Limpador em pó indicado para limpeza pesada, com apresentação de 2,4 kg.",
-                stock: 30,
-                freeShipping: false
-            },
-            {
-                id: 3,
-                name: "Lava Roupas em Pó Brilhante Limpeza Total 4kg",
-                category: "limpeza",
-                price: 34.55,
-                originalPrice: 39.00,
-                badge: "Destaque",
-                rating: 4.7,
-                reviews: 29,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Lava-roupas em pó para roupas brancas e coloridas.",
-                stock: 25,
-                freeShipping: true
-            },
-            {
-                id: 4,
-                name: "Desinfetante Pinho Sol 1 Litro",
-                category: "limpeza",
-                price: 12.50,
-                originalPrice: 15.00,
-                badge: "Promoção",
-                rating: 4.8,
-                reviews: 19,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Desinfetante eficiente na eliminação de germes e bactérias.",
-                stock: 40,
-                freeShipping: false
-            },
-            {
-                id: 5,
-                name: "Amaciante Downy Concentrado 1,5L",
-                category: "limpeza",
-                price: 26.90,
-                originalPrice: 31.00,
-                badge: "Perfume Intenso",
-                rating: 4.9,
-                reviews: 51,
-                image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60",
-                description: "Amaciante concentrado que garante fragrância prolongada e maciez.",
-                stock: 35,
-                freeShipping: true
-            },
-            {
-                id: 6,
-                name: "Brinco Gota de Lágrima, Gota de Água",
-                category: "bijuterias",
-                price: 97.00,
-                originalPrice: 109.00,
-                badge: "Destaque",
-                rating: 4.8,
-                reviews: 12,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Brinco elegante em formato gota de lágrima cravejado, ideal para ocasiões especiais.",
-                stock: 15,
-                freeShipping: true
-            },
-            {
-                id: 7,
-                name: "Kit Conjunto Trevo 4 Peças — Colar e Brinco",
-                category: "bijuterias",
-                price: 32.90,
-                originalPrice: 40.00,
-                badge: "Mais Vendido",
-                rating: 4.9,
-                reviews: 64,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Conjunto feminino de quatro peças com visual delicado.",
-                stock: 22,
-                freeShipping: false
-            },
-            {
-                id: 8,
-                name: "Pulseira Feminina Banhada a Ouro",
-                category: "bijuterias",
-                price: 45.00,
-                originalPrice: 55.00,
-                badge: "Lançamento",
-                rating: 4.7,
-                reviews: 18,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Pulseira com elos finos e fecho seguro, perfeita para o dia a dia.",
-                stock: 12,
-                freeShipping: false
-            },
-            {
-                id: 9,
-                name: "Colar Ponto de Luz em Zircônia",
-                category: "bijuterias",
-                price: 29.90,
-                originalPrice: 38.00,
-                badge: "Delicado",
-                rating: 4.9,
-                reviews: 27,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Colar clássico ponto de luz com corrente veneziana elegante.",
-                stock: 20,
-                freeShipping: true
-            },
-            {
-                id: 10,
-                name: "Anel Solitário Ajustável Cravejado",
-                category: "bijuterias",
-                price: 24.90,
-                originalPrice: 30.00,
-                badge: "Ajustável",
-                rating: 4.6,
-                reviews: 14,
-                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60",
-                description: "Anel brilhante ajustável que se adapta perfeitamente a qualquer dedo.",
-                stock: 18,
-                freeShipping: false
-            },
-            {
-                id: 11,
-                name: "Teclado e Mouse Sem Fio Lelong",
-                category: "informatica",
-                price: 25.99,
-                originalPrice: 35.00,
-                badge: "Mais Vendido",
-                rating: 4.6,
-                reviews: 58,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Kit compacto para computador e notebook.",
-                stock: 35,
-                freeShipping: false
-            },
-            {
-                id: 12,
-                name: "Mouse Pad Ergônomico com Apoio em Gel",
-                category: "informatica",
-                price: 18.50,
-                originalPrice: 24.00,
-                badge: "Ergonômico",
-                rating: 4.8,
-                reviews: 31,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Mouse pad com descanso de pulso macio para digitação e jogos.",
-                stock: 45,
-                freeShipping: false
-            },
-            {
-                id: 13,
-                name: "Fone de Ouvido Bluetooth Sem Fio TWS",
-                category: "informatica",
-                price: 59.90,
-                originalPrice: 79.90,
-                badge: "Alta Definição",
-                rating: 4.7,
-                reviews: 83,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Fone Bluetooth estéreo com estojo carregador e autonomia duradoura.",
-                stock: 28,
-                freeShipping: true
-            },
-            {
-                id: 14,
-                name: "Cabo USB-C Rápido para Celular 1 Metro",
-                category: "informatica",
-                price: 14.90,
-                originalPrice: 20.00,
-                badge: "Carga Rápida",
-                rating: 4.9,
-                reviews: 104,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Cabo reforçado trançado para carregamento rápido e transferência de dados.",
-                stock: 60,
-                freeShipping: false
-            },
-            {
-                id: 15,
-                name: "Suporte Dobrável para Notebook e Tablet",
-                category: "informatica",
-                price: 39.90,
-                originalPrice: 49.90,
-                badge: "Portátil",
-                rating: 4.8,
-                reviews: 22,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60",
-                description: "Suporte leve em alumínio ajustável para postura correta na mesa.",
-                stock: 16,
-                freeShipping: true
-            },
-            {
-                id: 16,
-                name: "Refrigerante Pepsi 2 Litros",
-                category: "bebidas",
-                price: 8.99,
-                originalPrice: 10.50,
-                badge: "Oferta",
-                rating: 4.8,
-                reviews: 90,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Refrigerante sabor cola em garrafa PET de 2 litros.",
-                stock: 60,
-                freeShipping: false
-            },
-            {
-                id: 17,
-                name: "Refrigerante Guaraná Antarctica 2L",
-                category: "bebidas",
-                price: 8.74,
-                originalPrice: 10.00,
-                badge: "Mais Vendido",
-                rating: 5.0,
-                reviews: 110,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Refrigerante sabor guaraná em embalagem PET de 2 litros.",
-                stock: 70,
-                freeShipping: false
-            },
-            {
-                id: 18,
-                name: "Água Mineral Sem Gás Garrafa 500ml (Fardo 12un)",
-                category: "bebidas",
-                price: 18.00,
-                originalPrice: 22.00,
-                badge: "Econômico",
-                rating: 4.9,
-                reviews: 45,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Fardo prático de água mineral natural sem gás.",
-                stock: 40,
-                freeShipping: false
-            },
-            {
-                id: 19,
-                name: "Suco Natural Del Valle Laranja 1 Litro",
-                category: "bebidas",
-                price: 9.50,
-                originalPrice: 11.90,
-                badge: "Saboroso",
-                rating: 4.7,
-                reviews: 33,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Suco pronto para beber enriquecido com vitamina C.",
-                stock: 35,
-                freeShipping: false
-            },
-            {
-                id: 20,
-                name: "Energético Red Bull Energy Drink 250ml",
-                category: "bebidas",
-                price: 11.90,
-                originalPrice: 14.00,
-                badge: "Energia",
-                rating: 0, /* Rating alterado dinamicamente caso seja avaliado */
-                reviews: 0,
-                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
-                description: "Bebida energética para disposição imediata em lata de 250ml.",
-                stock: 50,
-                freeShipping: true
-            }
+            { id: 1, name: "Detergente Líquido Ypê 500ml", category: "limpeza", price: 15.90, originalPrice: 18.00, badge: "Oferta", rating: 4.8, reviews: 42, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis.", stock: 50, freeShipping: true },
+            { id: 2, name: "Sabão em Pó Cif Limpeza Profissional 2,4kg", category: "limpeza", price: 34.99, originalPrice: 39.90, badge: "Mais Vendido", rating: 4.9, reviews: 38, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Limpador em pó indicado para limpeza pesada, com apresentação de 2,4 kg.", stock: 30, freeShipping: false },
+            { id: 3, name: "Lava Roupas em Pó Brilhante Limpeza Total 4kg", category: "limpeza", price: 34.55, originalPrice: 39.00, badge: "Destaque", rating: 4.7, reviews: 29, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Lava-roupas em pó para roupas brancas e coloridas.", stock: 25, freeShipping: true },
+            { id: 4, name: "Desinfetante Pinho Sol 1 Litro", category: "limpeza", price: 12.50, originalPrice: 15.00, badge: "Promoção", rating: 4.8, reviews: 19, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Desinfetante eficiente na eliminação de germes e bactérias.", stock: 40, freeShipping: false },
+            { id: 5, name: "Amaciante Downy Concentrado 1,5L", category: "limpeza", price: 26.90, originalPrice: 31.00, badge: "Perfume Intenso", rating: 4.9, reviews: 51, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Amaciante concentrado que garante fragrância prolongada e maciez.", stock: 35, freeShipping: true },
+            { id: 6, name: "Brinco Gota de Lágrima, Gota de Água", category: "bijuterias", price: 97.00, originalPrice: 109.00, badge: "Destaque", rating: 4.8, reviews: 12, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Brinco elegante em formato gota de lágrima cravejado, ideal para ocasiões especiais.", stock: 15, freeShipping: true },
+            { id: 7, name: "Kit Conjunto Trevo 4 Peças — Colar e Brinco", category: "bijuterias", price: 32.90, originalPrice: 40.00, badge: "Mais Vendido", rating: 4.9, reviews: 64, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Conjunto feminino de quatro peças com visual delicado.", stock: 22, freeShipping: false },
+            { id: 8, name: "Pulseira Feminina Banhada a Ouro", category: "bijuterias", price: 45.00, originalPrice: 55.00, badge: "Lançamento", rating: 4.7, reviews: 18, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Pulseira com elos finos e fecho seguro, perfeita para o dia a dia.", stock: 12, freeShipping: false },
+            { id: 9, name: "Colar Ponto de Luz em Zircônia", category: "bijuterias", price: 29.90, originalPrice: 38.00, badge: "Delicado", rating: 4.9, reviews: 27, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Colar clássico ponto de luz com corrente veneziana elegante.", stock: 20, freeShipping: true },
+            { id: 10, name: "Anel Solitário Ajustável Cravejado", category: "bijuterias", price: 24.90, originalPrice: 30.00, badge: "Ajustável", rating: 4.6, reviews: 14, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Anel brilhante ajustável que se adapta perfeitamente a qualquer dedo.", stock: 18, freeShipping: false },
+            { id: 11, name: "Teclado e Mouse Sem Fio Lelong", category: "informatica", price: 25.99, originalPrice: 35.00, badge: "Mais Vendido", rating: 4.6, reviews: 58, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Kit compacto para computador e notebook.", stock: 35, freeShipping: false },
+            { id: 12, name: "Mouse Pad Ergônomico com Apoio em Gel", category: "informatica", price: 18.50, originalPrice: 24.00, badge: "Ergonômico", rating: 4.8, reviews: 31, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Mouse pad com descanso de pulso macio para digitação e jogos.", stock: 45, freeShipping: false },
+            { id: 13, name: "Fone de Ouvido Bluetooth Sem Fio TWS", category: "informatica", price: 59.90, originalPrice: 79.90, badge: "Alta Definição", rating: 4.7, reviews: 83, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Fone Bluetooth estéreo com estojo carregador e autonomia duradoura.", stock: 28, freeShipping: true },
+            { id: 14, name: "Cabo USB-C Rápido para Celular 1 Metro", category: "informatica", price: 14.90, originalPrice: 20.00, badge: "Carga Rápida", rating: 4.9, reviews: 104, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Cabo reforçado trançado para carregamento rápido e transferência de dados.", stock: 60, freeShipping: false },
+            { id: 15, name: "Suporte Dobrável para Notebook e Tablet", category: "informatica", price: 39.90, originalPrice: 49.90, badge: "Portátil", rating: 4.8, reviews: 22, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Suporte leve em alumínio ajustável para postura correta na mesa.", stock: 16, freeShipping: true },
+            { id: 16, name: "Refrigerante Pepsi 2 Litros", category: "bebidas", price: 8.99, originalPrice: 10.50, badge: "Oferta", rating: 4.8, reviews: 90, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Refrigerante sabor cola em garrafa PET de 2 litros.", stock: 60, freeShipping: false },
+            { id: 17, name: "Refrigerante Guaraná Antarctica 2L", category: "bebidas", price: 8.74, originalPrice: 10.00, badge: "Mais Vendido", rating: 5.0, reviews: 110, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Refrigerante sabor guaraná em embalagem PET de 2 litros.", stock: 70, freeShipping: false },
+            { id: 18, name: "Água Mineral Sem Gás Garrafa 500ml (Fardo 12un)", category: "bebidas", price: 18.00, originalPrice: 22.00, badge: "Econômico", rating: 4.9, reviews: 45, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Fardo prático de água mineral natural sem gás.", stock: 40, freeShipping: false },
+            { id: 19, name: "Suco Natural Del Valle Laranja 1 Litro", category: "bebidas", price: 9.50, originalPrice: 11.90, badge: "Saboroso", rating: 4.7, reviews: 33, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Suco pronto para beber enriquecido com vitamina C.", stock: 35, freeShipping: false },
+            { id: 20, name: "Energético Red Bull Energy Drink 250ml", category: "bebidas", price: 11.90, originalPrice: 14.00, badge: "Energia", rating: 0, reviews: 0, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Bebida energética para disposição imediata em lata de 250ml.", stock: 50, freeShipping: true }
         ];
 
         // Base de Dados Simulada de Comentários
@@ -1380,13 +1166,151 @@
 
         const infoPagesData = {
             'politica-troca': `
-                <h1 class="text-xl font-black text-navy-900 mb-2">POLÍTICA DE TROCA E DEVOLUÇÃO</h1>
-                <p class="text-xs text-gray-500 mb-4">CDC COMÉRCIO ONLINE</p>
-                <p class="text-xs">Você poderá exercer o direito de arrependimento no prazo de 7 dias após o recebimento. Para iniciar o processo, entre em contato via WhatsApp com o número do pedido.</p>
+                <h1 class="text-xl font-black text-navy-900 mb-2">POLÍTICA DE TROCA, DEVOLUÇÃO E CANCELAMENTO</h1>
+                <p class="text-xs text-gray-500 mb-4">CDC COMÉRCIO ONLINE<br>Documento institucional para utilização no comércio eletrônico<br>Versão: 1.0 • Outubro de 2026</p>
+
+                <div class="space-y-4 text-xs sm:text-sm">
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">1. Objetivo</h2>
+                        <p>A presente Política de Troca, Devolução e Cancelamento estabelece as condições aplicáveis às compras realizadas por meio da CDC Comércio Online, buscando oferecer ao consumidor informações claras, objetivas e acessíveis sobre seus direitos e sobre os procedimentos para solicitar troca, devolução, cancelamento ou reembolso.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">2. Abrangência</h2>
+                        <p>Esta política aplica-se às compras realizadas pelos canais digitais oficiais da CDC Comércio Online, incluindo produtos das categorias de limpeza, bijuterias e acessórios, informática, eletrônicos, bebidas, alimentação, roupas, brinquedos, materiais escolares e de escritório, produtos de beleza e demais produtos comercializados pela empresa.</p>
+                        <p class="mt-2">As regras aqui previstas devem ser interpretadas em conjunto com a legislação brasileira de proteção e defesa do consumidor, especialmente a Lei nº 8.078/1990 (Código de Defesa do Consumidor) e o Decreto nº 7.962/2013, que regulamenta o comércio eletrônico.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">3. Direito de arrependimento — compras pela internet</h2>
+                        <p>Nas compras realizadas fora do estabelecimento comercial, inclusive pela internet, o consumidor poderá exercer o direito de arrependimento no prazo legal de 7 (sete) dias, contado da assinatura do contrato ou do recebimento do produto, conforme aplicável.</p>
+                        <p class="mt-2">No exercício regular desse direito, os valores pagos pelo consumidor deverão ser restituídos na forma prevista na legislação aplicável, sem prejuízo dos procedimentos necessários para a devolução do produto. O consumidor não precisa apresentar justificativa para exercer o direito de arrependimento.</p>
+                        <p class="mt-2">A solicitação poderá ser realizada pelo mesmo meio utilizado para a contratação, sem prejuízo de outros canais disponibilizados pela CDC Comércio Online. O Decreto nº 7.962/2013 também determina que o fornecedor disponibilize meios adequados e eficazes para o exercício do arrependimento e confirme o recebimento da solicitação.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">4. Como solicitar uma devolução</h2>
+                        <ol class="list-decimal pl-4 space-y-1">
+                            <li>Entre em contato com a CDC Comércio Online pelo canal oficial informado nesta política.</li>
+                            <li>Informe o número do pedido, nome do comprador, produto e motivo da solicitação, quando solicitado para fins de atendimento e registro.</li>
+                            <li>A CDC orientará o consumidor sobre o procedimento de devolução e, quando aplicável, sobre a forma de postagem ou coleta.</li>
+                            <li>Após o recebimento do produto, serão realizados os procedimentos de conferência e processamento da solicitação.</li>
+                            <li>O reembolso será realizado conforme a forma de pagamento utilizada e os prazos operacionais aplicáveis, observada a legislação.</li>
+                        </ol>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">5. Condições para devolução por arrependimento</h2>
+                        <p>Quando a devolução decorrer do direito de arrependimento, o produto deverá, sempre que possível, ser devolvido com seus acessórios, manuais, etiquetas, embalagem e demais itens que o acompanham. Isso não limita os direitos legalmente assegurados ao consumidor.</p>
+                        <p class="mt-2">A CDC Comércio Online poderá solicitar informações, fotos ou outros elementos necessários para identificar o pedido e viabilizar o procedimento logístico, sem transformar tais providências em requisito que impeça o exercício de direito legal.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">6. Produto com defeito ou vício</h2>
+                        <p>Caso o produto apresente vício de qualidade ou quantidade, a CDC Comércio Online adotará as providências cabíveis de acordo com o Código de Defesa do Consumidor e com a natureza do produto.</p>
+                        <p class="mt-2">O art. 18 do CDC estabelece a responsabilidade dos fornecedores pelos vícios que tornem o produto impróprio ou inadequado ao consumo ou diminuam seu valor. Em regra, existe prazo para saneamento do vício e, nas hipóteses previstas em lei, o consumidor poderá exercer as alternativas legalmente asseguradas, como substituição, restituição ou abatimento proporcional.</p>
+                        <p class="mt-2">Para produtos que possuam garantia do fabricante, assistência técnica ou condições específicas, a CDC poderá orientar o consumidor sobre o procedimento adequado, sem afastar os direitos previstos na legislação.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">7. Produto recebido avariado ou diferente do pedido</h2>
+                        <p>Se o consumidor receber produto danificado, com embalagem violada, produto diferente daquele adquirido ou quantidade divergente, recomenda-se comunicar a CDC Comércio Online assim que identificar a ocorrência.</p>
+                        <p class="mt-2">Quando possível, o consumidor deverá registrar fotografias da embalagem externa, etiqueta de transporte e produto recebido. Essas informações auxiliam na apuração da ocorrência e na solução mais rápida do atendimento.</p>
+                        <p class="mt-2">A CDC Comércio Online analisará a ocorrência e adotará a solução cabível, observando a legislação de proteção ao consumidor e as condições da oferta.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">8. Troca por tamanho, cor, modelo ou preferência</h2>
+                        <p>Nas hipóteses em que o consumidor deseja trocar o produto exclusivamente por preferência, tamanho, cor ou modelo, sem defeito e fora do exercício do direito de arrependimento, a troca ficará condicionada à política comercial específica divulgada para o respectivo produto ou categoria, sem prejuízo dos direitos obrigatórios previstos na legislação.</p>
+                        <p class="mt-2">Quando houver uma política comercial de troca voluntária, suas condições — prazo, disponibilidade de estoque, custos logísticos e demais requisitos — deverão ser informadas de maneira clara antes ou no momento da contratação.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">9. Cancelamento do pedido antes do envio</h2>
+                        <p>O consumidor poderá solicitar o cancelamento do pedido enquanto ele ainda estiver em etapa que permita a interrupção do processamento. A CDC Comércio Online confirmará a possibilidade operacional do cancelamento.</p>
+                        <p class="mt-2">Se o pedido já tiver sido expedido, a solicitação poderá ser tratada como devolução, observando-se o direito de arrependimento e demais direitos previstos na legislação, conforme o caso.</p>
+                        <p class="mt-2">Em compras com pagamento por cartão, a CDC adotará as providências cabíveis junto ao meio de pagamento para cancelamento ou estorno, conforme a situação. O Decreto nº 7.962/2013 determina que, no exercício do direito de arrependimento, o fornecedor comunique imediatamente a instituição financeira ou administradora do cartão para impedir o lançamento ou efetivar o estorno quando cabível.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">10. Reembolso</h2>
+                        <p>Quando houver restituição de valores, o procedimento observará a forma de pagamento utilizada na compra e os procedimentos operacionais da respectiva instituição financeira ou meio de pagamento.</p>
+                        <ul class="list-disc pl-4 mt-2 space-y-1">
+                            <li><strong>Cartão de crédito:</strong> o estorno será solicitado pela CDC conforme o procedimento da operadora/administradora, ficando o prazo de visualização do crédito sujeito também aos prazos da instituição financeira.</li>
+                            <li><strong>PIX ou transferência:</strong> quando aplicável, o reembolso será realizado pelos dados necessários ao processamento seguro da devolução.</li>
+                            <li><strong>Outras formas de pagamento:</strong> o reembolso seguirá o método e os procedimentos aplicáveis à transação.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">11. Produtos com características especiais</h2>
+                        <p>Algumas categorias podem exigir cuidados específicos em razão de suas características, condições sanitárias, validade, segurança, higiene, consumo ou funcionamento. Nessas situações, a CDC Comércio Online observará a legislação aplicável e informará, no anúncio ou atendimento, as condições específicas quando necessárias.</p>
+                        <p class="mt-2">Produtos de alimentação e bebidas, por exemplo, poderão estar sujeitos a controles relacionados a validade, integridade da embalagem, conservação e segurança alimentar. Produtos de higiene, limpeza, beleza e itens de uso pessoal poderão possuir condições específicas de manuseio e devolução, sempre respeitando os direitos legalmente assegurados ao consumidor.</p>
+                        <p class="mt-2">Nenhuma condição específica desta seção pretende restringir direito obrigatório assegurado pela legislação.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">12. Prazo e atendimento das solicitações</h2>
+                        <p>A CDC Comércio Online disponibilizará canal de atendimento adequado para solicitações de informação, dúvida, reclamação, suspensão ou cancelamento. O Decreto nº 7.962/2013 prevê a confirmação imediata do recebimento das demandas e estabelece que a manifestação do fornecedor às demandas relacionadas a atendimento eletrônico seja encaminhada em até 5 (cinco) dias.</p>
+                        <p class="mt-2">Os prazos específicos de análise, coleta, postagem, transporte, troca e processamento financeiro poderão variar conforme o tipo de ocorrência, localização do consumidor, transportadora e meio de pagamento.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">13. Responsabilidade do consumidor</h2>
+                        <p>O consumidor deve fornecer informações corretas para o atendimento, conservar o produto adequadamente enquanto estiver sob sua posse e seguir as orientações de devolução fornecidas pela CDC Comércio Online.</p>
+                        <p class="mt-2">Em qualquer procedimento, a CDC poderá solicitar dados necessários para localizar o pedido, verificar a compra e processar a solicitação com segurança.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">14. Atendimento</h2>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong>Empresa:</strong> CDC Comércio Online</li>
+                            <li><strong>E-mail:</strong> cdccomercioonline@gmail.com</li>
+                            <li><strong>WhatsApp / telefone:</strong> (61) 99582-9201</li>
+                            <li><strong>Endereço:</strong> Rua 105 Lote 16 – Céu Azul – Valparaíso-GO</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">15. Disposições finais</h2>
+                        <p>Esta política foi elaborada para servir como documento-base de uma operação de comércio eletrônico e deverá ser adaptada aos canais de venda, categorias de produtos, logística, meios de pagamento e procedimentos internos efetivamente utilizados pela CDC Comércio Online.</p>
+                        <p class="mt-2">Em caso de conflito entre qualquer disposição desta política e norma legal de proteção ao consumidor aplicável ao caso concreto, prevalecerá a legislação vigente.</p>
+                        <p class="mt-2">A CDC Comércio Online poderá atualizar esta política sempre que necessário para refletir mudanças legislativas, regulatórias, operacionais ou comerciais, mantendo a versão vigente disponível em seus canais oficiais.</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h2 class="font-bold text-navy-900 text-xs mb-1 text-gray-600">Base legal consultada</h2>
+                        <ul class="list-disc pl-4 space-y-1 text-xs text-gray-500">
+                            <li>Lei nº 8.078/1990 — Código de Defesa do Consumidor, especialmente arts. 18, 19, 26, 49 e 50.</li>
+                            <li>Decreto nº 7.962/2013 — regulamentação da contratação no comércio eletrônico.</li>
+                            <li>Orientações oficiais do Ministério da Justiça/Secretaria Nacional do Consumidor e órgãos de defesa do consumidor sobre comércio eletrônico e direito de arrependimento.</li>
+                        </ul>
+                    </div>
+                </div>
             `,
             'envio': `
                 <h1 class="text-xl font-black text-navy-900 mb-2">Envio e Entrega</h1>
                 <p class="text-xs">Enviamos para todo o Brasil através dos Correios e realizamos entregas via Motoboy para Valparaíso-GO e região do DF.</p>
+            `,
+            'missao-visao-valores': `
+                <h1 class="text-xl font-black text-navy-900 mb-4">MISSÃO, VISÃO E VALORES</h1>
+                
+                <div class="space-y-4 text-xs sm:text-sm">
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Missão</h2>
+                        <p>Oferecer uma experiência de compra on-line prática, acessível e confiável, disponibilizando produtos de qualidade em diferentes categorias, com atendimento humanizado, preços competitivos e soluções de entrega que facilitem o dia a dia dos nossos clientes.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Visão</h2>
+                        <p>Ser uma empresa de comércio eletrônico reconhecida pela confiança, inovação, variedade de produtos e excelência no atendimento, ampliando nossa presença no mercado e construindo relacionamentos duradouros com clientes, fornecedores e parceiros.</p>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Valores</h2>
+                        <p>Ética, transparência, qualidade, confiança e respeito, com foco no cliente, inovação, agilidade, segurança e crescimento sustentável.</p>
+                    </div>
+                </div>
             `
         };
 
@@ -1401,14 +1325,19 @@
 
         let currentBannerIndex = 0;
         let bannerTimer = null;
-        
         let isCarouselActive = true;
+
+        // Variaveis de Drag and Drop
+        let draggedId = null;
+        let draggedType = null;
+        
+        // Preferência da Vitrine (Automática ou Manual)
+        let isStorefrontOrderManual = false;
 
         document.addEventListener('DOMContentLoaded', () => {
             populateProductDropdowns();
             renderBannersSlider();
             
-            // Recalcula as médias de avaliação iniciais para os produtos antes de renderizar
             productsData.forEach(p => recalculateProductRating(p));
             
             renderProducts(productsData);
@@ -1425,6 +1354,19 @@
                 }
             };
         });
+
+        // Upload Local (Converte Imagem em Base64)
+        function handleImageUpload(event, targetInputId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetInputId).value = e.target.result;
+                    showNotification("Imagem carregada localmente!");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
         // Função geradora de Estrelas HTML
         function renderStarsHTML(rating) {
@@ -1450,7 +1392,6 @@
             return html;
         }
 
-        // Recalcula média e total de avaliações de um produto
         function recalculateProductRating(product) {
             const comments = initialComments[product.id] || [];
             if (comments.length === 0) {
@@ -1469,6 +1410,16 @@
             const editSelect = document.getElementById('editBannerProduct');
             if(newSelect) newSelect.innerHTML = options;
             if(editSelect) editSelect.innerHTML = options;
+        }
+
+        function toggleConditionField(prefix) {
+            const cat = document.getElementById(prefix + 'ProdCategory').value;
+            const condGroup = document.getElementById(prefix + 'ProdConditionGroup');
+            if (cat === 'livros') {
+                condGroup.classList.remove('hidden');
+            } else {
+                condGroup.classList.add('hidden');
+            }
         }
 
         function toggleBannerFields(prefix) {
@@ -1611,6 +1562,13 @@
             document.getElementById('activeFilterBadge').classList.add('hidden');
         }
 
+        function toggleStorefrontOrder() {
+            const selectVal = document.getElementById('adminStorefrontOrder').value;
+            isStorefrontOrderManual = (selectVal === 'manual');
+            applyFiltersAndSearch();
+            showNotification(isStorefrontOrderManual ? "Ordem vitrine: Manual" : "Ordem vitrine: Automática");
+        }
+
         function applyFiltersAndSearch() {
             let filtered = productsData.filter(p => {
                 const matchesCat = (currentCategory === 'todos' || p.category === currentCategory);
@@ -1636,9 +1594,21 @@
             const sortVal = document.getElementById('sortBy').value;
             let sorted = [...list];
 
-            if (sortVal === 'price-asc') sorted.sort((a, b) => a.price - b.price);
-            else if (sortVal === 'price-desc') sorted.sort((a, b) => b.price - a.price);
-            else if (sortVal === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name));
+            if (sortVal === 'price-asc') {
+                sorted.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-desc') {
+                sorted.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'name') {
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortVal === 'default') {
+                if (!isStorefrontOrderManual) {
+                    // Automático: Ordena pelo ID Decrescente (Mais novos primeiro)
+                    sorted.sort((a, b) => b.id - a.id);
+                } else {
+                    // Manual: Mantém a ordem exata do array original productsData
+                    // (O 'list' já vem do array mapeado na ordem, então não precisamos fazer nada aqui)
+                }
+            }
 
             renderProducts(sorted);
         }
@@ -1678,7 +1648,10 @@
                             <div class="flex items-baseline gap-1 mt-1">
                                 <span class="text-sm sm:text-base font-black text-navy-900">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
                             </div>
-                            <p class="text-[9px] text-emerald-600 font-medium">Estoque (${p.stock} un.)</p>
+                            <p class="text-[9px] text-emerald-600 font-medium flex items-center">
+                                Estoque (${p.stock} un.)
+                                ${p.category === 'livros' ? `<span class="ml-1 text-[9px] font-bold ${p.condition === 'usado' ? 'text-amber-600' : 'text-blue-600'}"> • ${p.condition === 'usado' ? 'Usado' : 'Novo'}</span>` : ''}
+                            </p>
                             
                             <button onclick="navigateToProduct(${p.id})" class="w-full mt-2 bg-cdcHeader hover:bg-cdcDark text-white text-[11px] font-bold py-1.5 px-2 rounded-xl transition flex items-center justify-center gap-1 shadow active:scale-95">
                                 Ver Detalhes
@@ -1734,20 +1707,14 @@
                 initialComments[selectedProductForPage.id] = [];
             }
 
-            // Adiciona o novo comentário
             initialComments[selectedProductForPage.id].unshift(newComment);
-            
-            // Recalcula e atualiza as estrelas e a média
             recalculateProductRating(selectedProductForPage);
 
-            // Atualiza a visualização da página do produto dinamicamente
             document.getElementById('pdStarRating').innerHTML = renderStarsHTML(selectedProductForPage.rating);
             document.getElementById('pdReviewsCount').innerText = `(${selectedProductForPage.reviews} avaliações)`;
             
-            // Renderiza novamente a lista de comentários
             renderComments(selectedProductForPage.id);
 
-            // Reseta o formulário
             authorInput.value = '';
             textInput.value = '';
             showNotification("Comentário e avaliação publicados!");
@@ -1807,11 +1774,18 @@
                 freeShippingBadge.className = "inline-block bg-gray-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1";
             }
 
+            const conditionBadge = document.getElementById('pdConditionBadge');
+            if (product.category === 'livros') {
+                conditionBadge.innerText = product.condition === 'usado' ? 'LIVRO USADO' : 'LIVRO NOVO';
+                conditionBadge.className = `inline-block ${product.condition === 'usado' ? 'bg-amber-500' : 'bg-blue-500'} text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider mb-1 ml-1`;
+            } else {
+                conditionBadge.className = 'hidden';
+            }
+
             document.getElementById('pdCurrentPrice').innerText = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
             document.getElementById('pdDescription').innerText = product.description;
             document.getElementById('pdQtyValue').innerText = activePageQuantity;
 
-            // Insere dinamicamente as estrelas e a contagem de avaliações
             document.getElementById('pdStarRating').innerHTML = renderStarsHTML(product.rating);
             document.getElementById('pdReviewsCount').innerText = product.reviews > 0 ? `(${product.reviews} avaliações)` : "(Sem avaliações)";
 
@@ -1826,6 +1800,16 @@
         function displayInfoView(infoKey) {
             const container = document.getElementById('infoContentContainer');
             if (infoPagesData[infoKey]) container.innerHTML = infoPagesData[infoKey];
+            
+            // Destaca o link ativo na barra lateral de informações
+            document.querySelectorAll('.info-link').forEach(link => {
+                if (link.dataset.info === infoKey) {
+                    link.classList.add('font-bold', 'text-navy-950');
+                } else {
+                    link.classList.remove('font-bold', 'text-navy-950');
+                }
+            });
+
             hideAllViews();
             document.getElementById('infoPageView').classList.remove('hidden');
             window.scrollTo(0, 0);
@@ -1855,7 +1839,6 @@
         function closeAllPages() {
             if (location.hash) history.pushState(null, '', location.pathname);
             displayStorefrontView();
-            // Recarrega os cards de produto da home para refletir qualquer mudança de estrela feita lá dentro
             applyFiltersAndSearch(); 
         }
 
@@ -1898,12 +1881,17 @@
         function updateCartUI() {
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const totalGeral = subtotal + calculatedFreight;
+            
+            // Verifica se tem algum item com frete grátis no carrinho
+            const hasFreeShipping = cart.some(item => item.freeShipping);
+            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+
+            const totalGeral = subtotal + finalFreight;
 
             document.getElementById('cartCountBadge').innerText = totalCount;
             document.getElementById('cartHeaderTotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             document.getElementById('cartSubtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            document.getElementById('cartFreightValue').innerText = `R$ ${calculatedFreight.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cartFreightValue').innerText = `R$ ${finalFreight.toFixed(2).replace('.', ',')}`;
             document.getElementById('cartTotal').innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 
             const cartList = document.getElementById('cartItemsList');
@@ -1941,8 +1929,16 @@
             }
 
             calculatedFreight = (cep.startsWith('72') || cep.startsWith('73')) ? 12.00 : 24.50;
-            msg.innerText = `✅ Frete calculated: R$ ${calculatedFreight.toFixed(2)}`;
+            
+            // Aviso visual no campo do CEP se o frete ficou grátis
+            const hasFreeShipping = cart.some(item => item.freeShipping);
+            if (hasFreeShipping) {
+                msg.innerText = `✅ Frete Grátis aplicado ao seu carrinho!`;
+            } else {
+                msg.innerText = `✅ Frete calculado: R$ ${calculatedFreight.toFixed(2)}`;
+            }
             msg.className = "text-[9px] text-emerald-600 font-semibold mt-1 block";
+            
             updateCartUI();
         }
 
@@ -1979,7 +1975,6 @@
             document.getElementById('userAccountStatus').innerText = "ADM Conectado";
             document.getElementById('navAdminDashboardLink').classList.remove('hidden');
             
-            // Oculta a área de Newsletter quando for o ADM
             const newsSection = document.getElementById('newsletterSection');
             if (newsSection) newsSection.classList.add('hidden');
 
@@ -1992,7 +1987,6 @@
             document.getElementById('userAccountStatus').innerText = "Visitante / ADM";
             document.getElementById('navAdminDashboardLink').classList.add('hidden');
             
-            // Mostra a área de Newsletter novamente ao sair
             const newsSection = document.getElementById('newsletterSection');
             if (newsSection) newsSection.classList.remove('hidden');
 
@@ -2005,6 +1999,81 @@
             const parts = dateStr.split('-');
             return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateStr;
         }
+
+        // --- SISTEMA DE DRAG AND DROP NATIVO ---
+        function attachDragAndDropEvents() {
+            const items = document.querySelectorAll('.draggable-item');
+            items.forEach(item => {
+                // Previne múltiplos listeners acidentais
+                item.removeEventListener('dragstart', handleDragStart);
+                item.removeEventListener('dragover', handleDragOver);
+                item.removeEventListener('dragleave', handleDragLeave);
+                item.removeEventListener('drop', handleDrop);
+                item.removeEventListener('dragend', handleDragEnd);
+
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedId = parseInt(this.getAttribute('data-id'));
+            draggedType = this.getAttribute('data-type');
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => this.classList.add('dragging'), 0);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            if(this.getAttribute('data-type') === draggedType) {
+                this.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const targetId = parseInt(this.getAttribute('data-id'));
+            const targetType = this.getAttribute('data-type');
+            
+            if (draggedId && draggedId !== targetId && draggedType === targetType) {
+                moveArrayItem(draggedType, draggedId, targetId);
+            }
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+            draggedId = null;
+            draggedType = null;
+            document.querySelectorAll('.draggable-item').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function moveArrayItem(type, fromId, toId) {
+            const arr = type === 'banner' ? bannersData : productsData;
+            const fromIndex = arr.findIndex(x => x.id === fromId);
+            const toIndex = arr.findIndex(x => x.id === toId);
+            
+            if (fromIndex > -1 && toIndex > -1) {
+                const [movedItem] = arr.splice(fromIndex, 1);
+                arr.splice(toIndex, 0, movedItem);
+                
+                if (type === 'banner') {
+                    renderBannersSlider();
+                } else {
+                    applyFiltersAndSearch();
+                }
+                renderAdminLists();
+            }
+        }
+        // ----------------------------------------
 
         function renderAdminLists() {
             const adminBannersContainer = document.getElementById('adminBannersList');
@@ -2024,15 +2093,16 @@
                     }
 
                     return `
-                    <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-pointer hover:border-amber-400" onclick="openEditBannerModal(${b.id})">
+                    <div class="draggable-item flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-move hover:border-amber-400 bg-white" draggable="true" data-id="${b.id}" data-type="banner">
+                        <i class="fas fa-grip-vertical text-gray-300 ml-1"></i>
                         <img src="${b.image}" class="w-12 h-8 object-cover rounded">
                         <div class="flex-grow min-w-0 space-y-1">
                             <div>${displayTarget}</div>
                             <span class="text-[9px] text-gray-500 block">${formatDateBR(b.startDate)} - ${formatDateBR(b.endDate)}</span>
                         </div>
                         <div class="flex items-center gap-1" onclick="event.stopPropagation()">
-                            <button onclick="openEditBannerModal(${b.id})" class="text-blue-600 p-1"><i class="fas fa-edit"></i></button>
-                            <button onclick="removeAdminBanner(${b.id})" class="text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                            <button onclick="openEditBannerModal(${b.id})" class="text-blue-600 p-1 cursor-pointer"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeAdminBanner(${b.id})" class="text-red-500 p-1 cursor-pointer"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 `}).join('');
@@ -2047,7 +2117,8 @@
                 adminProductCount.innerText = filteredList.length;
 
                 adminProductsContainer.innerHTML = filteredList.map(p => `
-                    <div class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-pointer hover:border-amber-400" onclick="openEditProductModal(${p.id})">
+                    <div class="draggable-item flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-move hover:border-amber-400 bg-white" draggable="true" data-id="${p.id}" data-type="product">
+                        <i class="fas fa-grip-vertical text-gray-300 ml-1"></i>
                         <img src="${p.image}" class="w-8 h-8 object-cover rounded">
                         <div class="flex-grow min-w-0">
                             <h5 class="font-bold truncate text-[11px]">${p.name}</h5>
@@ -2055,15 +2126,16 @@
                             <span class="text-[9px] text-gray-400 ml-2">Estoque: ${p.stock}</span>
                         </div>
                         <div class="flex items-center gap-1" onclick="event.stopPropagation()">
-                            <button onclick="openEditProductModal(${p.id})" class="text-amber-600 p-1"><i class="fas fa-edit"></i></button>
-                            <button onclick="removeAdminProduct(${p.id})" class="text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                            <button onclick="openEditProductModal(${p.id})" class="text-amber-600 p-1 cursor-pointer"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeAdminProduct(${p.id})" class="text-red-500 p-1 cursor-pointer"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 `).join('');
             }
+
+            attachDragAndDropEvents();
         }
 
-        // Função de Salvar o Banner Novo
         function handleAddNewBanner(e) {
             e.preventDefault();
             const imgUrl = document.getElementById('newBannerImgUrl').value.trim();
@@ -2094,7 +2166,6 @@
             toggleBannerFields('new');
         }
 
-        // Funções do Modal de Editar Banners
         function openEditBannerModal(bannerId) {
             const banner = bannersData.find(b => b.id === bannerId);
             if (!banner) return;
@@ -2169,7 +2240,6 @@
             }
         }
 
-        // Funções de Gerenciamento de Produtos
         function handleAddNewProduct(e) {
             e.preventDefault();
             const name = document.getElementById('newProdName').value.trim();
@@ -2181,16 +2251,18 @@
             const freeShipping = document.getElementById('newProdFreeShipping').value === 'true';
             const badge = document.getElementById('newProdBadge').value.trim() || 'Novo';
             const description = document.getElementById('newProdDescription').value.trim();
+            const condition = category === 'livros' ? document.getElementById('newProdCondition').value : 'novo';
 
             productsData.unshift({
-                id: Date.now(), name, category, price, originalPrice: origPrice, badge, rating: 0, reviews: 0, image, description, stock, freeShipping
+                id: Date.now(), name, category, price, originalPrice: origPrice, badge, rating: 0, reviews: 0, image, description, stock, freeShipping, condition
             });
 
             applyFiltersAndSearch();
             renderAdminLists();
-            populateProductDropdowns(); // Atualiza a lista de produtos no banner
+            populateProductDropdowns();
             showNotification(`Produto "${name}" cadastrado!`);
             e.target.reset();
+            toggleConditionField('new');
         }
 
         function openEditProductModal(productId) {
@@ -2207,6 +2279,9 @@
             document.getElementById('editProdFreeShipping').value = product.freeShipping ? 'true' : 'false';
             document.getElementById('editProdBadge').value = product.badge || '';
             document.getElementById('editProdDescription').value = product.description;
+            
+            document.getElementById('editProdCondition').value = product.condition || 'novo';
+            toggleConditionField('edit');
 
             document.getElementById('editProductModal').classList.remove('hidden');
         }
@@ -2231,11 +2306,12 @@
             product.freeShipping = document.getElementById('editProdFreeShipping').value === 'true';
             product.badge = document.getElementById('editProdBadge').value.trim();
             product.description = document.getElementById('editProdDescription').value.trim();
+            product.condition = product.category === 'livros' ? document.getElementById('editProdCondition').value : 'novo';
 
             closeEditProductModal();
             applyFiltersAndSearch();
             renderAdminLists();
-            populateProductDropdowns(); // Atualiza a lista de produtos no banner
+            populateProductDropdowns();
 
             showNotification("Produto atualizado!");
         }
@@ -2246,7 +2322,7 @@
                 productsData.splice(index, 1);
                 applyFiltersAndSearch();
                 renderAdminLists();
-                populateProductDropdowns(); // Atualiza a lista de produtos no banner
+                populateProductDropdowns();
                 showNotification("Produto removido!");
             }
         }
@@ -2254,9 +2330,14 @@
         function finishCheckout() {
             if (cart.length === 0) return;
             const payment = document.getElementById('paymentMethodSelect').value;
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + calculatedFreight;
+            
+            // Garante que o valor zero do frete vá corretamente para o WhatsApp
+            const hasFreeShipping = cart.some(item => item.freeShipping);
+            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
             let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
-            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Total:* R$ ${total.toFixed(2)}`;
+            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
             window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
         }
 
