@@ -32,6 +32,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- SUPABASE SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-header {
@@ -1124,39 +1127,18 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // Banners Data Base
-        const bannersData = [
-            { id: 1, image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('limpeza'); closeAllPages();", targetType: "categoria", targetValue: "limpeza", startDate: "2026-10-01", endDate: "2026-10-31" },
-            { id: 2, image: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('informatica'); closeAllPages();", targetType: "categoria", targetValue: "informatica", startDate: "2026-10-01", endDate: "2026-10-31" },
-            { id: 3, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('bijuterias'); closeAllPages();", targetType: "categoria", targetValue: "bijuterias", startDate: "2026-10-01", endDate: "2026-11-15" },
-            { id: 4, image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=1600&auto=format&fit=crop&q=80", link: "javascript:filterCategory('bebidas'); closeAllPages();", targetType: "categoria", targetValue: "bebidas", startDate: "2026-10-01", endDate: "2026-12-31" }
-        ];
+        // ==========================================
+        // 1. CONFIGURAÇÃO SUPABASE
+        // ==========================================
+        const supabaseUrl = 'https://ufbxxfyhllndprwjctuk.supabase.co';
+        const supabaseKey = 'sb_publishable_Udm_iff3YpLFrWkzukh7LQ_AcB7t30M';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Complete Product Database
-        const productsData = [
-            { id: 1, name: "Detergente Líquido Ypê 500ml", category: "limpeza", price: 15.90, originalPrice: 18.00, badge: "Oferta", rating: 4.8, reviews: 42, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Detergente lava-louças líquido para limpeza de utensílios e superfícies laváveis.", stock: 50, freeShipping: true },
-            { id: 2, name: "Sabão em Pó Cif Limpeza Profissional 2,4kg", category: "limpeza", price: 34.99, originalPrice: 39.90, badge: "Mais Vendido", rating: 4.9, reviews: 38, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Limpador em pó indicado para limpeza pesada, com apresentação de 2,4 kg.", stock: 30, freeShipping: false },
-            { id: 3, name: "Lava Roupas em Pó Brilhante Limpeza Total 4kg", category: "limpeza", price: 34.55, originalPrice: 39.00, badge: "Destaque", rating: 4.7, reviews: 29, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Lava-roupas em pó para roupas brancas e coloridas.", stock: 25, freeShipping: true },
-            { id: 4, name: "Desinfetante Pinho Sol 1 Litro", category: "limpeza", price: 12.50, originalPrice: 15.00, badge: "Promoção", rating: 4.8, reviews: 19, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Desinfetante eficiente na eliminação de germes e bactérias.", stock: 40, freeShipping: false },
-            { id: 5, name: "Amaciante Downy Concentrado 1,5L", category: "limpeza", price: 26.90, originalPrice: 31.00, badge: "Perfume Intenso", rating: 4.9, reviews: 51, image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=500&auto=format&fit=crop&q=60", description: "Amaciante concentrado que garante fragrância prolongada e maciez.", stock: 35, freeShipping: true },
-            { id: 6, name: "Brinco Gota de Lágrima, Gota de Água", category: "bijuterias", price: 97.00, originalPrice: 109.00, badge: "Destaque", rating: 4.8, reviews: 12, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Brinco elegante em formato gota de lágrima cravejado, ideal para ocasiões especiais.", stock: 15, freeShipping: true },
-            { id: 7, name: "Kit Conjunto Trevo 4 Peças — Colar e Brinco", category: "bijuterias", price: 32.90, originalPrice: 40.00, badge: "Mais Vendido", rating: 4.9, reviews: 64, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Conjunto feminino de quatro peças com visual delicado.", stock: 22, freeShipping: false },
-            { id: 8, name: "Pulseira Feminina Banhada a Ouro", category: "bijuterias", price: 45.00, originalPrice: 55.00, badge: "Lançamento", rating: 4.7, reviews: 18, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Pulseira com elos finos e fecho seguro, perfeita para o dia a dia.", stock: 12, freeShipping: false },
-            { id: 9, name: "Colar Ponto de Luz em Zircônia", category: "bijuterias", price: 29.90, originalPrice: 38.00, badge: "Delicado", rating: 4.9, reviews: 27, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Colar clássico ponto de luz com corrente veneziana elegante.", stock: 20, freeShipping: true },
-            { id: 10, name: "Anel Solitário Ajustável Cravejado", category: "bijuterias", price: 24.90, originalPrice: 30.00, badge: "Ajustável", rating: 4.6, reviews: 14, image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=60", description: "Anel brilhante ajustável que se adapta perfeitamente a qualquer dedo.", stock: 18, freeShipping: false },
-            { id: 11, name: "Teclado e Mouse Sem Fio Lelong", category: "informatica", price: 25.99, originalPrice: 35.00, badge: "Mais Vendido", rating: 4.6, reviews: 58, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Kit compacto para computador e notebook.", stock: 35, freeShipping: false },
-            { id: 12, name: "Mouse Pad Ergônomico com Apoio em Gel", category: "informatica", price: 18.50, originalPrice: 24.00, badge: "Ergonômico", rating: 4.8, reviews: 31, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Mouse pad com descanso de pulso macio para digitação e jogos.", stock: 45, freeShipping: false },
-            { id: 13, name: "Fone de Ouvido Bluetooth Sem Fio TWS", category: "informatica", price: 59.90, originalPrice: 79.90, badge: "Alta Definição", rating: 4.7, reviews: 83, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Fone Bluetooth estéreo com estojo carregador e autonomia duradoura.", stock: 28, freeShipping: true },
-            { id: 14, name: "Cabo USB-C Rápido para Celular 1 Metro", category: "informatica", price: 14.90, originalPrice: 20.00, badge: "Carga Rápida", rating: 4.9, reviews: 104, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Cabo reforçado trançado para carregamento rápido e transferência de dados.", stock: 60, freeShipping: false },
-            { id: 15, name: "Suporte Dobrável para Notebook e Tablet", category: "informatica", price: 39.90, originalPrice: 49.90, badge: "Portátil", rating: 4.8, reviews: 22, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60", description: "Suporte leve em alumínio ajustável para postura correta na mesa.", stock: 16, freeShipping: true },
-            { id: 16, name: "Refrigerante Pepsi 2 Litros", category: "bebidas", price: 8.99, originalPrice: 10.50, badge: "Oferta", rating: 4.8, reviews: 90, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Refrigerante sabor cola em garrafa PET de 2 litros.", stock: 60, freeShipping: false },
-            { id: 17, name: "Refrigerante Guaraná Antarctica 2L", category: "bebidas", price: 8.74, originalPrice: 10.00, badge: "Mais Vendido", rating: 5.0, reviews: 110, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Refrigerante sabor guaraná em embalagem PET de 2 litros.", stock: 70, freeShipping: false },
-            { id: 18, name: "Água Mineral Sem Gás Garrafa 500ml (Fardo 12un)", category: "bebidas", price: 18.00, originalPrice: 22.00, badge: "Econômico", rating: 4.9, reviews: 45, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Fardo prático de água mineral natural sem gás.", stock: 40, freeShipping: false },
-            { id: 19, name: "Suco Natural Del Valle Laranja 1 Litro", category: "bebidas", price: 9.50, originalPrice: 11.90, badge: "Saboroso", rating: 4.7, reviews: 33, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Suco pronto para beber enriquecido com vitamina C.", stock: 35, freeShipping: false },
-            { id: 20, name: "Energético Red Bull Energy Drink 250ml", category: "bebidas", price: 11.90, originalPrice: 14.00, badge: "Energia", rating: 0, reviews: 0, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60", description: "Bebida energética para disposição imediata em lata de 250ml.", stock: 50, freeShipping: true }
-        ];
+        // Arrays de Banco de Dados (Agora dinâmicos do Supabase)
+        let bannersData = [];
+        let productsData = [];
 
-        // Base de Dados Simulada de Comentários
+        // Base de Dados Simulada de Comentários (mantida local para exemplo)
         const initialComments = {
             6: [
                 { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo." },
@@ -1334,15 +1316,42 @@
         // Preferência da Vitrine (Automática ou Manual)
         let isStorefrontOrderManual = false;
 
+        // ==========================================
+        // 2. FUNÇÕES DE LEITURA (SELECT) E INICIALIZAÇÃO
+        // ==========================================
+        async function carregarDadosDoSupabase() {
+            const { data: prods, error: errProds } = await supabaseClient
+                .from('produtos')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (prods) {
+                productsData = prods;
+                productsData.forEach(p => recalculateProductRating(p));
+                populateProductDropdowns();
+                applyFiltersAndSearch();
+            } else {
+                console.error("Erro produtos:", errProds);
+            }
+
+            const { data: bans, error: errBans } = await supabaseClient
+                .from('banners')
+                .select('*');
+
+            if (bans) {
+                bannersData = bans;
+                renderBannersSlider();
+                startBannerRotation();
+            } else {
+                console.error("Erro banners:", errBans);
+            }
+
+            renderAdminLists();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            populateProductDropdowns();
-            renderBannersSlider();
-            
-            productsData.forEach(p => recalculateProductRating(p));
-            
-            renderProducts(productsData);
+            carregarDadosDoSupabase();
             updateCartUI();
-            startBannerRotation();
 
             window.onpopstate = function(event) {
                 if (event.state) {
@@ -1606,7 +1615,6 @@
                     sorted.sort((a, b) => b.id - a.id);
                 } else {
                     // Manual: Mantém a ordem exata do array original productsData
-                    // (O 'list' já vem do array mapeado na ordem, então não precisamos fazer nada aqui)
                 }
             }
 
@@ -2136,12 +2144,15 @@
             attachDragAndDropEvents();
         }
 
-        function handleAddNewBanner(e) {
+        // ==========================================
+        // 3. FUNÇÕES DO PAINEL ADM (INSERT/UPDATE/DELETE)
+        // ==========================================
+
+        async function handleAddNewBanner(e) {
             e.preventDefault();
             const imgUrl = document.getElementById('newBannerImgUrl').value.trim();
             const startDate = document.getElementById('newBannerStartDate').value;
             const endDate = document.getElementById('newBannerEndDate').value;
-
             const targetType = document.getElementById('newBannerTargetType').value;
             let targetValue = '';
             let linkUrl = '';
@@ -2157,13 +2168,18 @@
                 linkUrl = targetValue.startsWith('http') || targetValue.startsWith('#') ? targetValue : 'javascript:void(0)';
             }
 
-            bannersData.push({ id: Date.now(), image: imgUrl, link: linkUrl, targetType, targetValue, startDate, endDate });
-            renderBannersSlider();
-            renderAdminLists();
-            showNotification("Novo banner cadastrado!");
-            
-            e.target.reset();
-            toggleBannerFields('new');
+            const newBanner = { image: imgUrl, link: linkUrl, targetType, targetValue, startDate, endDate };
+
+            const { error } = await supabaseClient.from('banners').insert([newBanner]);
+
+            if (error) {
+                alert("Erro ao salvar no banco. Verifique RLS.");
+            } else {
+                showNotification("Novo banner cadastrado!");
+                e.target.reset();
+                toggleBannerFields('new');
+                carregarDadosDoSupabase();
+            }
         }
 
         function openEditBannerModal(bannerId) {
@@ -2194,16 +2210,10 @@
             document.getElementById('editBannerModal').classList.add('hidden');
         }
 
-        function handleSaveEditedBanner(e) {
+        async function handleSaveEditedBanner(e) {
             e.preventDefault();
             const id = parseInt(document.getElementById('editBannerId').value);
-            const banner = bannersData.find(b => b.id === id);
-            if (!banner) return;
-
-            banner.image = document.getElementById('editBannerImgUrl').value.trim();
-            banner.startDate = document.getElementById('editBannerStartDate').value;
-            banner.endDate = document.getElementById('editBannerEndDate').value;
-
+            
             const targetType = document.getElementById('editBannerTargetType').value;
             let targetValue = '';
             let linkUrl = '';
@@ -2219,50 +2229,65 @@
                 linkUrl = targetValue.startsWith('http') || targetValue.startsWith('#') ? targetValue : 'javascript:void(0)';
             }
 
-            banner.targetType = targetType;
-            banner.targetValue = targetValue;
-            banner.link = linkUrl;
+            const updatedBanner = {
+                image: document.getElementById('editBannerImgUrl').value.trim(),
+                startDate: document.getElementById('editBannerStartDate').value,
+                endDate: document.getElementById('editBannerEndDate').value,
+                targetType,
+                targetValue,
+                link: linkUrl
+            };
 
-            closeEditBannerModal();
-            renderBannersSlider(); 
-            renderAdminLists();    
+            const { error } = await supabaseClient.from('banners').update(updatedBanner).eq('id', id);
 
-            showNotification("Banner atualizado com sucesso!");
-        }
-
-        function removeAdminBanner(bannerId) {
-            const index = bannersData.findIndex(b => b.id === bannerId);
-            if (index !== -1) {
-                bannersData.splice(index, 1);
-                renderBannersSlider();
-                renderAdminLists();
-                showNotification("Banner removido!");
+            if (error) {
+                alert("Erro ao atualizar banner.");
+            } else {
+                closeEditBannerModal();
+                showNotification("Banner atualizado com sucesso!");
+                carregarDadosDoSupabase();
             }
         }
 
-        function handleAddNewProduct(e) {
+        async function removeAdminBanner(bannerId) {
+            const { error } = await supabaseClient.from('banners').delete().eq('id', bannerId);
+            if (!error) {
+                showNotification("Banner removido!");
+                carregarDadosDoSupabase();
+            }
+        }
+
+        async function handleAddNewProduct(e) {
             e.preventDefault();
-            const name = document.getElementById('newProdName').value.trim();
             const category = document.getElementById('newProdCategory').value;
             const price = parseFloat(document.getElementById('newProdPrice').value);
             const origPrice = parseFloat(document.getElementById('newProdOriginalPrice').value) || (price * 1.15);
-            const stock = parseInt(document.getElementById('newProdStock').value) || 10;
-            const image = document.getElementById('newProdImage').value.trim();
-            const freeShipping = document.getElementById('newProdFreeShipping').value === 'true';
-            const badge = document.getElementById('newProdBadge').value.trim() || 'Novo';
-            const description = document.getElementById('newProdDescription').value.trim();
-            const condition = category === 'livros' ? document.getElementById('newProdCondition').value : 'novo';
 
-            productsData.unshift({
-                id: Date.now(), name, category, price, originalPrice: origPrice, badge, rating: 0, reviews: 0, image, description, stock, freeShipping, condition
-            });
+            const newProduct = {
+                name: document.getElementById('newProdName').value.trim(),
+                category: category,
+                price: price,
+                originalPrice: origPrice,
+                stock: parseInt(document.getElementById('newProdStock').value) || 10,
+                image: document.getElementById('newProdImage').value.trim(),
+                freeShipping: document.getElementById('newProdFreeShipping').value === 'true',
+                badge: document.getElementById('newProdBadge').value.trim() || 'Novo',
+                description: document.getElementById('newProdDescription').value.trim(),
+                condition: category === 'livros' ? document.getElementById('newProdCondition').value : 'novo',
+                rating: 0,
+                reviews: 0
+            };
 
-            applyFiltersAndSearch();
-            renderAdminLists();
-            populateProductDropdowns();
-            showNotification(`Produto "${name}" cadastrado!`);
-            e.target.reset();
-            toggleConditionField('new');
+            const { error } = await supabaseClient.from('produtos').insert([newProduct]);
+
+            if (error) {
+                alert("Erro ao salvar produto. Verifique RLS.");
+            } else {
+                showNotification(`Produto cadastrado!`);
+                e.target.reset();
+                toggleConditionField('new');
+                carregarDadosDoSupabase();
+            }
         }
 
         function openEditProductModal(productId) {
@@ -2290,40 +2315,41 @@
             document.getElementById('editProductModal').classList.add('hidden');
         }
 
-        function handleSaveEditedProduct(e) {
+        async function handleSaveEditedProduct(e) {
             e.preventDefault();
             const id = parseInt(document.getElementById('editProdId').value);
-            const product = productsData.find(p => p.id === id);
+            const category = document.getElementById('editProdCategory').value;
+            const price = parseFloat(document.getElementById('editProdPrice').value);
+            
+            const updatedProduct = {
+                name: document.getElementById('editProdName').value.trim(),
+                category: category,
+                price: price,
+                originalPrice: parseFloat(document.getElementById('editProdOriginalPrice').value) || price,
+                stock: parseInt(document.getElementById('editProdStock').value),
+                image: document.getElementById('editProdImage').value.trim(),
+                freeShipping: document.getElementById('editProdFreeShipping').value === 'true',
+                badge: document.getElementById('editProdBadge').value.trim(),
+                description: document.getElementById('editProdDescription').value.trim(),
+                condition: category === 'livros' ? document.getElementById('editProdCondition').value : 'novo'
+            };
 
-            if (!product) return;
+            const { error } = await supabaseClient.from('produtos').update(updatedProduct).eq('id', id);
 
-            product.name = document.getElementById('editProdName').value.trim();
-            product.category = document.getElementById('editProdCategory').value;
-            product.price = parseFloat(document.getElementById('editProdPrice').value);
-            product.originalPrice = parseFloat(document.getElementById('editProdOriginalPrice').value) || product.price;
-            product.stock = parseInt(document.getElementById('editProdStock').value);
-            product.image = document.getElementById('editProdImage').value.trim();
-            product.freeShipping = document.getElementById('editProdFreeShipping').value === 'true';
-            product.badge = document.getElementById('editProdBadge').value.trim();
-            product.description = document.getElementById('editProdDescription').value.trim();
-            product.condition = product.category === 'livros' ? document.getElementById('editProdCondition').value : 'novo';
-
-            closeEditProductModal();
-            applyFiltersAndSearch();
-            renderAdminLists();
-            populateProductDropdowns();
-
-            showNotification("Produto atualizado!");
+            if (error) {
+                alert("Erro ao atualizar produto.");
+            } else {
+                closeEditProductModal();
+                showNotification("Produto atualizado!");
+                carregarDadosDoSupabase();
+            }
         }
 
-        function removeAdminProduct(productId) {
-            const index = productsData.findIndex(p => p.id === productId);
-            if (index !== -1) {
-                productsData.splice(index, 1);
-                applyFiltersAndSearch();
-                renderAdminLists();
-                populateProductDropdowns();
+        async function removeAdminProduct(productId) {
+            const { error } = await supabaseClient.from('produtos').delete().eq('id', productId);
+            if (!error) {
                 showNotification("Produto removido!");
+                carregarDadosDoSupabase();
             }
         }
 
