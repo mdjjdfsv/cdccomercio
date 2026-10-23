@@ -1321,7 +1321,7 @@
         // ==========================================
         async function carregarDadosDoSupabase() {
             const { data: prods, error: errProds } = await supabaseClient
-                .from('produtos')
+                .from('products')
                 .select('*')
                 .order('id', { ascending: false });
 
@@ -2278,7 +2278,7 @@
                 reviews: 0
             };
 
-            const { error } = await supabaseClient.from('produtos').insert([newProduct]);
+            const { error } = await supabaseClient.from('products').insert([newProduct]);
 
             if (error) {
                 alert("Erro ao salvar produto. Verifique RLS.");
@@ -2334,7 +2334,7 @@
                 condition: category === 'livros' ? document.getElementById('editProdCondition').value : 'novo'
             };
 
-            const { error } = await supabaseClient.from('produtos').update(updatedProduct).eq('id', id);
+            const { error } = await supabaseClient.from('products').update(updatedProduct).eq('id', id);
 
             if (error) {
                 alert("Erro ao atualizar produto.");
@@ -2346,7 +2346,7 @@
         }
 
         async function removeAdminProduct(productId) {
-            const { error } = await supabaseClient.from('produtos').delete().eq('id', productId);
+            const { error } = await supabaseClient.from('products').delete().eq('id', productId);
             if (!error) {
                 showNotification("Produto removido!");
                 carregarDadosDoSupabase();
