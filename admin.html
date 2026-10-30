@@ -141,6 +141,7 @@
                                         <option value="limpeza">Limpeza</option>
                                         <option value="bijuterias">Bijuterias</option>
                                         <option value="informatica">Informática</option>
+                                        <option value="pecas-veiculos">Peças para Veículos</option>
                                         <option value="bebidas">Bebidas</option>
                                         <option value="livros">Livros</option>
                                     </select>
@@ -194,7 +195,7 @@
                         <form onsubmit="handleAddNewProduct(event)" class="space-y-3">
                             <div>
                                 <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome do Produto</label>
-                                <input type="text" id="newProdName" required placeholder="Ex: Detergente Neutro 500ml" 
+                                <input type="text" id="newProdName" required placeholder="Ex: Pastilha de Freio / Detergente" 
                                        class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none">
                             </div>
 
@@ -205,6 +206,7 @@
                                         <option value="limpeza">Limpeza</option>
                                         <option value="bijuterias">Bijuterias</option>
                                         <option value="informatica">Informática</option>
+                                        <option value="pecas-veiculos">Peças para Veículos</option>
                                         <option value="bebidas">Bebidas</option>
                                         <option value="livros">Livros</option>
                                     </select>
@@ -289,6 +291,7 @@
                                     <option value="limpeza">Limpeza</option>
                                     <option value="bijuterias">Bijuterias</option>
                                     <option value="informatica">Informática</option>
+                                    <option value="pecas-veiculos">Peças para Veículos</option>
                                     <option value="bebidas">Bebidas</option>
                                     <option value="livros">Livros</option>
                                 </select>
@@ -323,6 +326,7 @@
                                 <option value="limpeza">Limpeza</option>
                                 <option value="bijuterias">Bijuterias</option>
                                 <option value="informatica">Informática</option>
+                                <option value="pecas-veiculos">Peças para Veículos</option>
                                 <option value="bebidas">Bebidas</option>
                                 <option value="livros">Livros</option>
                             </select>
@@ -411,6 +415,7 @@
                                 <option value="limpeza">Limpeza</option>
                                 <option value="bijuterias">Bijuterias</option>
                                 <option value="informatica">Informática</option>
+                                <option value="pecas-veiculos">Peças para Veículos</option>
                                 <option value="bebidas">Bebidas</option>
                                 <option value="livros">Livros</option>
                             </select>
@@ -459,7 +464,6 @@
         let productsData = [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Apenas carrega os arrays silenciosamente para os selects de categorias funcionarem
             carregarDadosDoSupabase();
         });
 
@@ -469,7 +473,6 @@
             const email = document.getElementById('adminUser').value.trim();
             const password = document.getElementById('adminPass').value;
 
-            // Faz a autenticação direto no banco de dados do Supabase
             const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password
@@ -480,13 +483,12 @@
                 return;
             }
 
-            // Se logou com sucesso no Supabase
             document.getElementById('loginView').classList.add('hidden');
             document.getElementById('adminDashboardView').classList.remove('hidden');
             document.getElementById('logoutBtn').classList.remove('hidden');
             document.getElementById('logoutBtn').classList.add('flex');
             showNotification("Acesso Liberado!");
-            renderAdminLists(); // Renderiza a tela após logar
+            renderAdminLists();
         }
 
         async function handleAdminLogout() {
@@ -514,7 +516,6 @@
                 bannersData = bans;
             }
 
-            // Atualiza listas caso já esteja logado
             if(!document.getElementById('adminDashboardView').classList.contains('hidden')) {
                 renderAdminLists();
             }
@@ -528,7 +529,6 @@
 
         // 3. RENDERIZAÇÃO DAS LISTAS
         function renderAdminLists() {
-            // Renderiza Banners
             const adminBannersContainer = document.getElementById('adminBannersList');
             document.getElementById('adminBannerCount').innerText = bannersData.length;
             
@@ -557,7 +557,6 @@
                 `}).join('');
             }
 
-            // Renderiza Produtos
             const adminProductsContainer = document.getElementById('adminProductsList');
             const adminCategoryFilter = document.getElementById('adminCategoryFilter').value;
             let filteredList = adminCategoryFilter === 'todos' ? productsData : productsData.filter(p => p.category === adminCategoryFilter);
@@ -584,12 +583,11 @@
             attachDragAndDropEvents();
         }
 
-        // 4. CRUD PRODUTOS E BANNERS (Corrigido para tratar decimais com vírgula ou ponto)
+        // 4. CRUD PRODUTOS E BANNERS
         async function handleAddNewProduct(e) {
             e.preventDefault();
             const category = document.getElementById('newProdCategory').value;
             
-            // Substitui vírgula por ponto para o banco de dados salvar o valor exato (ex: 1,5 vira 1.50)
             const priceVal = document.getElementById('newProdPrice').value.replace(',', '.');
             const origPriceVal = document.getElementById('newProdOriginalPrice').value.replace(',', '.');
 
@@ -739,7 +737,6 @@
             document.getElementById('editProdName').value = product.name;
             document.getElementById('editProdCategory').value = product.category;
             
-            // Formatando para exibir com ponto ou vírgula no painel de edição
             document.getElementById('editProdPrice').value = product.price;
             document.getElementById('editProdOriginalPrice').value = product.originalPrice || '';
             
@@ -798,7 +795,7 @@
             setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'), 2500);
         }
 
-        // DRAG AND DROP (Apenas visual no painel)
+        // DRAG AND DROP
         let draggedId = null;
         let draggedType = null;
         function attachDragAndDropEvents() {
