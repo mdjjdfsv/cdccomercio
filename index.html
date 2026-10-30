@@ -332,7 +332,7 @@
 
                     <div class="flex items-center gap-2 text-xs text-gray-400">
                         <div class="flex text-yellow-400 text-xs" id="pdStarRating">
-                            <!-- Injetado dinamicamente via JS (Ex: 3 estrelas cheias e 2 vazias) -->
+                            <!-- Injetado dinamicamente via JS -->
                         </div>
                         <span id="pdReviewsCount" class="text-[10px]">(Sem avaliações)</span>
                     </div>
@@ -350,10 +350,6 @@
                                 -11%
                             </span>
                         </div>
-
-                        <p id="pdInstallments" class="text-xs font-semibold text-gray-700 mt-0.5">
-                            12x de R$ 18,95
-                        </p>
                     </div>
 
                     <div class="flex items-center gap-3 pt-3">
@@ -499,7 +495,6 @@
                     <button id="tabVisitorBtn" onclick="switchAuthTab('visitor')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-cdcHeader text-cdcHeader">
                         <i class="fas fa-user-plus mr-1"></i> Visitante
                     </button>
-                    
                 </div>
 
                 <form id="visitorAuthForm" onsubmit="handleVisitorRegister(event)" class="space-y-2.5 pt-1">
@@ -519,8 +514,6 @@
                         Cadastrar e Continuar
                     </button>
                 </form>
-
-                
             </div>
         </div>
     </div>
@@ -694,11 +687,9 @@
         const supabaseKey = 'sb_publishable_Udm_iff3YpLFrWkzukh7LQ_AcB7t30M';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Arrays de Banco de Dados (Agora dinâmicos do Supabase)
         let bannersData = [];
         let productsData = [];
 
-        // Base de Dados Simulada de Comentários (mantida local para exemplo)
         const initialComments = {
             6: [
                 { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo." },
@@ -856,7 +847,6 @@
             `
         };
 
-        // State Management
         let cart = [];
         let currentCategory = 'todos';
         let searchQuery = '';
@@ -869,16 +859,10 @@
         let bannerTimer = null;
         let isCarouselActive = true;
 
-        // Variaveis de Drag and Drop
         let draggedId = null;
         let draggedType = null;
-        
-        // Preferência da Vitrine (Automática ou Manual)
         let isStorefrontOrderManual = false;
 
-        // ==========================================
-        // 2. FUNÇÕES DE LEITURA (SELECT) E INICIALIZAÇÃO
-        // ==========================================
         async function carregarDadosDoSupabase() {
             const { data: prods, error: errProds } = await supabaseClient
                 .from('products')
@@ -924,7 +908,6 @@
             };
         });
 
-        // Upload Local (Converte Imagem em Base64)
         function handleImageUpload(event, targetInputId) {
             const file = event.target.files[0];
             if (file) {
@@ -937,7 +920,6 @@
             }
         }
 
-        // Função geradora de Estrelas HTML
         function renderStarsHTML(rating) {
             if (rating === 0 || !rating) {
                 return `
@@ -999,25 +981,6 @@
             document.getElementById(prefix + 'BannerField_url').classList.add('hidden');
             
             document.getElementById(prefix + 'BannerField_' + type).classList.remove('hidden');
-        }
-
-        function toggleAllBanners() {
-            isCarouselActive = !isCarouselActive;
-            const btn = document.getElementById('toggleBannersBtn');
-            
-            if (isCarouselActive) {
-                btn.classList.remove('bg-red-500', 'hover:bg-red-600');
-                btn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
-                btn.innerText = "Desativar Todos";
-                showNotification("Carrossel ativado no site!");
-            } else {
-                btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
-                btn.classList.add('bg-red-500', 'hover:bg-red-600');
-                btn.innerText = "Ativar Todos";
-                showNotification("Carrossel oculto no site!");
-            }
-            
-            renderBannersSlider(); 
         }
 
         function renderBannersSlider() {
@@ -1131,13 +1094,6 @@
             document.getElementById('activeFilterBadge').classList.add('hidden');
         }
 
-        function toggleStorefrontOrder() {
-            const selectVal = document.getElementById('adminStorefrontOrder').value;
-            isStorefrontOrderManual = (selectVal === 'manual');
-            applyFiltersAndSearch();
-            showNotification(isStorefrontOrderManual ? "Ordem vitrine: Manual" : "Ordem vitrine: Automática");
-        }
-
         function applyFiltersAndSearch() {
             let filtered = productsData.filter(p => {
                 const matchesCat = (currentCategory === 'todos' || p.category === currentCategory);
@@ -1171,10 +1127,7 @@
                 sorted.sort((a, b) => a.name.localeCompare(b.name));
             } else if (sortVal === 'default') {
                 if (!isStorefrontOrderManual) {
-                    // Automático: Ordena pelo ID Decrescente (Mais novos primeiro)
                     sorted.sort((a, b) => b.id - a.id);
-                } else {
-                    // Manual: Mantém a ordem exata do array original productsData
                 }
             }
 
@@ -1369,7 +1322,6 @@
             const container = document.getElementById('infoContentContainer');
             if (infoPagesData[infoKey]) container.innerHTML = infoPagesData[infoKey];
             
-            // Destaca o link ativo na barra lateral de informações
             document.querySelectorAll('.info-link').forEach(link => {
                 if (link.dataset.info === infoKey) {
                     link.classList.add('font-bold', 'text-navy-950');
@@ -1450,7 +1402,6 @@
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Verifica se tem algum item com frete grátis no carrinho
             const hasFreeShipping = cart.some(item => item.freeShipping);
             const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
 
@@ -1498,7 +1449,6 @@
 
             calculatedFreight = (cep.startsWith('72') || cep.startsWith('73')) ? 12.00 : 24.50;
             
-            // Aviso visual no campo do CEP se o frete ficou grátis
             const hasFreeShipping = cart.some(item => item.freeShipping);
             if (hasFreeShipping) {
                 msg.innerText = `✅ Frete Grátis aplicado ao seu carrinho!`;
@@ -1520,13 +1470,8 @@
 
         function switchAuthTab(type) {
             const visitorForm = document.getElementById('visitorAuthForm');
-            const adminForm = document.getElementById('adminAuthForm');
             if (type === 'visitor') {
                 visitorForm.classList.remove('hidden');
-                adminForm.classList.add('hidden');
-            } else {
-                adminForm.classList.remove('hidden');
-                visitorForm.classList.add('hidden');
             }
         }
 
@@ -1536,388 +1481,16 @@
             showNotification("Cadastro de visitante efetuado!");
         }
 
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            isAdminLoggedIn = true;
-            toggleAuthModal(false);
-            document.getElementById('userAccountStatus').innerText = "ADM Conectado";
-            document.getElementById('navAdminDashboardLink').classList.remove('hidden');
-            
-            const newsSection = document.getElementById('newsletterSection');
-            if (newsSection) newsSection.classList.add('hidden');
-
-            showNotification("Login ADM realizado!");
-            displayAdminDashboardView();
-        }
-
-        function handleAdminLogout() {
-            isAdminLoggedIn = false;
-            document.getElementById('userAccountStatus').innerText = "Visitante / ADM";
-            document.getElementById('navAdminDashboardLink').classList.add('hidden');
-            
-            const newsSection = document.getElementById('newsletterSection');
-            if (newsSection) newsSection.classList.remove('hidden');
-
-            showNotification("Você saiu do modo ADM.");
-            closeAllPages();
-        }
-
-        function formatDateBR(dateStr) {
-            if (!dateStr) return 'N/A';
-            const parts = dateStr.split('-');
-            return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateStr;
-        }
-
-        // --- SISTEMA DE DRAG AND DROP NATIVO ---
-        function attachDragAndDropEvents() {
-            const items = document.querySelectorAll('.draggable-item');
-            items.forEach(item => {
-                // Previne múltiplos listeners acidentais
-                item.removeEventListener('dragstart', handleDragStart);
-                item.removeEventListener('dragover', handleDragOver);
-                item.removeEventListener('dragleave', handleDragLeave);
-                item.removeEventListener('drop', handleDrop);
-                item.removeEventListener('dragend', handleDragEnd);
-
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('dragleave', handleDragLeave);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragend', handleDragEnd);
-            });
-        }
-
-        function handleDragStart(e) {
-            draggedId = parseInt(this.getAttribute('data-id'));
-            draggedType = this.getAttribute('data-type');
-            e.dataTransfer.effectAllowed = 'move';
-            setTimeout(() => this.classList.add('dragging'), 0);
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            if(this.getAttribute('data-type') === draggedType) {
-                this.classList.add('drag-over');
-            }
-        }
-
-        function handleDragLeave(e) {
-            this.classList.remove('drag-over');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            this.classList.remove('drag-over');
-            const targetId = parseInt(this.getAttribute('data-id'));
-            const targetType = this.getAttribute('data-type');
-            
-            if (draggedId && draggedId !== targetId && draggedType === targetType) {
-                moveArrayItem(draggedType, draggedId, targetId);
-            }
-        }
-
-        function handleDragEnd() {
-            this.classList.remove('dragging');
-            draggedId = null;
-            draggedType = null;
-            document.querySelectorAll('.draggable-item').forEach(el => el.classList.remove('drag-over'));
-        }
-
-        function moveArrayItem(type, fromId, toId) {
-            const arr = type === 'banner' ? bannersData : productsData;
-            const fromIndex = arr.findIndex(x => x.id === fromId);
-            const toIndex = arr.findIndex(x => x.id === toId);
-            
-            if (fromIndex > -1 && toIndex > -1) {
-                const [movedItem] = arr.splice(fromIndex, 1);
-                arr.splice(toIndex, 0, movedItem);
-                
-                if (type === 'banner') {
-                    renderBannersSlider();
-                } else {
-                    applyFiltersAndSearch();
-                }
-                renderAdminLists();
-            }
-        }
-        // ----------------------------------------
-
-        function renderAdminLists() {
-            const adminBannersContainer = document.getElementById('adminBannersList');
-            const adminBannerCount = document.getElementById('adminBannerCount');
-            if (adminBannersContainer && adminBannerCount) {
-                adminBannerCount.innerText = bannersData.length;
-                adminBannersContainer.innerHTML = bannersData.map(b => {
-                    let displayTarget = '';
-                    if (b.targetType === 'categoria') {
-                        displayTarget = `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[9px] uppercase font-bold">Cat: ${b.targetValue}</span>`;
-                    } else if (b.targetType === 'produto') {
-                        const p = productsData.find(prod => prod.id == b.targetValue);
-                        const pName = p ? p.name : `ID: ${b.targetValue}`;
-                        displayTarget = `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-[9px] uppercase font-bold">Prod: ${pName}</span>`;
-                    } else {
-                        displayTarget = `<span class="bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded text-[9px] uppercase font-bold">URL Externa</span>`;
-                    }
-
-                    return `
-                    <div class="draggable-item flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-move hover:border-amber-400 bg-white" draggable="true" data-id="${b.id}" data-type="banner">
-                        <i class="fas fa-grip-vertical text-gray-300 ml-1"></i>
-                        <img src="${b.image}" class="w-12 h-8 object-cover rounded">
-                        <div class="flex-grow min-w-0 space-y-1">
-                            <div>${displayTarget}</div>
-                            <span class="text-[9px] text-gray-500 block">${formatDateBR(b.startDate)} - ${formatDateBR(b.endDate)}</span>
-                        </div>
-                        <div class="flex items-center gap-1" onclick="event.stopPropagation()">
-                            <button onclick="openEditBannerModal(${b.id})" class="text-blue-600 p-1 cursor-pointer"><i class="fas fa-edit"></i></button>
-                            <button onclick="removeAdminBanner(${b.id})" class="text-red-500 p-1 cursor-pointer"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                `}).join('');
-            }
-
-            const adminProductsContainer = document.getElementById('adminProductsList');
-            const adminProductCount = document.getElementById('adminProductCount');
-            const adminCategoryFilter = document.getElementById('adminCategoryFilter')?.value || 'todos';
-
-            if (adminProductsContainer && adminProductCount) {
-                let filteredList = adminCategoryFilter === 'todos' ? productsData : productsData.filter(p => p.category === adminCategoryFilter);
-                adminProductCount.innerText = filteredList.length;
-
-                adminProductsContainer.innerHTML = filteredList.map(p => `
-                    <div class="draggable-item flex items-center gap-2 p-2 bg-gray-50 rounded-lg border text-xs cursor-move hover:border-amber-400 bg-white" draggable="true" data-id="${p.id}" data-type="product">
-                        <i class="fas fa-grip-vertical text-gray-300 ml-1"></i>
-                        <img src="${p.image}" class="w-8 h-8 object-cover rounded">
-                        <div class="flex-grow min-w-0">
-                            <h5 class="font-bold truncate text-[11px]">${p.name}</h5>
-                            <span class="text-[10px] text-emerald-600 font-bold">R$ ${p.price.toFixed(2)}</span>
-                            <span class="text-[9px] text-gray-400 ml-2">Estoque: ${p.stock}</span>
-                        </div>
-                        <div class="flex items-center gap-1" onclick="event.stopPropagation()">
-                            <button onclick="openEditProductModal(${p.id})" class="text-amber-600 p-1 cursor-pointer"><i class="fas fa-edit"></i></button>
-                            <button onclick="removeAdminProduct(${p.id})" class="text-red-500 p-1 cursor-pointer"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            attachDragAndDropEvents();
-        }
-
-        // ==========================================
-        // 3. FUNÇÕES DO PAINEL ADM (INSERT/UPDATE/DELETE)
-        // ==========================================
-
-        async function handleAddNewBanner(e) {
-            e.preventDefault();
-            const imgUrl = document.getElementById('newBannerImgUrl').value.trim();
-            const startDate = document.getElementById('newBannerStartDate').value;
-            const endDate = document.getElementById('newBannerEndDate').value;
-            const targetType = document.getElementById('newBannerTargetType').value;
-            let targetValue = '';
-            let linkUrl = '';
-
-            if (targetType === 'categoria') {
-                targetValue = document.getElementById('newBannerCategory').value;
-                linkUrl = `javascript:filterCategory('${targetValue}'); closeAllPages();`;
-            } else if (targetType === 'produto') {
-                targetValue = document.getElementById('newBannerProduct').value;
-                linkUrl = `javascript:navigateToProduct(${targetValue});`;
-            } else {
-                targetValue = document.getElementById('newBannerUrl').value.trim() || 'javascript:void(0)';
-                linkUrl = targetValue.startsWith('http') || targetValue.startsWith('#') ? targetValue : 'javascript:void(0)';
-            }
-
-            const newBanner = { image: imgUrl, link: linkUrl, targetType, targetValue, startDate, endDate };
-
-            const { error } = await supabaseClient.from('banners').insert([newBanner]);
-
-            if (error) {
-                alert("Erro ao salvar no banco. Verifique RLS.");
-            } else {
-                showNotification("Novo banner cadastrado!");
-                e.target.reset();
-                toggleBannerFields('new');
-                carregarDadosDoSupabase();
-            }
-        }
-
-        function openEditBannerModal(bannerId) {
-            const banner = bannersData.find(b => b.id === bannerId);
-            if (!banner) return;
-
-            document.getElementById('editBannerId').value = banner.id;
-            document.getElementById('editBannerImgUrl').value = banner.image;
-            document.getElementById('editBannerStartDate').value = banner.startDate;
-            document.getElementById('editBannerEndDate').value = banner.endDate;
-
-            const tType = banner.targetType || 'url';
-            document.getElementById('editBannerTargetType').value = tType;
-            toggleBannerFields('edit');
-
-            if (tType === 'categoria') {
-                document.getElementById('editBannerCategory').value = banner.targetValue;
-            } else if (tType === 'produto') {
-                document.getElementById('editBannerProduct').value = banner.targetValue;
-            } else {
-                document.getElementById('editBannerUrl').value = banner.targetValue || banner.link;
-            }
-
-            document.getElementById('editBannerModal').classList.remove('hidden');
-        }
-
-        function closeEditBannerModal() {
-            document.getElementById('editBannerModal').classList.add('hidden');
-        }
-
-        async function handleSaveEditedBanner(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editBannerId').value);
-            
-            const targetType = document.getElementById('editBannerTargetType').value;
-            let targetValue = '';
-            let linkUrl = '';
-
-            if (targetType === 'categoria') {
-                targetValue = document.getElementById('editBannerCategory').value;
-                linkUrl = `javascript:filterCategory('${targetValue}'); closeAllPages();`;
-            } else if (targetType === 'produto') {
-                targetValue = document.getElementById('editBannerProduct').value;
-                linkUrl = `javascript:navigateToProduct(${targetValue});`;
-            } else {
-                targetValue = document.getElementById('editBannerUrl').value.trim() || 'javascript:void(0)';
-                linkUrl = targetValue.startsWith('http') || targetValue.startsWith('#') ? targetValue : 'javascript:void(0)';
-            }
-
-            const updatedBanner = {
-                image: document.getElementById('editBannerImgUrl').value.trim(),
-                startDate: document.getElementById('editBannerStartDate').value,
-                endDate: document.getElementById('editBannerEndDate').value,
-                targetType,
-                targetValue,
-                link: linkUrl
-            };
-
-            const { error } = await supabaseClient.from('banners').update(updatedBanner).eq('id', id);
-
-            if (error) {
-                alert("Erro ao atualizar banner.");
-            } else {
-                closeEditBannerModal();
-                showNotification("Banner atualizado com sucesso!");
-                carregarDadosDoSupabase();
-            }
-        }
-
-        async function removeAdminBanner(bannerId) {
-            const { error } = await supabaseClient.from('banners').delete().eq('id', bannerId);
-            if (!error) {
-                showNotification("Banner removido!");
-                carregarDadosDoSupabase();
-            }
-        }
-
-        async function handleAddNewProduct(e) {
-            e.preventDefault();
-            const category = document.getElementById('newProdCategory').value;
-            const price = parseFloat(document.getElementById('newProdPrice').value);
-            const origPrice = parseFloat(document.getElementById('newProdOriginalPrice').value) || (price * 1.15);
-
-            const newProduct = {
-                name: document.getElementById('newProdName').value.trim(),
-                category: category,
-                price: price,
-                originalPrice: origPrice,
-                stock: parseInt(document.getElementById('newProdStock').value) || 10,
-                image: document.getElementById('newProdImage').value.trim(),
-                freeShipping: document.getElementById('newProdFreeShipping').value === 'true',
-                badge: document.getElementById('newProdBadge').value.trim() || 'Novo',
-                description: document.getElementById('newProdDescription').value.trim(),
-                condition: category === 'livros' ? document.getElementById('newProdCondition').value : 'novo',
-                rating: 0,
-                reviews: 0
-            };
-
-            const { error } = await supabaseClient.from('products').insert([newProduct]);
-
-            if (error) {
-                alert("Erro ao salvar produto. Verifique RLS.");
-            } else {
-                showNotification(`Produto cadastrado!`);
-                e.target.reset();
-                toggleConditionField('new');
-                carregarDadosDoSupabase();
-            }
-        }
-
-        function openEditProductModal(productId) {
-            const product = productsData.find(p => p.id === productId);
-            if (!product) return;
-
-            document.getElementById('editProdId').value = product.id;
-            document.getElementById('editProdName').value = product.name;
-            document.getElementById('editProdCategory').value = product.category;
-            document.getElementById('editProdPrice').value = product.price;
-            document.getElementById('editProdOriginalPrice').value = product.originalPrice || '';
-            document.getElementById('editProdStock').value = product.stock;
-            document.getElementById('editProdImage').value = product.image;
-            document.getElementById('editProdFreeShipping').value = product.freeShipping ? 'true' : 'false';
-            document.getElementById('editProdBadge').value = product.badge || '';
-            document.getElementById('editProdDescription').value = product.description;
-            
-            document.getElementById('editProdCondition').value = product.condition || 'novo';
-            toggleConditionField('edit');
-
-            document.getElementById('editProductModal').classList.remove('hidden');
-        }
-
-        function closeEditProductModal() {
-            document.getElementById('editProductModal').classList.add('hidden');
-        }
-
-        async function handleSaveEditedProduct(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editProdId').value);
-            const category = document.getElementById('editProdCategory').value;
-            const price = parseFloat(document.getElementById('editProdPrice').value);
-            
-            const updatedProduct = {
-                name: document.getElementById('editProdName').value.trim(),
-                category: category,
-                price: price,
-                originalPrice: parseFloat(document.getElementById('editProdOriginalPrice').value) || price,
-                stock: parseInt(document.getElementById('editProdStock').value),
-                image: document.getElementById('editProdImage').value.trim(),
-                freeShipping: document.getElementById('editProdFreeShipping').value === 'true',
-                badge: document.getElementById('editProdBadge').value.trim(),
-                description: document.getElementById('editProdDescription').value.trim(),
-                condition: category === 'livros' ? document.getElementById('editProdCondition').value : 'novo'
-            };
-
-            const { error } = await supabaseClient.from('products').update(updatedProduct).eq('id', id);
-
-            if (error) {
-                alert("Erro ao atualizar produto.");
-            } else {
-                closeEditProductModal();
-                showNotification("Produto atualizado!");
-                carregarDadosDoSupabase();
-            }
-        }
-
-        async function removeAdminProduct(productId) {
-            const { error } = await supabaseClient.from('products').delete().eq('id', productId);
-            if (!error) {
-                showNotification("Produto removido!");
-                carregarDadosDoSupabase();
-            }
+        function showNotification(msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
         }
 
         function finishCheckout() {
             if (cart.length === 0) return;
             const payment = document.getElementById('paymentMethodSelect').value;
-            
-            // Garante que o valor zero do frete vá corretamente para o WhatsApp
             const hasFreeShipping = cart.some(item => item.freeShipping);
             const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
             
@@ -1925,13 +1498,6 @@
             let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
             const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
             window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
-        }
-
-        function showNotification(msg) {
-            const toast = document.getElementById('toastNotification');
-            document.getElementById('toastMessage').innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
         }
     </script>
 </body>
