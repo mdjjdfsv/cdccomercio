@@ -211,7 +211,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Atual (R$)</label>
-                                    <input type="number" step="0.01" id="newProdPrice" required placeholder="29.90" 
+                                    <input type="text" inputmode="decimal" id="newProdPrice" required placeholder="29,90" 
                                            class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
                                 </div>
                             </div>
@@ -219,7 +219,7 @@
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Antigo Riscado (R$)</label>
-                                    <input type="number" step="0.01" id="newProdOriginalPrice" placeholder="Opcional" 
+                                    <input type="text" inputmode="decimal" id="newProdOriginalPrice" placeholder="Opcional" 
                                            class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
                                 </div>
                                 <div>
@@ -252,7 +252,7 @@
 
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo (Ex: Lançamento)</label>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo (Ex: Promoção)</label>
                                     <input type="text" id="newProdBadge" placeholder="Opcional..." 
                                            class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
                                 </div>
@@ -329,13 +329,13 @@
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Atual</label>
-                            <input type="number" step="0.01" id="editProdPrice" required class="w-full px-3 py-2 text-xs border rounded-lg bg-gray-50 outline-none">
+                            <input type="text" inputmode="decimal" id="editProdPrice" required class="w-full px-3 py-2 text-xs border rounded-lg bg-gray-50 outline-none">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Antigo</label>
-                            <input type="number" step="0.01" id="editProdOriginalPrice" class="w-full px-3 py-2 text-xs border rounded-lg bg-gray-50 outline-none">
+                            <input type="text" inputmode="decimal" id="editProdOriginalPrice" class="w-full px-3 py-2 text-xs border rounded-lg bg-gray-50 outline-none">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">Estoque</label>
@@ -584,12 +584,17 @@
             attachDragAndDropEvents();
         }
 
-        // 4. CRUD PRODUTOS E BANNERS (Manteve a mesma lógica do original)
+        // 4. CRUD PRODUTOS E BANNERS (Corrigido para tratar decimais com vírgula ou ponto)
         async function handleAddNewProduct(e) {
             e.preventDefault();
             const category = document.getElementById('newProdCategory').value;
-            const price = parseFloat(document.getElementById('newProdPrice').value);
-            const origPrice = parseFloat(document.getElementById('newProdOriginalPrice').value) || price;
+            
+            // Substitui vírgula por ponto para o banco de dados salvar o valor exato (ex: 1,5 vira 1.50)
+            const priceVal = document.getElementById('newProdPrice').value.replace(',', '.');
+            const origPriceVal = document.getElementById('newProdOriginalPrice').value.replace(',', '.');
+
+            const price = parseFloat(priceVal);
+            const origPrice = origPriceVal ? parseFloat(origPriceVal) : price;
 
             const newProduct = {
                 name: document.getElementById('newProdName').value.trim(),
@@ -618,13 +623,18 @@
             e.preventDefault();
             const id = parseInt(document.getElementById('editProdId').value);
             const category = document.getElementById('editProdCategory').value;
-            const price = parseFloat(document.getElementById('editProdPrice').value);
+            
+            const priceVal = document.getElementById('editProdPrice').value.replace(',', '.');
+            const origPriceVal = document.getElementById('editProdOriginalPrice').value.replace(',', '.');
+
+            const price = parseFloat(priceVal);
+            const origPrice = origPriceVal ? parseFloat(origPriceVal) : price;
             
             const updatedProduct = {
                 name: document.getElementById('editProdName').value.trim(),
                 category: category,
                 price: price,
-                originalPrice: parseFloat(document.getElementById('editProdOriginalPrice').value) || price,
+                originalPrice: origPrice,
                 stock: parseInt(document.getElementById('editProdStock').value),
                 image: document.getElementById('editProdImage').value.trim(),
                 freeShipping: document.getElementById('editProdFreeShipping').value === 'true',
@@ -728,8 +738,11 @@
             document.getElementById('editProdId').value = product.id;
             document.getElementById('editProdName').value = product.name;
             document.getElementById('editProdCategory').value = product.category;
+            
+            // Formatando para exibir com ponto ou vírgula no painel de edição
             document.getElementById('editProdPrice').value = product.price;
             document.getElementById('editProdOriginalPrice').value = product.originalPrice || '';
+            
             document.getElementById('editProdStock').value = product.stock;
             document.getElementById('editProdImage').value = product.image;
             document.getElementById('editProdFreeShipping').value = product.freeShipping ? 'true' : 'false';
