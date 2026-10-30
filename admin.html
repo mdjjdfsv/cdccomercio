@@ -73,10 +73,10 @@
 
             <form onsubmit="handleAdminLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Usuário</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">E-mail do Administrador</label>
                     <div class="relative">
                         <i class="fas fa-user absolute left-3 top-2.5 text-gray-400 text-sm"></i>
-                        <input type="text" id="adminUser" required placeholder="Digite seu usuário" 
+                        <input type="email" id="adminUser" required placeholder="Seu e-mail cadastrado" 
                                class="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -463,26 +463,34 @@
             carregarDadosDoSupabase();
         });
 
-        // 1. SISTEMA DE LOGIN
-        function handleAdminLogin(e) {
+        // 1. SISTEMA DE LOGIN INTEGRADO AO SUPABASE
+        async function handleAdminLogin(e) {
             e.preventDefault();
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
+            const email = document.getElementById('adminUser').value.trim();
+            const password = document.getElementById('adminPass').value;
 
-            // Mockup de segurança simples (pode alterar a senha aqui se quiser)
-            if (user === 'admin' && pass.length > 0) {
-                document.getElementById('loginView').classList.add('hidden');
-                document.getElementById('adminDashboardView').classList.remove('hidden');
-                document.getElementById('logoutBtn').classList.remove('hidden');
-                document.getElementById('logoutBtn').classList.add('flex');
-                showNotification("Acesso Liberado!");
-                renderAdminLists(); // Renderiza a tela após logar
-            } else {
-                alert("Usuário incorreto.");
+            // Faz a autenticação direto no banco de dados do Supabase
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("E-mail ou senha incorretos. Verifique seus dados no Supabase.");
+                return;
             }
+
+            // Se logou com sucesso no Supabase
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('adminDashboardView').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('flex');
+            showNotification("Acesso Liberado!");
+            renderAdminLists(); // Renderiza a tela após logar
         }
 
-        function handleAdminLogout() {
+        async function handleAdminLogout() {
+            await supabaseClient.auth.signOut();
             document.getElementById('loginView').classList.remove('hidden');
             document.getElementById('adminDashboardView').classList.add('hidden');
             document.getElementById('logoutBtn').classList.remove('flex');
