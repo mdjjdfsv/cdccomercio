@@ -169,6 +169,9 @@
                 <button onclick="filterCategory('informatica'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="informatica">
                     <i class="fas fa-laptop text-amber-300"></i> Informática
                 </button>
+                <button onclick="filterCategory('pecas-veiculos'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="pecas-veiculos">
+                    <i class="fas fa-car text-orange-400"></i> Peças para Veículos
+                </button>
                 <button onclick="filterCategory('bebidas'); closeAllPages();" class="cat-btn px-3 py-1.5 rounded-full hover:bg-cdcHeader hover:text-white transition whitespace-nowrap flex items-center gap-1.5 border border-blue-900 text-[11px]" data-cat="bebidas">
                     <i class="fas fa-wine-bottle text-purple-300"></i> Bebidas
                 </button>
@@ -632,12 +635,11 @@
                 </div>
             </div>
 
-            <!-- Adicionado o grid de 5 colunas para acomodar Parcerias antes de Informações -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
                 <div class="space-y-2">
                     <h4 class="font-extrabold text-xs text-[#ECA929] uppercase tracking-wider">PARCERIAS</h4>
                     <ul class="space-y-1.5 text-gray-200 text-[11px]">
-                        <li><span class="text-gray-300 font-medium">AV TECH</span></li>
+                        <li><a href="https://bright-info-quest.lovable.app/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-300 font-medium">AV TECH</a></li>
                     </ul>
                 </div>
 
@@ -656,6 +658,7 @@
                         <li><a href="#catalogo" onclick="filterCategory('limpeza'); closeAllPages();" class="hover:text-blue-300">Limpeza</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('bijuterias'); closeAllPages();" class="hover:text-blue-300">Bijuterias</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('informatica'); closeAllPages();" class="hover:text-blue-300">Informática</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('pecas-veiculos'); closeAllPages();" class="hover:text-blue-300">Peças para Veículos</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('bebidas'); closeAllPages();" class="hover:text-blue-300">Bebidas</a></li>
                         <li><a href="#catalogo" onclick="filterCategory('livros'); closeAllPages();" class="hover:text-blue-300">Livros</a></li>
                     </ul>
