@@ -371,7 +371,7 @@
                         </div>
 
                         <button onclick="buyNowFromPage()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2 active:scale-95">
-                            COMPRAR AGORA
+                            ADICIONAR AO CARRINHO
                         </button>
                     </div>
 
@@ -1308,7 +1308,7 @@
 
             updateCartUI();
             showNotification(`Adicionado ao carrinho!`);
-            toggleCartModal(true);
+            // toggleCartModal(true); // Removido para não abrir o carrinho automaticamente
         }
 
         function updateCartQuantity(productId, delta) {
