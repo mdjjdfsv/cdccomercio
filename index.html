@@ -558,19 +558,24 @@
                         <span id="freightMsg" class="text-[9px] text-gray-500 mt-1 block"> Digite seu CEP para calcular</span>
                     </div>
 
+                    <!-- SELEÇÃO DO MÉTODO DE PAGAMENTO -->
                     <div class="space-y-1">
                         <label class="text-[11px] font-semibold text-gray-700">Forma de Pagamento:</label>
-                        <select id="paymentMethodSelect" class="w-full border border-gray-300 rounded p-1 text-xs font-medium text-gray-800">
-                            <option value="pix">PIX (Confirmação Imediata)</option>
-                            <option value="cartao">Cartão de Crédito / Débito</option>
-                            <option value="transferencia">Transferência Bancária</option>
+                        <select id="paymentMethodSelect" onchange="toggleCheckoutFields()" class="w-full border border-gray-300 rounded p-1.5 text-xs font-medium text-gray-800">
+                            <option value="pix">PIX Automático (Asaas - Liberação Imediata)</option>
+                            <option value="cartao">Cartão de Crédito / Débito (Asaas)</option>
+                            <option value="whatsapp">Finalizar com Atendente no WhatsApp</option>
                         </select>
                     </div>
 
-                    <div id="pixInfoBox" class="bg-emerald-50 border border-emerald-200 p-2 rounded text-[10px] text-emerald-900 flex items-start gap-2">
-                        <i class="fas fa-qrcode text-emerald-600 text-sm mt-0.5"></i>
-                        <div>
-                            <strong>Chave PIX (CNPJ):</strong> <span class="select-all font-mono">62.024.645/0001-11</span>
+                    <!-- CAMPOS DE IDENTIFICAÇÃO DO CLIENTE (EXIGIDOS PELO ASAAS) -->
+                    <div id="asaasCustomerFields" class="space-y-2 pt-1 border-t border-gray-200">
+                        <span class="text-[10px] font-bold text-gray-500 block uppercase">Dados para cobrança:</span>
+                        <input type="text" id="checkoutName" placeholder="Nome Completo *" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs">
+                        <input type="text" id="checkoutCpf" placeholder="CPF ou CNPJ (apenas números) *" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="email" id="checkoutEmail" placeholder="E-mail" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs">
+                            <input type="tel" id="checkoutPhone" placeholder="WhatsApp / Telefone" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs">
                         </div>
                     </div>
 
@@ -589,10 +594,46 @@
                         </div>
                     </div>
 
-                    <button onclick="finishCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95">
-                        <i class="fas fa-check-circle"></i> Finalizar Compra no WhatsApp
+                    <button onclick="finishCheckout()" id="checkoutSubmitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95">
+                        <i class="fas fa-qrcode"></i> Pagar via PIX no Asaas
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PAGAMENTO PIX (ASAAS) -->
+    <div id="pixPaymentModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closePixModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-3">
+            <div class="relative bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl z-10 space-y-4 text-center">
+                <button onclick="closePixModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-base font-black text-navy-900">Pagamento via PIX</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Escaneie o QR Code ou copie a chave abaixo:</p>
+                </div>
+
+                <!-- Imagem do QR Code -->
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 inline-block">
+                    <img id="pixQrCodeImg" src="" alt="QR Code PIX" class="w-48 h-48 mx-auto object-contain">
+                </div>
+
+                <!-- Copia e Cola -->
+                <div class="space-y-2">
+                    <textarea id="pixCopiaEColaText" readonly rows="3" class="w-full text-[10px] bg-gray-50 border border-gray-300 rounded-lg p-2 font-mono resize-none focus:outline-none"></textarea>
+                    <button onclick="copyPixCode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition shadow flex items-center justify-center gap-2">
+                        <i class="far fa-copy"></i> Copiar Código PIX
+                    </button>
+                </div>
+
+                <p class="text-[10px] text-gray-400">Após o pagamento, a confirmação é processada automaticamente pelo sistema.</p>
             </div>
         </div>
     </div>
@@ -1501,16 +1542,100 @@
             setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'); }, 2500);
         }
 
-        function finishCheckout() {
-            if (cart.length === 0) return;
-            const payment = document.getElementById('paymentMethodSelect').value;
-            const hasFreeShipping = cart.some(item => item.freeShipping);
-            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
-            let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
-            const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* ${payment.toUpperCase()}%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
-            window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
+        function toggleCheckoutFields() {
+            const method = document.getElementById('paymentMethodSelect').value;
+            const asaasFields = document.getElementById('asaasCustomerFields');
+            const submitBtn = document.getElementById('checkoutSubmitBtn');
+
+            if (method === 'whatsapp') {
+                asaasFields.classList.add('hidden');
+                submitBtn.innerHTML = `<i class="fab fa-whatsapp"></i> Finalizar Compra no WhatsApp`;
+                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95";
+            } else if (method === 'pix') {
+                asaasFields.classList.remove('hidden');
+                submitBtn.innerHTML = `<i class="fas fa-qrcode"></i> Pagar via PIX no Asaas`;
+                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95";
+            } else {
+                asaasFields.classList.remove('hidden');
+                submitBtn.innerHTML = `<i class="fas fa-credit-card"></i> Pagar com Cartão no Asaas`;
+                submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs active:scale-95";
+            }
+        }
+
+        async function finishCheckout() {
+            if (cart.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+
+            const paymentMethod = document.getElementById('paymentMethodSelect').value;
+
+            if (paymentMethod === 'whatsapp') {
+                const hasFreeShipping = cart.some(item => item.freeShipping);
+                const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
+                let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
+                const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* WHATSAPP%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
+                window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
+                return;
+            }
+
+            // Validação dos dados do cliente para Asaas
+            const name = document.getElementById('checkoutName').value.trim();
+            const cpfCnpj = document.getElementById('checkoutCpf').value.replace(/\D/g, '');
+            const email = document.getElementById('checkoutEmail').value.trim();
+            const phone = document.getElementById('checkoutPhone').value.replace(/\D/g, '');
+
+            if (!name || !cpfCnpj) {
+                alert("Por favor, preencha o Nome Completo e o CPF/CNPJ para gerar a cobrança.");
+                return;
+            }
+
+            showNotification("Comunicando com o Asaas...");
+
+            try {
+                const response = await fetch(`${supabaseUrl}/functions/v1/create-asaas-charge`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${supabaseKey}`
+                    },
+                    body: JSON.stringify({
+                        customer: { name, cpfCnpj, email, phone },
+                        items: cart,
+                        paymentMethod: paymentMethod
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    if (paymentMethod === 'pix') {
+                        document.getElementById('pixQrCodeImg').src = data.pixQrCodeImage;
+                        document.getElementById('pixCopiaEColaText').value = data.pixQrCode;
+                        toggleCartModal(false);
+                        document.getElementById('pixPaymentModal').classList.remove('hidden');
+                    } else {
+                        window.location.href = data.invoiceUrl;
+                    }
+                } else {
+                    alert("Erro do Asaas: " + (data.error || "Não foi possível gerar a cobrança."));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Erro na conexão com o servidor de pagamentos.");
+            }
+        }
+
+        function copyPixCode() {
+            const copyText = document.getElementById("pixCopiaEColaText");
+            copyText.select();
+            document.execCommand("copy");
+            showNotification("Código PIX copiado!");
+        }
+
+        function closePixModal() {
+            document.getElementById('pixPaymentModal').classList.add('hidden');
         }
     </script>
 </body>
