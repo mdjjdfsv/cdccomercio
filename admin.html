@@ -102,203 +102,242 @@
                 <p><strong>Atenção:</strong> Qualquer alteração feita aqui reflete imediatamente no site dos seus clientes.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <!-- LAYOUT COM MENU LATERAL À ESQUERDA -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                 
-                <!-- COLUNA ESQUERDA: CARROSSEL / BANNERS -->
-                <div class="space-y-6">
-                    <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
-                        <h3 class="text-sm font-black text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
-                            <i class="fas fa-images text-blue-600"></i> Acrescentar Novo Banner
-                        </h3>
-
-                        <form onsubmit="handleAddNewBanner(event)" class="space-y-3">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem do Banner (URL ou Arquivo)</label>
-                                <div class="flex gap-2">
-                                    <input type="url" id="newBannerImgUrl" placeholder="https://exemplo.com/imagem-banner.jpg" 
-                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                                    <label class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
-                                        <i class="fas fa-upload mr-1.5"></i> Arquivo
-                                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newBannerImgUrl')">
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Ação ao Clicar</label>
-                                    <select id="newBannerTargetType" onchange="toggleBannerFields('new')" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                        <option value="categoria">Abrir Categoria</option>
-                                        <option value="produto">Abrir Produto</option>
-                                        <option value="url">Link Customizado</option>
-                                    </select>
-                                </div>
-                                
-                                <div id="newBannerField_categoria">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Qual Categoria?</label>
-                                    <select id="newBannerCategory" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                        <option value="todos">Todos os Produtos</option>
-                                        <option value="limpeza">Limpeza</option>
-                                        <option value="bijuterias">Bijuterias</option>
-                                        <option value="informatica">Informática</option>
-                                        <option value="pecas-veiculos">Peças para Veículos</option>
-                                        <option value="bebidas">Bebidas</option>
-                                        <option value="livros">Livros</option>
-                                    </select>
-                                </div>
-
-                                <div id="newBannerField_produto" class="hidden">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Qual Produto?</label>
-                                    <select id="newBannerProduct" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none"></select>
-                                </div>
-
-                                <div id="newBannerField_url" class="hidden">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Link URL</label>
-                                    <input type="text" id="newBannerUrl" placeholder="https..." class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Início Promoção</label>
-                                    <input type="date" id="newBannerStartDate" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Fim Promoção</label>
-                                    <input type="date" id="newBannerEndDate" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 mt-2">
-                                <i class="fas fa-plus-circle"></i> Adicionar Banner
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-200 pb-2">
-                            <h4 class="text-xs font-black text-navy-900 flex items-center gap-1.5">
-                                <i class="fas fa-list text-blue-600"></i> Banners Ativos no Site (<span id="adminBannerCount">0</span>)
-                            </h4>
-                        </div>
-                        <div id="adminBannersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
-                    </div>
+                <!-- MENU LATERAL (ESQUERDA) -->
+                <div class="md:col-span-3 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm space-y-2 sticky top-20">
+                    <h3 class="font-extrabold text-navy-900 text-xs mb-3 border-b pb-2 uppercase tracking-wider text-gray-400">Navegação</h3>
+                    <button onclick="switchAdminTab('banners')" id="tabBtnBanners" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 bg-cdcHeader text-white">
+                        <i class="fas fa-images text-sm"></i> Gerenciar Banners
+                    </button>
+                    <button onclick="switchAdminTab('produtos')" id="tabBtnProdutos" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-box-open text-sm"></i> Cadastrar e Produtos
+                    </button>
+                    <button onclick="switchAdminTab('pedidos')" id="tabBtnPedidos" class="admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-truck text-sm"></i> Pedidos e Rastreio
+                    </button>
                 </div>
 
-                <!-- COLUNA DIREITA: PRODUTOS -->
-                <div class="space-y-6">
-                    <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
-                        <h3 class="text-sm font-black text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
-                            <i class="fas fa-box-open text-emerald-600"></i> Cadastrar Novo Produto
-                        </h3>
+                <!-- CONTEÚDO PRINCIPAL (DIREITA) -->
+                <div class="md:col-span-9 space-y-6">
+                    
+                    <!-- SEÇÃO 1: BANNERS -->
+                    <div id="adminSectionBanners" class="space-y-6">
+                        <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
+                            <h3 class="text-sm font-black text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
+                                <i class="fas fa-images text-blue-600"></i> Acrescentar Novo Banner
+                            </h3>
 
-                        <form onsubmit="handleAddNewProduct(event)" class="space-y-3">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome do Produto</label>
-                                <input type="text" id="newProdName" required placeholder="Ex: Pastilha de Freio / Detergente" 
-                                       class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none">
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
+                            <form onsubmit="handleAddNewBanner(event)" class="space-y-3">
                                 <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
-                                    <select id="newProdCategory" onchange="toggleConditionField('new')" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                        <option value="limpeza">Limpeza</option>
-                                        <option value="bijuterias">Bijuterias</option>
-                                        <option value="informatica">Informática</option>
-                                        <option value="pecas-veiculos">Peças para Veículos</option>
-                                        <option value="bebidas">Bebidas</option>
-                                        <option value="livros">Livros</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Atual (R$)</label>
-                                    <input type="text" inputmode="decimal" id="newProdPrice" required placeholder="29,90" 
-                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Antigo Riscado (R$)</label>
-                                    <input type="text" inputmode="decimal" id="newProdOriginalPrice" placeholder="Opcional" 
-                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Estoque (Unidades)</label>
-                                    <input type="number" id="newProdStock" required placeholder="10" 
-                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem (URL ou Arquivo)</label>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem do Banner (URL ou Arquivo)</label>
                                     <div class="flex gap-2">
-                                        <input type="url" id="newProdImage" placeholder="https://..." 
-                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                        <label class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
-                                            <i class="fas fa-upload"></i>
-                                            <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newProdImage')">
+                                        <input type="url" id="newBannerImgUrl" placeholder="https://exemplo.com/imagem-banner.jpg" 
+                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                        <label class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                            <i class="fas fa-upload mr-1.5"></i> Arquivo
+                                            <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newBannerImgUrl')">
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
-                                    <select id="newProdFreeShipping" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                        <option value="true">Sim (Grátis)</option>
-                                        <option value="false" selected>Não (Padrão)</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo (Ex: Promoção)</label>
-                                    <input type="text" id="newProdBadge" placeholder="Opcional..." 
-                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
-                                </div>
-                                <div id="newProdConditionGroup" class="hidden">
-                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Condição (Livros)</label>
-                                    <select id="newProdCondition" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
-                                        <option value="novo">Novo</option>
-                                        <option value="usado">Usado</option>
-                                    </select>
-                                </div>
-                            </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Ação ao Clicar</label>
+                                        <select id="newBannerTargetType" onchange="toggleBannerFields('new')" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                            <option value="categoria">Abrir Categoria</option>
+                                            <option value="produto">Abrir Produto</option>
+                                            <option value="url">Link Customizado</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="newBannerField_categoria">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Qual Categoria?</label>
+                                        <select id="newBannerCategory" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                            <option value="todos">Todos os Produtos</option>
+                                            <option value="limpeza">Limpeza</option>
+                                            <option value="bijuterias">Bijuterias</option>
+                                            <option value="informatica">Informática</option>
+                                            <option value="pecas-veiculos">Peças para Veículos</option>
+                                            <option value="bebidas">Bebidas</option>
+                                            <option value="livros">Livros</option>
+                                        </select>
+                                    </div>
 
-                            <div>
-                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">Descrição do Produto</label>
-                                <textarea id="newProdDescription" required rows="3" placeholder="Especificações e detalhes..." 
-                                          class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg resize-none outline-none"></textarea>
-                            </div>
+                                    <div id="newBannerField_produto" class="hidden">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Qual Produto?</label>
+                                        <select id="newBannerProduct" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none"></select>
+                                    </div>
 
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 mt-2">
-                                <i class="fas fa-check"></i> Publicar Produto na Loja
-                            </button>
-                        </form>
+                                    <div id="newBannerField_url" class="hidden">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Link URL</label>
+                                        <input type="text" id="newBannerUrl" placeholder="https..." class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Início Promoção</label>
+                                        <input type="date" id="newBannerStartDate" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Fim Promoção</label>
+                                        <input type="date" id="newBannerEndDate" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 mt-2">
+                                    <i class="fas fa-plus-circle"></i> Adicionar Banner
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
+                            <div class="flex items-center justify-between border-b border-gray-200 pb-2">
+                                <h4 class="text-xs font-black text-navy-900 flex items-center gap-1.5">
+                                    <i class="fas fa-list text-blue-600"></i> Banners Ativos no Site (<span id="adminBannerCount">0</span>)
+                                </h4>
+                            </div>
+                            <div id="adminBannersList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
+                        </div>
                     </div>
 
-                    <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-2">
-                            <h4 class="text-xs font-black text-navy-900 flex items-center gap-1.5">
-                                <i class="fas fa-boxes text-emerald-600"></i> Produtos Cadastrados (<span id="adminProductCount">0</span>)
-                            </h4>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-semibold text-gray-600">Categoria:</span>
-                                <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700 outline-none">
-                                    <option value="todos">Todas</option>
-                                    <option value="limpeza">Limpeza</option>
-                                    <option value="bijuterias">Bijuterias</option>
-                                    <option value="informatica">Informática</option>
-                                    <option value="pecas-veiculos">Peças para Veículos</option>
-                                    <option value="bebidas">Bebidas</option>
-                                    <option value="livros">Livros</option>
-                                </select>
+                    <!-- SEÇÃO 2: PRODUTOS -->
+                    <div id="adminSectionProdutos" class="space-y-6 hidden">
+                        <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
+                            <h3 class="text-sm font-black text-navy-900 flex items-center gap-2 border-b border-gray-200 pb-2">
+                                <i class="fas fa-box-open text-emerald-600"></i> Cadastrar Novo Produto
+                            </h3>
+
+                            <form onsubmit="handleAddNewProduct(event)" class="space-y-3">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome do Produto</label>
+                                    <input type="text" id="newProdName" required placeholder="Ex: Pastilha de Freio / Detergente" 
+                                           class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Categoria</label>
+                                        <select id="newProdCategory" onchange="toggleConditionField('new')" required class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                            <option value="limpeza">Limpeza</option>
+                                            <option value="bijuterias">Bijuterias</option>
+                                            <option value="informatica">Informática</option>
+                                            <option value="pecas-veiculos">Peças para Veículos</option>
+                                            <option value="bebidas">Bebidas</option>
+                                            <option value="livros">Livros</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Atual (R$)</label>
+                                        <input type="text" inputmode="decimal" id="newProdPrice" required placeholder="29,90" 
+                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Preço Antigo Riscado (R$)</label>
+                                        <input type="text" inputmode="decimal" id="newProdOriginalPrice" placeholder="Opcional" 
+                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Estoque (Unidades)</label>
+                                        <input type="number" id="newProdStock" required placeholder="10" 
+                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Imagem (URL ou Arquivo)</label>
+                                        <div class="flex gap-2">
+                                            <input type="url" id="newProdImage" placeholder="https://..." 
+                                                   class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                            <label class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-2 rounded-lg cursor-pointer text-xs font-bold flex items-center justify-center whitespace-nowrap transition">
+                                                <i class="fas fa-upload"></i>
+                                                <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(event, 'newProdImage')">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-2 sm:col-span-1">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Frete Grátis?</label>
+                                        <select id="newProdFreeShipping" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                            <option value="true">Sim (Grátis)</option>
+                                            <option value="false" selected>Não (Padrão)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Selo (Ex: Promoção)</label>
+                                        <input type="text" id="newProdBadge" placeholder="Opcional..." 
+                                               class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg outline-none">
+                                    </div>
+                                    <div id="newProdConditionGroup" class="hidden">
+                                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Condição (Livros)</label>
+                                        <select id="newProdCondition" class="w-full px-2 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg font-medium outline-none">
+                                            <option value="novo">Novo</option>
+                                            <option value="usado">Usado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Descrição do Produto</label>
+                                    <textarea id="newProdDescription" required rows="3" placeholder="Especificações e detalhes..." 
+                                              class="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-300 rounded-lg resize-none outline-none"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 mt-2">
+                                    <i class="fas fa-check"></i> Publicar Produto na Loja
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-2">
+                                <h4 class="text-xs font-black text-navy-900 flex items-center gap-1.5">
+                                    <i class="fas fa-boxes text-emerald-600"></i> Produtos Cadastrados (<span id="adminProductCount">0</span>)
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-semibold text-gray-600">Categoria:</span>
+                                    <select id="adminCategoryFilter" onchange="renderAdminLists()" class="bg-gray-50 border border-gray-300 rounded-lg px-2 py-1 text-xs font-medium text-gray-700 outline-none">
+                                        <option value="todos">Todas</option>
+                                        <option value="limpeza">Limpeza</option>
+                                        <option value="bijuterias">Bijuterias</option>
+                                        <option value="informatica">Informática</option>
+                                        <option value="pecas-veiculos">Peças para Veículos</option>
+                                        <option value="bebidas">Bebidas</option>
+                                        <option value="livros">Livros</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="adminProductsList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
+                        </div>
+                    </div>
+
+                    <!-- SEÇÃO 3: PEDIDOS E RASTREIO -->
+                    <div id="adminSectionPedidos" class="space-y-6 hidden">
+                        <div class="bg-white border border-gray-200 p-5 rounded-2xl shadow-sm space-y-4">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <h3 class="text-sm font-black text-navy-900 flex items-center gap-2">
+                                    <i class="fas fa-truck text-blue-600"></i> Gerenciamento de Pedidos e Rastreio
+                                </h3>
+                                <button onclick="carregarPedidosAdmin()" class="bg-blue-50 text-blue-700 text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-blue-100 transition">
+                                    <i class="fas fa-sync-alt mr-1"></i> Atualizar Lista
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500">Adicione ou atualize o código de rastreio dos Correios para que o cliente possa acompanhar a entrega na Área do Comprador.</p>
+                            
+                            <div id="adminOrdersList" class="space-y-3 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
+                                <p class="text-xs text-gray-400 text-center py-6">Carregando pedidos...</p>
                             </div>
                         </div>
-                        <div id="adminProductsList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -467,6 +506,29 @@
             carregarDadosDoSupabase();
         });
 
+        // TROCAR ABAS DO PAINEL LATERAL
+        function switchAdminTab(tabName) {
+            document.getElementById('adminSectionBanners').classList.add('hidden');
+            document.getElementById('adminSectionProdutos').classList.add('hidden');
+            document.getElementById('adminSectionPedidos').classList.add('hidden');
+
+            document.getElementById('tabBtnBanners').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 text-gray-700 hover:bg-gray-100";
+            document.getElementById('tabBtnProdutos').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 text-gray-700 hover:bg-gray-100";
+            document.getElementById('tabBtnPedidos').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 text-gray-700 hover:bg-gray-100";
+
+            if (tabName === 'banners') {
+                document.getElementById('adminSectionBanners').classList.remove('hidden');
+                document.getElementById('tabBtnBanners').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 bg-cdcHeader text-white";
+            } else if (tabName === 'produtos') {
+                document.getElementById('adminSectionProdutos').classList.remove('hidden');
+                document.getElementById('tabBtnProdutos').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 bg-cdcHeader text-white";
+            } else if (tabName === 'pedidos') {
+                document.getElementById('adminSectionPedidos').classList.remove('hidden');
+                document.getElementById('tabBtnPedidos').className = "admin-tab-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2.5 bg-cdcHeader text-white";
+                carregarPedidosAdmin();
+            }
+        }
+
         // 1. SISTEMA DE LOGIN INTEGRADO AO SUPABASE
         async function handleAdminLogin(e) {
             e.preventDefault();
@@ -518,6 +580,73 @@
 
             if(!document.getElementById('adminDashboardView').classList.contains('hidden')) {
                 renderAdminLists();
+            }
+        }
+
+        async function carregarPedidosAdmin() {
+            const container = document.getElementById('adminOrdersList');
+            container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4"><i class="fas fa-spinner fa-spin"></i> Carregando pedidos...</p>`;
+
+            const { data: orders, error } = await supabaseClient
+                .from('orders')
+                .select('*, customers(name, cpf_cnpj, email, phone)')
+                .order('created_at', { ascending: false });
+
+            if (error || !orders || orders.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Nenhum pedido encontrado no sistema.</p>`;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                let itemsHtml = '';
+                if (Array.isArray(order.items)) {
+                    itemsHtml = order.items.map(i => `<span class="block text-[11px] text-gray-600">• ${i.quantity || 1}x ${i.name || 'Produto'} (R$ ${(i.price || 0).toFixed(2)})</span>`).join('');
+                }
+                const cust = order.customers || {};
+
+                return `
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-xs space-y-2">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <div>
+                                <span class="font-black text-cdcHeader text-sm">Pedido #${order.id}</span>
+                                <span class="text-[10px] text-gray-400 ml-2">${new Date(order.created_at).toLocaleString('pt-BR')}</span>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${order.status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-yellow-100 text-yellow-800'}">
+                                ${order.status}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 bg-white p-2.5 rounded-lg border">
+                            <div><strong>Cliente:</strong> ${cust.name || 'Não informado'}</div>
+                            <div><strong>CPF/CNPJ:</strong> ${cust.cpf_cnpj || 'Não informado'}</div>
+                            <div class="sm:col-span-2"><strong>Itens:</strong><div class="mt-1">${itemsHtml}</div></div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t">
+                            <span class="font-black text-navy-900">Total: R$ ${(order.total_amount || 0).toFixed(2).replace('.', ',')}</span>
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <input type="text" id="trackingInput_${order.id}" value="${order.tracking_code || ''}" placeholder="Código de Rastreio (Ex: AB123456789BR)" 
+                                       class="px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-lg flex-grow sm:w-64 outline-none focus:border-blue-500">
+                                <button onclick="salvarRastreio(${order.id})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">
+                                    Salvar Rastreio
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function salvarRastreio(orderId) {
+            const trackingCode = document.getElementById(`trackingInput_${orderId}`).value.trim();
+            const { error } = await supabaseClient
+                .from('orders')
+                .update({ tracking_code: trackingCode })
+                .eq('id', orderId);
+
+            if (!error) {
+                showNotification("Código de rastreio salvo com sucesso!");
+                carregarPedidosAdmin();
+            } else {
+                alert("Erro ao salvar o código de rastreio.");
             }
         }
 
