@@ -132,12 +132,12 @@
                 <!-- Right Menu: Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     
-                    <!-- User Account Quick Link -->
-                    <div id="userAccountBtn" class="hidden lg:flex items-center text-xs text-left gap-2 cursor-pointer hover:opacity-80" onclick="toggleAuthModal(true)">
-                        <i class="far fa-user-circle text-2xl text-white"></i>
+                    <!-- User Account Quick Link (Área do Comprador) -->
+                    <div id="userAccountBtn" class="hidden lg:flex items-center text-xs text-left gap-2 cursor-pointer hover:opacity-80 bg-blue-900/60 px-3 py-1.5 rounded-xl border border-blue-800" onclick="openCustomerArea()">
+                        <i class="fas fa-box-open text-xl text-emerald-400"></i>
                         <div>
-                            <span class="block text-gray-300">Bem-vindo(a)!</span>
-                            <span class="font-semibold text-white" id="userAccountStatus">Visitante / ADM</span>
+                            <span class="block text-gray-300">Acompanhe seu pedido</span>
+                            <span class="font-semibold text-white">Área do Comprador</span>
                         </div>
                     </div>
 
@@ -291,6 +291,43 @@
                     </button>
                 </div>
             </section>
+        </div>
+
+        <!-- PÁGINA DEDICADA DA ÁREA DO COMPRADOR (RASTREIO) -->
+        <div id="customerAreaView" class="hidden max-w-4xl mx-auto px-3 sm:px-6 py-8">
+            <button onclick="closeAllPages()" class="mb-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-navy-900 transition">
+                <i class="fas fa-arrow-left"></i> Voltar para a Loja
+            </button>
+
+            <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6 space-y-6">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-blue-100 text-cdcHeader rounded-2xl flex items-center justify-center mx-auto text-xl">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-navy-900">Área do Comprador</h2>
+                    <p class="text-xs text-gray-500">Consulte o status do seu pedido e código de rastreio dos Correios informando seus dados.</p>
+                </div>
+
+                <form onsubmit="handleCustomerSearch(event)" class="space-y-4 max-w-md mx-auto bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Seu Nome Completo</label>
+                        <input type="text" id="searchCustomerName" required placeholder="Ex: Maria Silva" 
+                               class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-cdcHeader">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Seu CPF ou CNPJ (Apenas números)</label>
+                        <input type="text" id="searchCustomerCpf" required placeholder="Ex: 12345678900" 
+                               class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-cdcHeader">
+                    </div>
+                    <button type="submit" class="w-full bg-cdcHeader hover:bg-cdcDark text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
+                        Consultar Meus Pedidos
+                    </button>
+                </form>
+
+                <div id="customerOrdersResultContainer" class="space-y-3 pt-2">
+                    <!-- Resultados injetados via JS -->
+                </div>
+            </div>
         </div>
 
         <!-- PÁGINA DEDICADA DO PRODUTO -->
@@ -486,42 +523,6 @@
             </div>
         </section>
     </main>
-
-    <!-- Modal de Acesso (Visitante / Admin) -->
-    <div id="authModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="toggleAuthModal(false)"></div>
-        <div class="flex items-center justify-center min-h-screen p-3">
-            <div class="relative bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl z-10 space-y-3">
-                <button onclick="toggleAuthModal(false)" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-base"></i>
-                </button>
-
-                <div class="flex border-b border-gray-200">
-                    <button id="tabVisitorBtn" onclick="switchAuthTab('visitor')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-cdcHeader text-cdcHeader">
-                        <i class="fas fa-user-plus mr-1"></i> Visitante
-                    </button>
-                </div>
-
-                <form id="visitorAuthForm" onsubmit="handleVisitorRegister(event)" class="space-y-2.5 pt-1">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">Nome Completo</label>
-                        <input type="text" required placeholder="Seu nome" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">E-mail</label>
-                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">WhatsApp</label>
-                        <input type="tel" required placeholder="(61) 99999-9999" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none">
-                    </div>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl transition shadow">
-                        Cadastrar e Continuar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Cart Drawer Modal -->
     <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden hidden">
@@ -791,7 +792,6 @@
 
             if (prods) {
                 productsData = prods;
-                // Carrega a média de avaliações do Supabase para cada produto
                 for (let p of productsData) {
                     await recalculateProductRatingFromSupabase(p);
                 }
@@ -812,8 +812,6 @@
             } else {
                 console.error("Erro banners:", errBans);
             }
-
-            renderAdminLists();
         }
 
         async function recalculateProductRatingFromSupabase(product) {
@@ -840,7 +838,7 @@
                 if (event.state) {
                     if (event.state.productId) displayProductView(event.state.productId);
                     else if (event.state.infoKey) displayInfoView(event.state.infoKey);
-                    else if (event.state.admin) displayAdminDashboardView();
+                    else if (event.state.customerArea) displayCustomerAreaView();
                 } else {
                     displayStorefrontView();
                 }
@@ -1110,7 +1108,7 @@
             `).join('');
         }
 
-        // CARREGA COMENTÁRIOS DO SUPABASE
+        // COMENTÁRIOS E AVALIAÇÕES
         async function renderComments(productId) {
             const container = document.getElementById('commentsListContainer');
             if (!container) return;
@@ -1146,7 +1144,6 @@
             `).join('');
         }
 
-        // SALVA COMENTÁRIO NO SUPABASE
         async function handleAddComment(e) {
             e.preventDefault();
             if (!selectedProductForPage) return;
@@ -1227,6 +1224,103 @@
             displayInfoView(infoKey);
         }
 
+        // FUNÇÕES DA ÁREA DO COMPRADOR
+        function openCustomerArea() {
+            history.pushState({ customerArea: true }, '', '#area-do-comprador');
+            displayCustomerAreaView();
+        }
+
+        function displayCustomerAreaView() {
+            hideAllViews();
+            document.getElementById('customerAreaView').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        async function handleCustomerSearch(e) {
+            e.preventDefault();
+            const name = document.getElementById('searchCustomerName').value.trim();
+            const cpfCnpj = document.getElementById('searchCustomerCpf').value.replace(/\D/g, '');
+            const resultContainer = document.getElementById('customerOrdersResultContainer');
+
+            if (!name || !cpfCnpj) {
+                alert("Preencha o nome e o CPF/CNPJ.");
+                return;
+            }
+
+            resultContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-4"><i class="fas fa-spinner fa-spin"></i> Buscando seus pedidos...</p>`;
+
+            try {
+                // Busca o cliente pelo CPF na tabela 'customers'
+                const { data: customerData, error: custError } = await supabaseClient
+                    .from('customers')
+                    .select('id')
+                    .eq('cpf_cnpj', cpfCnpj)
+                    .maybeSingle();
+
+                if (custError || !customerData) {
+                    resultContainer.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-800">Nenhum pedido encontrado para este CPF/CNPJ. Verifique se digitou corretamente.</div>`;
+                    return;
+                }
+
+                // Busca os pedidos do cliente na tabela 'orders'
+                const { data: ordersData, error: ordError } = await supabaseClient
+                    .from('orders')
+                    .select('*')
+                    .eq('customer_id', customerData.id)
+                    .order('created_at', { ascending: false });
+
+                if (ordError || !ordersData || ordersData.length === 0) {
+                    resultContainer.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-800">Nenhum pedido registrado para este cadastro.</div>`;
+                    return;
+                }
+
+                resultContainer.innerHTML = ordersData.map(order => {
+                    let itemsHtml = '';
+                    if (Array.isArray(order.items)) {
+                        itemsHtml = order.items.map(i => `<span class="block text-[11px] text-gray-600">• ${i.quantity || 1}x ${i.name || 'Produto'} (R$ ${(i.price || 0).toFixed(2)})</span>`).join('');
+                    }
+
+                    return `
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-2 text-xs">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="font-bold text-cdcHeader">Pedido #${order.id}</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${order.status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-yellow-100 text-yellow-800'}">
+                                    Status: ${order.status}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-700 block mb-1">Itens do Pedido:</span>
+                                ${itemsHtml}
+                            </div>
+                            <div class="pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
+                                <span class="text-gray-500">Data: ${new Date(order.created_at).toLocaleDateString('pt-BR')}</span>
+                                <span class="font-black text-navy-900">Total: R$ ${(order.total_amount || 0).toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            ${order.tracking_code ? `
+                                <div class="mt-2 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                                    <div>
+                                        <span class="block font-bold text-blue-900">📦 Código de Rastreio (Correios):</span>
+                                        <span class="font-mono text-blue-700 font-semibold">${order.tracking_code}</span>
+                                    </div>
+                                    <a href="https://www.linkcorreios.com.br/?id=${order.tracking_code}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold transition">
+                                        Rastrear
+                                    </a>
+                                </div>
+                            ` : `
+                                <div class="mt-2 p-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-[11px]">
+                                    <i class="fas fa-clock text-amber-500 mr-1"></i> Pedido em separação. O código de rastreio será disponibilizado em breve pelo vendedor.
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error(err);
+                resultContainer.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-center text-xs text-red-800">Erro ao buscar pedidos. Tente novamente mais tarde.</div>`;
+            }
+        }
+
         async function displayProductView(productId) {
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
@@ -1293,22 +1387,8 @@
             window.scrollTo(0, 0);
         }
 
-        function displayAdminDashboardView() {
-            if (!isAdminLoggedIn) {
-                toggleAuthModal(true);
-                switchAuthTab('admin');
-                showNotification("Faça login como Administrador!");
-                return;
-            }
-            history.pushState({ admin: true }, '', '#admin-dashboard');
-            hideAllViews();
-            renderAdminLists();
-            document.getElementById('adminDashboardView').classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
         function hideAllViews() {
-            ['mainStorefrontView', 'singleProductPageView', 'infoPageView', 'adminDashboardView'].forEach(id => {
+            ['mainStorefrontView', 'singleProductPageView', 'infoPageView', 'customerAreaView'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -1456,23 +1536,6 @@
 
         function toggleCartModal(show) {
             document.getElementById('cartModal').classList.toggle('hidden', !show);
-        }
-
-        function toggleAuthModal(show) {
-            document.getElementById('authModal').classList.toggle('hidden', !show);
-        }
-
-        function switchAuthTab(type) {
-            const visitorForm = document.getElementById('visitorAuthForm');
-            if (type === 'visitor') {
-                visitorForm.classList.remove('hidden');
-            }
-        }
-
-        function handleVisitorRegister(e) {
-            e.preventDefault();
-            toggleAuthModal(false);
-            showNotification("Cadastro de visitante efetuado!");
         }
 
         function showNotification(msg) {
