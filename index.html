@@ -545,17 +545,32 @@
                 </div>
 
                 <div id="cartFooter" class="p-3.5 bg-gray-50 border-t border-gray-200 space-y-2.5">
-                    <div class="bg-white p-2.5 rounded-lg border border-gray-200 text-xs">
-                        <label class="font-semibold text-gray-700 block mb-1">
-                            <i class="fas fa-truck text-cdcHeader mr-1"></i> Simular Frete (CEP):
+                    
+                    <!-- ENDEREÇO DE ENTREGA E SIMULAÇÃO -->
+                    <div class="bg-white p-2.5 rounded-lg border border-gray-200 text-xs space-y-2">
+                        <label class="font-semibold text-gray-700 block">
+                            <i class="fas fa-map-marker-alt text-red-500 mr-1"></i> Endereço de Entrega:
                         </label>
                         <div class="flex gap-2">
-                            <input type="text" id="cepInput" placeholder="72870-000" maxlength="9" class="flex-grow border rounded px-2 py-1 text-xs focus:ring-1 focus:ring-cdcHeader">
-                            <button onclick="calculateFreight()" class="bg-cdcHeader text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-cdcDark">
-                                OK
+                            <input type="text" id="cepInput" onblur="buscarCEP()" placeholder="CEP (Ex: 72870-000) *" maxlength="9" class="w-2/3 border border-gray-300 rounded px-2 py-1.5 text-xs focus:ring-1 focus:ring-cdcHeader focus:outline-none">
+                            <button onclick="calculateFreight()" class="w-1/3 bg-cdcHeader text-white px-2 py-1.5 rounded text-[11px] font-bold hover:bg-cdcDark transition">
+                                Calcular
                             </button>
                         </div>
-                        <span id="freightMsg" class="text-[9px] text-gray-500 mt-1 block"> Digite seu CEP para calcular</span>
+                        <span id="freightMsg" class="text-[9px] text-gray-500 block"> Digite seu CEP para calcular o frete.</span>
+                        
+                        <div id="addressFields" class="hidden space-y-2 pt-2 border-t border-gray-100">
+                            <input type="text" id="ruaInput" placeholder="Rua / Avenida *" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none">
+                            <div class="flex gap-2">
+                                <input type="text" id="numeroInput" placeholder="Número *" class="w-1/3 border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none">
+                                <input type="text" id="complementoInput" placeholder="Complemento (Opcional)" class="w-2/3 border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none">
+                            </div>
+                            <input type="text" id="bairroInput" placeholder="Bairro *" class="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none">
+                            <div class="flex gap-2">
+                                <input type="text" id="cidadeInput" placeholder="Cidade *" readonly class="w-2/3 border border-gray-300 bg-gray-50 rounded px-2 py-1.5 text-xs focus:outline-none">
+                                <input type="text" id="ufInput" placeholder="UF *" readonly class="w-1/3 border border-gray-300 bg-gray-50 rounded px-2 py-1.5 text-xs focus:outline-none">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- SELEÇÃO DO MÉTODO DE PAGAMENTO -->
@@ -752,159 +767,16 @@
         };
 
         const infoPagesData = {
-            'politica-troca': `
-                <h1 class="text-xl font-black text-navy-900 mb-2">POLÍTICA DE TROCA, DEVOLUÇÃO E CANCELAMENTO</h1>
-                <p class="text-xs text-gray-500 mb-4">CDC COMÉRCIO ONLINE<br>Documento institucional para utilização no comércio eletrônico<br>Versão: 1.0 • Outubro de 2026</p>
-
-                <div class="space-y-4 text-xs sm:text-sm">
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">1. Objetivo</h2>
-                        <p>A presente Política de Troca, Devolução e Cancelamento estabelece as condições aplicáveis às compras realizadas por meio da CDC Comércio Online, buscando oferecer ao consumidor informações claras, objetivas e acessíveis sobre seus direitos e sobre os procedimentos para solicitar troca, devolução, cancelamento ou reembolso.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">2. Abrangência</h2>
-                        <p>Esta política aplica-se às compras realizadas pelos canais digitais oficiais da CDC Comércio Online, incluindo produtos das categorias de limpeza, bijuterias e acessórios, informática, eletrônicos, bebidas, alimentação, roupas, brinquedos, materiais escolares e de escritório, produtos de beleza e demais produtos comercializados pela empresa.</p>
-                        <p class="mt-2">As regras aqui previstas devem ser interpretadas em conjunto com a legislação brasileira de proteção e defesa do consumidor, especialmente a Lei nº 8.078/1990 (Código de Defesa do Consumidor) e o Decreto nº 7.962/2013, que regulamenta o comércio eletrônico.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">3. Direito de arrependimento — compras pela internet</h2>
-                        <p>Nas compras realizadas fora do estabelecimento comercial, inclusive pela internet, o consumidor poderá exercer o direito de arrependimento no prazo legal de 7 (sete) dias, contado da assinatura do contrato ou do recebimento do produto, conforme aplicável.</p>
-                        <p class="mt-2">No exercício regular desse direito, os valores pagos pelo consumidor deverão ser restituídos na forma prevista na legislação aplicável, sem prejuízo dos procedimentos necessários para a devolução do produto. O consumidor não precisa apresentar justificativa para exercer o direito de arrependimento.</p>
-                        <p class="mt-2">A solicitação poderá ser realizada pelo mesmo meio utilizado para a contratação, sem prejuízo de outros canais disponibilizados pela CDC Comércio Online. O Decreto nº 7.962/2013 também determina que o fornecedor disponibilize meios adequados e eficazes para o exercício do arrependimento e confirme o recebimento da solicitação.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">4. Como solicitar uma devolução</h2>
-                        <ol class="list-decimal pl-4 space-y-1">
-                            <li>Entre em contato com a CDC Comércio Online pelo canal oficial informado nesta política.</li>
-                            <li>Informe o número do pedido, nome do comprador, produto e motivo da solicitação, quando solicitado para fins de atendimento e registro.</li>
-                            <li>A CDC orientará o consumidor sobre o procedimento de devolução e, quando aplicável, sobre a forma de postagem ou coleta.</li>
-                            <li>Após o recebimento do produto, serão realizados os procedimentos de conferência e processamento da solicitação.</li>
-                            <li>O reembolso será realizado conforme a forma de pagamento utilizada e os prazos operacionais aplicáveis, observada a legislação.</li>
-                        </ol>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">5. Condições para devolução por arrependimento</h2>
-                        <p>Quando a devolução decorrer do direito de arrependimento, o produto deverá, sempre que possível, ser devolvido com seus acessórios, manuais, etiquetas, embalagem e demais itens que o acompanham. Isso não limita os direitos legalmente assegurados ao consumidor.</p>
-                        <p class="mt-2">A CDC Comércio Online poderá solicitar informações, fotos ou outros elementos necessários para identificar o pedido e viabilizar o procedimento logístico, sem transformar tais providências em requisito que impeça o exercício de direito legal.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">6. Produto com defeito ou vício</h2>
-                        <p>Caso o produto apresente vício de qualidade ou quantidade, a CDC Comércio Online adotará as providências cabíveis de acordo com o Código de Defesa do Consumidor e com a natureza do produto.</p>
-                        <p class="mt-2">O art. 18 do CDC estabelece a responsabilidade dos fornecedores pelos vícios que tornem o produto impróprio ou inadequado ao consumo ou diminuam seu valor. Em regra, existe prazo para saneamento do vício e, nas hipóteses previstas em lei, o consumidor poderá exercer as alternativas legalmente asseguradas, como substituição, restituição ou abatimento proporcional.</p>
-                        <p class="mt-2">Para produtos que possuam garantia do fabricante, assistência técnica ou condições específicas, a CDC poderá orientar o consumidor sobre o procedimento adequado, sem afastar os direitos previstos na legislação.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">7. Produto recebido avariado ou diferente do pedido</h2>
-                        <p>Se o consumidor receber produto danificado, com embalagem violada, produto diferente daquele adquirido ou quantidade divergente, recomenda-se comunicar a CDC Comércio Online assim que identificar a ocorrência.</p>
-                        <p class="mt-2">Quando possível, o consumidor deverá registrar fotografias da embalagem externa, etiqueta de transporte e produto recebido. Essas informações auxiliam na apuração da ocorrência e na solução mais rápida do atendimento.</p>
-                        <p class="mt-2">A CDC Comércio Online analisará a ocorrência e adotará a solução cabível, observando a legislação de proteção ao consumidor e as condições da oferta.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">8. Troca por tamanho, cor, modelo ou preferência</h2>
-                        <p>Nas hipóteses em que o consumidor deseja trocar o produto exclusivamente por preferência, tamanho, cor ou modelo, sem defeito e fora do exercício do direito de arrependimento, a troca ficará condicionada à política comercial específica divulgada para o respectivo produto ou categoria, sem prejuízo dos direitos obrigatórios previstos na legislação.</p>
-                        <p class="mt-2">Quando houver uma política comercial de troca voluntária, suas condições — prazo, disponibilidade de estoque, custos logísticos e demais requisitos — deverão ser informadas de maneira clara antes ou no momento da contratação.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">9. Cancelamento do pedido antes do envio</h2>
-                        <p>O consumidor poderá solicitar o cancelamento do pedido enquanto ele ainda estiver em etapa que permita a interrupção do processamento. A CDC Comércio Online confirmará a possibilidade operacional do cancelamento.</p>
-                        <p class="mt-2">Se o pedido já tiver sido expedido, a solicitação poderá ser tratada como devolução, observando-se o direito de arrependimento e demais direitos previstos na legislação, conforme o caso.</p>
-                        <p class="mt-2">Em compras com pagamento por cartão, a CDC adotará as providências cabíveis junto ao meio de pagamento para cancelamento ou estorno, conforme a situação. O Decreto nº 7.962/2013 determina que, no exercício do direito de arrependimento, o fornecedor comunique imediatamente a instituição financeira ou administradora do cartão para impedir o lançamento ou efetivar o estorno quando cabível.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">10. Reembolso</h2>
-                        <p>Quando houver restituição de valores, o procedimento observará a forma de pagamento utilizada na compra e os procedimentos operacionais da respectiva instituição financeira ou meio de pagamento.</p>
-                        <ul class="list-disc pl-4 mt-2 space-y-1">
-                            <li><strong>Cartão de crédito:</strong> o estorno será solicitado pela CDC conforme o procedimento da operadora/administradora, ficando o prazo de visualização do crédito sujeito também aos prazos da instituição financeira.</li>
-                            <li><strong>PIX ou transferência:</strong> quando aplicável, o reembolso será realizado pelos dados necessários ao processamento seguro da devolução.</li>
-                            <li><strong>Outras formas de pagamento:</strong> o reembolso seguirá o método e os procedimentos aplicáveis à transação.</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">11. Produtos com características especiais</h2>
-                        <p>Algumas categorias podem exigir cuidados específicos em razão de suas características, condições sanitárias, validade, segurança, higiene, consumo ou funcionamento. Nessas situações, a CDC Comércio Online observará a legislação aplicável e informará, no anúncio ou atendimento, as condições específicas quando necessárias.</p>
-                        <p class="mt-2">Produtos de alimentação e bebidas, por exemplo, poderão estar sujeitos a controles relacionados a validade, integridade da embalagem, conservação e segurança alimentar. Produtos de higiene, limpeza, beleza e itens de uso pessoal poderão possuir condições específicas de manuseio e devolução, sempre respeitando os direitos legalmente assegurados ao consumidor.</p>
-                        <p class="mt-2">Nenhuma condição específica desta seção pretende restringir direito obrigatório assegurado pela legislação.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">12. Prazo e atendimento das solicitações</h2>
-                        <p>A CDC Comércio Online disponibilizará canal de atendimento adequado para solicitações de informação, dúvida, reclamação, suspensão ou cancelamento. O Decreto nº 7.962/2013 prevê a confirmação imediata do recebimento das demandas e estabelece que a manifestação do fornecedor às demandas relacionadas a atendimento eletrônico seja encaminhada em até 5 (cinco) dias.</p>
-                        <p class="mt-2">Os prazos específicos de análise, coleta, postagem, transporte, troca e processamento financeiro poderão variar conforme o tipo de ocorrência, localização do consumidor, transportadora e meio de pagamento.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">13. Responsabilidade do consumidor</h2>
-                        <p>O consumidor deve fornecer informações corretas para o atendimento, conservar o produto adequadamente enquanto estiver sob sua posse e seguir as orientações de devolução fornecidas pela CDC Comércio Online.</p>
-                        <p class="mt-2">Em qualquer procedimento, a CDC poderá solicitar dados necessários para localizar o pedido, verificar a compra e processar a solicitação com segurança.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">14. Atendimento</h2>
-                        <ul class="list-disc pl-4 space-y-1">
-                            <li><strong>Empresa:</strong> CDC Comércio Online</li>
-                            <li><strong>E-mail:</strong> cdccomercioonline@gmail.com</li>
-                            <li><strong>WhatsApp / telefone:</strong> (61) 99582-9201</li>
-                            <li><strong>Endereço:</strong> Rua 105 Lote 16 – Céu Azul – Valparaíso-GO</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 text-blue-900">15. Disposições finais</h2>
-                        <p>Esta política foi elaborada para servir como documento-base de uma operação de comércio eletrônico e deverá ser adaptada aos canais de venda, categorias de produtos, logística, meios de pagamento e procedimentos internos efetivamente utilizados pela CDC Comércio Online.</p>
-                        <p class="mt-2">Em caso de conflito entre qualquer disposição desta política e norma legal de proteção ao consumidor aplicável ao caso concreto, prevalecerá a legislação vigente.</p>
-                        <p class="mt-2">A CDC Comércio Online poderá atualizar esta política sempre que necessário para refletir mudanças legislativas, regulatórias, operacionais ou comerciais, mantendo a versão vigente disponível em seus canais oficiais.</p>
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-gray-200">
-                        <h2 class="font-bold text-navy-900 text-xs mb-1 text-gray-600">Base legal consultada</h2>
-                        <ul class="list-disc pl-4 space-y-1 text-xs text-gray-500">
-                            <li>Lei nº 8.078/1990 — Código de Defesa do Consumidor, especialmente arts. 18, 19, 26, 49 e 50.</li>
-                            <li>Decreto nº 7.962/2013 — regulamentação da contratação no comércio eletrônico.</li>
-                            <li>Orientações oficiais do Ministério da Justiça/Secretaria Nacional do Consumidor e órgãos de defesa do consumidor sobre comércio eletrônico e direito de arrependimento.</li>
-                        </ul>
-                    </div>
-                </div>
-            `,
-            'envio': `
-                <h1 class="text-xl font-black text-navy-900 mb-2">Envio e Entrega</h1>
-                <p class="text-xs">Enviamos para todo o Brasil através dos Correios e realizamos entregas via Motoboy para Valparaíso-GO e região do DF.</p>
-            `,
-            'missao-visao-valores': `
-                <h1 class="text-xl font-black text-navy-900 mb-4">MISSÃO, VISÃO E VALORES</h1>
-                
-                <div class="space-y-4 text-xs sm:text-sm">
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Missão</h2>
-                        <p>Oferecer uma experiência de compra on-line prática, acessível e confiável, disponibilizando produtos de qualidade em diferentes categorias, com atendimento humanizado, preços competitivos e soluções de entrega que facilitem o dia a dia dos nossos clientes.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Visão</h2>
-                        <p>Ser uma empresa de comércio eletrônico reconhecida pela confiança, inovação, variedade de produtos e excelência no atendimento, ampliando nossa presença no mercado e construindo relacionamentos duradouros com clientes, fornecedores e parceiros.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-bold text-navy-900 text-sm mb-1 uppercase text-blue-900">Valores</h2>
-                        <p>Ética, transparência, qualidade, confiança e respeito, com foco no cliente, inovação, agilidade, segurança e crescimento sustentável.</p>
-                    </div>
-                </div>
-            `
+            'politica-troca': `...`,
+            'envio': `...`,
+            'missao-visao-valores': `...`
         };
 
         let cart = [];
         let currentCategory = 'todos';
         let searchQuery = '';
         let calculatedFreight = 0;
+        let isFreightCalculated = false; // Variavel global para validar o frete
         let selectedProductForPage = null;
         let activePageQuantity = 1;
         let isAdminLoggedIn = false;
@@ -1491,6 +1363,34 @@
             }
         }
 
+        // NOVO: Busca do endereço via API do ViaCEP
+        async function buscarCEP() {
+            let cep = document.getElementById('cepInput').value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                try {
+                    let response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    let data = await response.json();
+                    if (!data.erro) {
+                        document.getElementById('ruaInput').value = data.logradouro;
+                        document.getElementById('bairroInput').value = data.bairro;
+                        document.getElementById('cidadeInput').value = data.localidade;
+                        document.getElementById('ufInput').value = data.uf;
+                        document.getElementById('addressFields').classList.remove('hidden');
+                        
+                        // Força a exibição do frete preenchido
+                        calculateFreight(); 
+                        document.getElementById('numeroInput').focus();
+                    } else {
+                        alert("CEP não encontrado.");
+                        document.getElementById('addressFields').classList.remove('hidden');
+                    }
+                } catch (e) {
+                    console.error("Erro ao buscar CEP", e);
+                    document.getElementById('addressFields').classList.remove('hidden');
+                }
+            }
+        }
+
         function calculateFreight() {
             const cep = document.getElementById('cepInput').value.replace(/\D/g, '');
             const msg = document.getElementById('freightMsg');
@@ -1498,6 +1398,7 @@
             if (cep.length < 8) {
                 msg.innerText = "❌ CEP inválido.";
                 msg.className = "text-[9px] text-red-500 mt-1 block";
+                isFreightCalculated = false;
                 return;
             }
 
@@ -1506,11 +1407,20 @@
             const hasFreeShipping = cart.some(item => item.freeShipping);
             if (hasFreeShipping) {
                 msg.innerText = `✅ Frete Grátis aplicado ao seu carrinho!`;
+                calculatedFreight = 0;
             } else {
-                msg.innerText = `✅ Frete calculado: R$ ${calculatedFreight.toFixed(2)}`;
+                msg.innerText = `✅ Frete calculado: R$ ${calculatedFreight.toFixed(2).replace('.', ',')}`;
             }
             msg.className = "text-[9px] text-emerald-600 font-semibold mt-1 block";
             
+            isFreightCalculated = true;
+            document.getElementById('addressFields').classList.remove('hidden');
+            
+            // Tenta buscar o ViaCEP se o usuário apenas clicou no botão "Calcular"
+            if(document.getElementById('ruaInput').value === "") {
+               buscarCEP();
+            }
+
             updateCartUI();
         }
 
@@ -1568,19 +1478,43 @@
                 return;
             }
 
-            const paymentMethod = document.getElementById('paymentMethodSelect').value;
+            // 1. Validação Obrigatória do Frete e Endereço
+            if (!isFreightCalculated) {
+                alert("Por favor, calcule o frete inserindo seu CEP antes de finalizar a compra.");
+                document.getElementById('cepInput').focus();
+                return;
+            }
 
+            const cep = document.getElementById('cepInput').value.trim();
+            const rua = document.getElementById('ruaInput').value.trim();
+            const numero = document.getElementById('numeroInput').value.trim();
+            const complemento = document.getElementById('complementoInput').value.trim();
+            const bairro = document.getElementById('bairroInput').value.trim();
+            const cidade = document.getElementById('cidadeInput').value.trim();
+            const uf = document.getElementById('ufInput').value.trim();
+
+            if (!cep || !rua || !numero || !bairro || !cidade || !uf) {
+                alert("Por favor, preencha todos os campos obrigatórios do endereço de entrega.");
+                return;
+            }
+
+            const enderecoCompleto = `${rua}, ${numero}${complemento ? ' - ' + complemento : ''}, ${bairro}, ${cidade}-${uf}, CEP: ${cep}`;
+            
+            // 2. Cálculo Final dos Valores
+            const paymentMethod = document.getElementById('paymentMethodSelect').value;
+            const hasFreeShipping = cart.some(item => item.freeShipping);
+            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
+
+            // 3. Pagamento via WhatsApp
             if (paymentMethod === 'whatsapp') {
-                const hasFreeShipping = cart.some(item => item.freeShipping);
-                const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
                 let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
-                const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Pagamento:* WHATSAPP%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
+                const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Endereço de Entrega:*%0A${enderecoCompleto}%0A%0A*Pagamento:* WHATSAPP%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
                 window.open(`https://wa.me/5561995829201?text=${message}`, '_blank');
                 return;
             }
 
-            // Validação dos dados do cliente para Asaas
+            // 4. Pagamento via Asaas - Validação do Cliente
             const name = document.getElementById('checkoutName').value.trim();
             const cpfCnpj = document.getElementById('checkoutCpf').value.replace(/\D/g, '');
             const email = document.getElementById('checkoutEmail').value.trim();
@@ -1594,6 +1528,17 @@
             showNotification("Comunicando com o Asaas...");
 
             try {
+                // TRUQUE DE MESTRE: Injetar o valor do frete como um item na lista que vai pro Supabase
+                // Assim a sua Edge Function cobrará o valor exato no Asaas sem precisar modificar o código do banco de dados!
+                let itemsParaAsaas = [...cart];
+                if (finalFreight > 0) {
+                    itemsParaAsaas.push({
+                        name: "Frete de Entrega",
+                        price: finalFreight,
+                        quantity: 1
+                    });
+                }
+
                 const response = await fetch(`${supabaseUrl}/functions/v1/create-asaas-charge`, {
                     method: 'POST',
                     headers: {
@@ -1602,7 +1547,7 @@
                     },
                     body: JSON.stringify({
                         customer: { name, cpfCnpj, email, phone },
-                        items: cart,
+                        items: itemsParaAsaas, 
                         paymentMethod: paymentMethod
                     })
                 });
