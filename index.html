@@ -759,13 +759,6 @@
         let bannersData = [];
         let productsData = [];
 
-        const initialComments = {
-            6: [
-                { id: 101, author: "Juliana Mendes", rating: 5, date: "12/03/2026", text: "Lindo demais! Brilha muito ao vivo." },
-                { id: 102, author: "Carla Antunes", rating: 4, date: "28/02/2026", text: "Achei super delicado. Tira apenas 1 estrela porque demorou um tiquinho." }
-            ]
-        };
-
         const infoPagesData = {
             'politica-troca': `...`,
             'envio': `...`,
@@ -798,7 +791,10 @@
 
             if (prods) {
                 productsData = prods;
-                productsData.forEach(p => recalculateProductRating(p));
+                // Carrega a média de avaliações do Supabase para cada produto
+                for (let p of productsData) {
+                    await recalculateProductRatingFromSupabase(p);
+                }
                 populateProductDropdowns();
                 applyFiltersAndSearch();
             } else {
@@ -818,6 +814,22 @@
             }
 
             renderAdminLists();
+        }
+
+        async function recalculateProductRatingFromSupabase(product) {
+            const { data: comments } = await supabaseClient
+                .from('product_comments')
+                .select('rating')
+                .eq('product_id', product.id);
+
+            if (!comments || comments.length === 0) {
+                product.rating = 0;
+                product.reviews = 0;
+                return;
+            }
+            const sum = comments.reduce((acc, c) => acc + c.rating, 0);
+            product.rating = parseFloat((sum / comments.length).toFixed(1));
+            product.reviews = comments.length;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -868,18 +880,6 @@
             for (let i = 0; i < emptyStars; i++) html += '<i class="far fa-star"></i>';
             
             return html;
-        }
-
-        function recalculateProductRating(product) {
-            const comments = initialComments[product.id] || [];
-            if (comments.length === 0) {
-                product.rating = 0;
-                product.reviews = 0;
-                return;
-            }
-            const sum = comments.reduce((acc, c) => acc + c.rating, 0);
-            product.rating = parseFloat((sum / comments.length).toFixed(1));
-            product.reviews = comments.length;
         }
 
         function populateProductDropdowns() {
@@ -1110,13 +1110,24 @@
             `).join('');
         }
 
-        function renderComments(productId) {
+        // CARREGA COMENTÁRIOS DO SUPABASE
+        async function renderComments(productId) {
             const container = document.getElementById('commentsListContainer');
             if (!container) return;
 
-            const comments = initialComments[productId] || [];
+            const { data: comments, error } = await supabaseClient
+                .from('product_comments')
+                .select('*')
+                .eq('product_id', productId)
+                .order('id', { ascending: false });
 
-            if (comments.length === 0) {
+            if (error) {
+                console.error("Erro ao carregar comentários:", error);
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">Erro ao carregar avaliações.</p>`;
+                return;
+            }
+
+            if (!comments || comments.length === 0) {
                 container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">Ainda não há avaliações para este produto.</p>`;
                 return;
             }
@@ -1125,7 +1136,7 @@
                 <div class="p-2.5 bg-white rounded-xl border border-gray-200 shadow-sm space-y-1 text-xs">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-navy-900">${c.author}</span>
-                        <span class="text-[9px] text-gray-400">${c.date}</span>
+                        <span class="text-[9px] text-gray-400">${new Date(c.created_at).toLocaleDateString('pt-BR')}</span>
                     </div>
                     <div class="flex text-yellow-400 text-[10px] mb-1">
                         ${renderStarsHTML(c.rating)}
@@ -1135,7 +1146,8 @@
             `).join('');
         }
 
-        function handleAddComment(e) {
+        // SALVA COMENTÁRIO NO SUPABASE
+        async function handleAddComment(e) {
             e.preventDefault();
             if (!selectedProductForPage) return;
 
@@ -1143,29 +1155,48 @@
             const ratingSelect = document.getElementById('commentRating');
             const textInput = document.getElementById('commentText');
 
-            const newComment = {
-                id: Date.now(),
+            const novoComentario = {
+                product_id: selectedProductForPage.id,
                 author: authorInput.value.trim(),
                 rating: parseInt(ratingSelect.value),
-                date: new Date().toLocaleDateString('pt-BR'),
                 text: textInput.value.trim()
             };
 
-            if (!initialComments[selectedProductForPage.id]) {
-                initialComments[selectedProductForPage.id] = [];
+            const { error } = await supabaseClient
+                .from('product_comments')
+                .insert([novoComentario]);
+
+            if (error) {
+                console.error("Erro ao salvar comentário:", error);
+                alert("Não foi possível publicar seu comentário. Tente novamente.");
+                return;
             }
 
-            initialComments[selectedProductForPage.id].unshift(newComment);
-            recalculateProductRating(selectedProductForPage);
-
-            document.getElementById('pdStarRating').innerHTML = renderStarsHTML(selectedProductForPage.rating);
-            document.getElementById('pdReviewsCount').innerText = `(${selectedProductForPage.reviews} avaliações)`;
-            
-            renderComments(selectedProductForPage.id);
+            await atualizarMediaEstrelasProduto(selectedProductForPage.id);
 
             authorInput.value = '';
             textInput.value = '';
+            
+            renderComments(selectedProductForPage.id);
             showNotification("Comentário e avaliação publicados!");
+        }
+
+        async function atualizarMediaEstrelasProduto(productId) {
+            const { data: comments } = await supabaseClient
+                .from('product_comments')
+                .select('rating')
+                .eq('product_id', productId);
+
+            if (comments && comments.length > 0) {
+                const sum = comments.reduce((acc, c) => acc + c.rating, 0);
+                const avg = parseFloat((sum / comments.length).toFixed(1));
+                
+                selectedProductForPage.rating = avg;
+                selectedProductForPage.reviews = comments.length;
+
+                document.getElementById('pdStarRating').innerHTML = renderStarsHTML(avg);
+                document.getElementById('pdReviewsCount').innerText = `(${comments.length} avaliações)`;
+            }
         }
 
         function renderRecommendedProducts(currentProductId) {
@@ -1196,7 +1227,7 @@
             displayInfoView(infoKey);
         }
 
-        function displayProductView(productId) {
+        async function displayProductView(productId) {
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
 
@@ -1238,7 +1269,7 @@
             document.getElementById('pdReviewsCount').innerText = product.reviews > 0 ? `(${product.reviews} avaliações)` : "(Sem avaliações)";
 
             renderRecommendedProducts(productId);
-            renderComments(productId);
+            await renderComments(productId);
 
             hideAllViews();
             document.getElementById('singleProductPageView').classList.remove('hidden');
@@ -1330,8 +1361,6 @@
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // CORREÇÃO DA REGRA DE FRETE: O frete só é 0 (grátis) se TODOS os itens do carrinho tiverem freeShipping igual a true.
-            // Se houver pelo menos um item sem frete grátis, o carrinho exigirá o pagamento do frete.
             const allItemsFreeShipping = cart.length > 0 && cart.every(item => item.freeShipping);
             const finalFreight = allItemsFreeShipping ? 0 : calculatedFreight;
 
@@ -1367,7 +1396,6 @@
             }
         }
 
-        // NOVO: Busca do endereço via API do ViaCEP
         async function buscarCEP() {
             let cep = document.getElementById('cepInput').value.replace(/\D/g, '');
             if (cep.length === 8) {
@@ -1381,7 +1409,6 @@
                         document.getElementById('ufInput').value = data.uf;
                         document.getElementById('addressFields').classList.remove('hidden');
                         
-                        // Força a exibição do frete preenchido
                         calculateFreight(); 
                         document.getElementById('numeroInput').focus();
                     } else {
