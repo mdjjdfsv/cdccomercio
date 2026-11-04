@@ -772,11 +772,12 @@
             'missao-visao-valores': `...`
         };
 
-        let cart = [];
+        let cart = JSON.parse(localStorage.getItem('cdc_cart')) || [];
+        
         let currentCategory = 'todos';
         let searchQuery = '';
         let calculatedFreight = 0;
-        let isFreightCalculated = false; // Variavel global para validar o frete
+        let isFreightCalculated = false;
         let selectedProductForPage = null;
         let activePageQuantity = 1;
         let isAdminLoggedIn = false;
@@ -1308,7 +1309,6 @@
 
             updateCartUI();
             showNotification(`Adicionado ao carrinho!`);
-            // toggleCartModal(true); // Removido para não abrir o carrinho automaticamente
         }
 
         function updateCartQuantity(productId, delta) {
@@ -1325,11 +1325,15 @@
         }
 
         function updateCartUI() {
+            localStorage.setItem('cdc_cart', JSON.stringify(cart));
+
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            const hasFreeShipping = cart.some(item => item.freeShipping);
-            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+            // CORREÇÃO DA REGRA DE FRETE: O frete só é 0 (grátis) se TODOS os itens do carrinho tiverem freeShipping igual a true.
+            // Se houver pelo menos um item sem frete grátis, o carrinho exigirá o pagamento do frete.
+            const allItemsFreeShipping = cart.length > 0 && cart.every(item => item.freeShipping);
+            const finalFreight = allItemsFreeShipping ? 0 : calculatedFreight;
 
             const totalGeral = subtotal + finalFreight;
 
@@ -1404,8 +1408,8 @@
 
             calculatedFreight = (cep.startsWith('72') || cep.startsWith('73')) ? 12.00 : 24.50;
             
-            const hasFreeShipping = cart.some(item => item.freeShipping);
-            if (hasFreeShipping) {
+            const allItemsFreeShipping = cart.length > 0 && cart.every(item => item.freeShipping);
+            if (allItemsFreeShipping) {
                 msg.innerText = `✅ Frete Grátis aplicado ao seu carrinho!`;
                 calculatedFreight = 0;
             } else {
@@ -1416,7 +1420,6 @@
             isFreightCalculated = true;
             document.getElementById('addressFields').classList.remove('hidden');
             
-            // Tenta buscar o ViaCEP se o usuário apenas clicou no botão "Calcular"
             if(document.getElementById('ruaInput').value === "") {
                buscarCEP();
             }
@@ -1478,7 +1481,6 @@
                 return;
             }
 
-            // 1. Validação Obrigatória do Frete e Endereço
             if (!isFreightCalculated) {
                 alert("Por favor, calcule o frete inserindo seu CEP antes de finalizar a compra.");
                 document.getElementById('cepInput').focus();
@@ -1500,13 +1502,11 @@
 
             const enderecoCompleto = `${rua}, ${numero}${complemento ? ' - ' + complemento : ''}, ${bairro}, ${cidade}-${uf}, CEP: ${cep}`;
             
-            // 2. Cálculo Final dos Valores
             const paymentMethod = document.getElementById('paymentMethodSelect').value;
-            const hasFreeShipping = cart.some(item => item.freeShipping);
-            const finalFreight = hasFreeShipping ? 0 : calculatedFreight;
+            const allItemsFreeShipping = cart.length > 0 && cart.every(item => item.freeShipping);
+            const finalFreight = allItemsFreeShipping ? 0 : calculatedFreight;
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + finalFreight;
 
-            // 3. Pagamento via WhatsApp
             if (paymentMethod === 'whatsapp') {
                 let itemsListStr = cart.map(i => `• ${i.quantity}x ${i.name} (R$ ${(i.price * i.quantity).toFixed(2)})`).join('%0A');
                 const message = `Olá CDC Comércio Online! Gostaria de finalizar meu pedido:%0A%0A${itemsListStr}%0A%0A*Endereço de Entrega:*%0A${enderecoCompleto}%0A%0A*Pagamento:* WHATSAPP%0A*Frete:* R$ ${finalFreight.toFixed(2)}%0A*Total:* R$ ${total.toFixed(2)}`;
@@ -1514,7 +1514,6 @@
                 return;
             }
 
-            // 4. Pagamento via Asaas - Validação do Cliente
             const name = document.getElementById('checkoutName').value.trim();
             const cpfCnpj = document.getElementById('checkoutCpf').value.replace(/\D/g, '');
             const email = document.getElementById('checkoutEmail').value.trim();
@@ -1528,8 +1527,6 @@
             showNotification("Comunicando com o Asaas...");
 
             try {
-                // TRUQUE DE MESTRE: Injetar o valor do frete como um item na lista que vai pro Supabase
-                // Assim a sua Edge Function cobrará o valor exato no Asaas sem precisar modificar o código do banco de dados!
                 let itemsParaAsaas = [...cart];
                 if (finalFreight > 0) {
                     itemsParaAsaas.push({
